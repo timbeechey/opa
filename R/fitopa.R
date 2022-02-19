@@ -1,11 +1,16 @@
 #' Fit an ordinal pattern analysis model
-#' @param dat a data.frame
+#' @param dat a data frame
 #' @param hypothesis a numeric vector
+#' @param group an optional factor vector
 #' @param pairing_type a string
 #' @param diff_threshold a positive integer or floating point number
+#' @param cval_method a string, either "exact" or "stochastic
+#' @param nreps an integer, ignored if \code{cval_method = "exact"}
 #' @return an object of class "opafit"
 #' @examples
 #' \dontrun{opa(dat, c(1,2,3,3))}
+#' \dontrun{opa(dat, c(1,2,3,3), nreps = 10000)}
+#' \dontrun{opa(dat, c(1,2,3,3), cval_method = "exact")}
 #' \dontrun{opa(dat, c(1,2,3,3), pairing_type = "adjacent")}
 #' \dontrun{opa(dat, c(1,2,3,3), diff_threshold = 1)}
 #' \dontrun{opa(dat, c(1,2,3,3), group = group_vector)}

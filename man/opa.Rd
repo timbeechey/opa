@@ -15,13 +15,19 @@ opa(
 )
 }
 \arguments{
-\item{dat}{a data.frame}
+\item{dat}{a data frame}
 
 \item{hypothesis}{a numeric vector}
+
+\item{group}{an optional factor vector}
 
 \item{pairing_type}{a string}
 
 \item{diff_threshold}{a positive integer or floating point number}
+
+\item{cval_method}{a string, either "exact" or "stochastic}
+
+\item{nreps}{an integer, ignored if \code{cval_method = "exact"}}
 }
 \value{
 an object of class "opafit"
@@ -43,6 +49,8 @@ the dependent variable data.frame \code{dat}.
 }
 \examples{
 \dontrun{opa(dat, c(1,2,3,3))}
+\dontrun{opa(dat, c(1,2,3,3), nreps = 10000)}
+\dontrun{opa(dat, c(1,2,3,3), cval_method = "exact")}
 \dontrun{opa(dat, c(1,2,3,3), pairing_type = "adjacent")}
 \dontrun{opa(dat, c(1,2,3,3), diff_threshold = 1)}
 \dontrun{opa(dat, c(1,2,3,3), group = group_vector)}

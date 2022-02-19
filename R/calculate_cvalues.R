@@ -22,7 +22,7 @@ cval_exact <- function(pcc_out) {
                                  nrow=factorial(ncol(pcc_out$data)))
   total_perms <- 0
   total_perms_greater_eq <- 0
-  progress_bar <- txtProgressBar(min = 0,
+  progress_bar <- utils::txtProgressBar(min = 0,
                                  max = nrow(pcc_out$data),
                                  initial = 0,
                                  width = 60,
@@ -34,7 +34,7 @@ cval_exact <- function(pcc_out) {
       hypothesis_no_nas <- pcc_out$hypothesis
     }
 
-    permutations <- combinat::permn(na.omit(pcc_out$data[i,]))
+    permutations <- combinat::permn(stats::na.omit(pcc_out$data[i,]))
     n_perms <- length(permutations)
     total_perms <- total_perms + n_perms
 
@@ -48,7 +48,7 @@ cval_exact <- function(pcc_out) {
     individual_cvals[i] <- n_perms_greater_eq / n_perms
     # Increment the count of permutations with PCCs >= the observed PCC
     total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
-    setTxtProgressBar(progress_bar, i)
+    utils::setTxtProgressBar(progress_bar, i)
   }
   close(progress_bar)
   group_cval <- total_perms_greater_eq / total_perms
@@ -67,7 +67,7 @@ cval_stochastic <- function(pcc_out, nreps) {
                                  ncol=nrow(pcc_out$data),
                                  nrow=nreps)
   total_perms_greater_eq <- 0
-  progress_bar <- txtProgressBar(min = 0, max = nrow(pcc_out$data),
+  progress_bar <- utils::txtProgressBar(min = 0, max = nrow(pcc_out$data),
                                  initial = 0, width = 60, style = 3)
   for (i in 1:nrow(pcc_out$data)) {
     if (any(is.na(unlist(pcc_out$data[i,])))) {
@@ -77,7 +77,7 @@ cval_stochastic <- function(pcc_out, nreps) {
     }
 
     permutations <- replicate(nreps,
-                              sample(na.omit(pcc_out$data[i,])),
+                              sample(stats::na.omit(pcc_out$data[i,])),
                               simplify = FALSE)
 
     h_ordering <- ordering(hypothesis_no_nas, pcc_out$pairing_type, 0)
@@ -90,7 +90,7 @@ cval_stochastic <- function(pcc_out, nreps) {
     individual_cvals[i] <- n_perms_greater_eq / nreps
     # Increment the count of permutations with PCCs >= the observed PCC
     total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
-    setTxtProgressBar(progress_bar, i)
+    utils::setTxtProgressBar(progress_bar, i)
   }
   close(progress_bar)
   group_cval <- total_perms_greater_eq / (nreps * nrow(pcc_out$data))

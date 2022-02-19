@@ -25,28 +25,29 @@ conform <- function(xs, h) {
 }
 
 #' Prints a summary of results from a fitted ordinal pattern analysis model.
-#' @param x an object of class "opafit".
+#' @param object an object of class "opafit".
 #' @param digits an integer used for rounding values in the output.
+#' @param ... ignored
 #' @examples
 #' \dontrun{summary(opa_model)}
 #' \dontrun{summary(opa_model, digits = 3)}
 #' @export
-summary.opafit <- function(x, ..., digits = 2L) {
-  if (is.null(x$groups)) {
-    cat("Ordinal Pattern Analysis of", ncol(x$data), "observations for",
-        nrow(x$data), "individuals in 1 group \n\n")
+summary.opafit <- function(object, ..., digits = 2L) {
+  if (is.null(object$groups)) {
+    cat("Ordinal Pattern Analysis of", ncol(object$data), "observations for",
+        nrow(object$data), "individuals in 1 group \n\n")
   } else {
-    cat("Ordinal Pattern Analysis of", ncol(x$data), "observations for",
-        nrow(x$data), "individuals in", nlevels(x$groups), "groups \n\n")
+    cat("Ordinal Pattern Analysis of", ncol(object$data), "observations for",
+        nrow(object$data), "individuals in", nlevels(object$groups), "groups \n\n")
   }
   cat("Group-level results:\n")
-  print(group_results(x, digits))
+  print(group_results(object, digits))
   cat("\nIndividual-level results:\n")
-  print(individual_results(x, digits))
-  cat("\nPCCs were calculated for ", x$pairing_type,
-      " ordinal relationships using a difference threshold of ", x$diff_threshold,
+  print(individual_results(object, digits))
+  cat("\nPCCs were calculated for ", object$pairing_type,
+      " ordinal relationships using a difference threshold of ", object$diff_threshold,
       ".\n", sep="")
-  cat("Chance-values were calculated using the", x$cval_method, "method.\n")
+  cat("Chance-values were calculated using the", object$cval_method, "method.\n")
 }
 
 #' @export
@@ -63,6 +64,7 @@ print.opafit <- function(x, ...) {
 #' \dontrun{pcc_threshold_plot(opa_model, pcc_threshold = 85)}
 #' @export
 pcc_threshold_plot <- function(m, pcc_threshold = 75) {
+  Individual <- group <- PCC <- NULL # bind variables to function
   if (is.null(m$groups)) { # single group
     df <- data.frame(Individual = 1:nrow(m$data),
                      PCC = m$individual_pccs)
@@ -92,18 +94,20 @@ pcc_threshold_plot <- function(m, pcc_threshold = 75) {
 }
 
 #' Plots individual-level PCCs and chance-values.
-#' @param m an object of class "opafit" produced by \code{opa()}
+#' @param x an object of class "opafit" produced by \code{opa()}
+#' @param ... ignored
 #' @examples
 #' \dontrun{plot(fitted_model)}
 #' @export
-plot.opafit <- function(m) {
-  if (is.null(m$groups)) { # single group
-    df <- data.frame(Individual = rep(1:nrow(m$data), 2),
-                     stat = c(rep("PCCs", nrow(m$data)), rep("c-values", nrow(m$data))),
-                     value = c(m$individual_pccs, m$individual_cvals))
+plot.opafit <- function(x, ...) {
+  Individual <- stat <- group <- value <- NULL
+  if (is.null(x$groups)) { # single group
+    df <- data.frame(Individual = rep(1:nrow(x$data), 2),
+                     stat = c(rep("PCCs", nrow(x$data)), rep("c-values", nrow(x$data))),
+                     value = c(x$individual_pccs, x$individual_cvals))
     df$stat <- factor(df$stat, levels = c("PCCs", "c-values"))
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
-      ggplot2::scale_x_continuous(breaks = 1:length(m$individual_pccs)) +
+      ggplot2::scale_x_continuous(breaks = 1:length(x$individual_pccs)) +
       ggplot2::geom_segment(ggplot2::aes(x=Individual, xend=Individual, y=0, yend=value), colour="black", size=0.3) +
       ggplot2::geom_point(size=2, shape=21, ggplot2::aes(fill=stat)) +
       ggplot2::facet_wrap(~ stat, nrow=1, scale="free") +
@@ -113,13 +117,13 @@ plot.opafit <- function(m) {
       ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                      panel.grid.minor.y = ggplot2::element_blank())
   } else { # multiple groups
-    df <- data.frame(Individual = rep(1:length(m$individual_pccs), 2),
-                     group = rep(factor(m$group_labels), 2),
-                     stat = c(rep("PCCs", nrow(m$data)), rep("c-values", nrow(m$data))),
-                     value = c(m$individual_pccs, m$individual_cvals))
+    df <- data.frame(Individual = rep(1:length(x$individual_pccs), 2),
+                     group = rep(factor(x$group_labels), 2),
+                     stat = c(rep("PCCs", nrow(x$data)), rep("c-values", nrow(x$data))),
+                     value = c(x$individual_pccs, x$individual_cvals))
     df$stat <- factor(df$stat, levels = c("PCCs", "c-values"))
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
-      ggplot2::scale_x_continuous(breaks = 1:length(m$individual_idx), labels=m$individual_idx) +
+      ggplot2::scale_x_continuous(breaks = 1:length(x$individual_idx), labels=x$individual_idx) +
       ggplot2::geom_segment(ggplot2::aes(x=Individual, xend=Individual, y=0, yend=value), colour="black", size=0.3) +
       ggplot2::geom_point(size=2, shape=21, ggplot2::aes(fill=group)) +
       ggplot2::facet_wrap(~ stat, nrow=1, scale="free") +
@@ -131,13 +135,12 @@ plot.opafit <- function(m) {
   }
 }
 
-#' @export
-group_results <- function(m, ...) {
+group_results <- function(m, digits) {
   UseMethod("group_results")
 }
 
 #' @export
-group_results.default <- function(m, ...) .NotYetImplemented()
+group_results.default <- function(m, digits) .NotYetImplemented()
 
 #' Returns group-level PCC and chance values.
 #'
@@ -164,13 +167,12 @@ group_results.opafit <- function(m, digits = 2) {
   }
 }
 
-#' @export
-individual_results <- function(m, ...) {
+individual_results <- function(m, digits) {
   UseMethod("individual_results")
 }
 
 #' @export
-individual_results.default <- function(m, ...) .NotYetImplemented()
+individual_results.default <- function(m, digits) .NotYetImplemented()
 
 #' Returns individual-level PCC and chance values.
 #'
@@ -208,6 +210,7 @@ individual_results.opafit <- function(m, digits = 2) {
 #' plot_hypothesis(my_hypothesis)}
 #' @export
 plot_hypothesis <- function(h) {
+  condition <- hypothesis <- NULL
   df <- data.frame(condition = 1:length(h), hypothesis = h)
   ggplot2::ggplot(df, ggplot2::aes(x = condition, y = hypothesis)) +
     ggplot2::geom_point(size = 4, shape = 21, fill = "royalblue") +

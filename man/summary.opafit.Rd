@@ -4,10 +4,12 @@
 \alias{summary.opafit}
 \title{Prints a summary of results from a fitted ordinal pattern analysis model.}
 \usage{
-\method{summary}{opafit}(x, ..., digits = 2L)
+\method{summary}{opafit}(object, ..., digits = 2L)
 }
 \arguments{
-\item{x}{an object of class "opafit".}
+\item{object}{an object of class "opafit".}
+
+\item{...}{ignored}
 
 \item{digits}{an integer used for rounding values in the output.}
 }

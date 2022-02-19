@@ -1,6 +1,6 @@
 row_pcc <- function(xs, h, pairing_type, diff_threshold) {
   # skip NAs in the data row
-  xs_no_nas <- na.omit(xs)
+  xs_no_nas <- stats::na.omit(xs)
   # if there are NAs in the data row, skip corresponding
   # values in the hypothesis
   if (any(is.na(xs))) {
@@ -11,7 +11,7 @@ row_pcc <- function(xs, h, pairing_type, diff_threshold) {
 
   # get ordinal relations in hypothesis and data row
   hypothesis_ordering <- ordering(hypothesis_no_nas, pairing_type, 0)
-  row_ordering <- ordering(na.omit(xs), pairing_type, diff_threshold)
+  row_ordering <- ordering(stats::na.omit(xs), pairing_type, diff_threshold)
 
   # compare ordinal relations in hypothesis and data row
   match <- row_ordering == hypothesis_ordering

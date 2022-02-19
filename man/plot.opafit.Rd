@@ -4,10 +4,12 @@
 \alias{plot.opafit}
 \title{Plots individual-level PCCs and chance-values.}
 \usage{
-\method{plot}{opafit}(m)
+\method{plot}{opafit}(x, ...)
 }
 \arguments{
-\item{m}{an object of class "opafit" produced by \code{opa()}}
+\item{x}{an object of class "opafit" produced by \code{opa()}}
+
+\item{...}{ignored}
 }
 \description{
 Plots individual-level PCCs and chance-values.
