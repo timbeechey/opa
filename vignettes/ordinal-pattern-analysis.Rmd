@@ -1,0 +1,106 @@
+---
+title: "Ordinal pattern analysis for analysing individual repeated-measures data"
+author: "Timothy Beechey"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ordinal-pattern-analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(opa)
+library(ggplot2)
+```
+
+## Overview
+
+This vignette describes the use of the `opa` package for fitting ordinal pattern analysis models for repeated measures data. The details of ordinal pattern analysis are described by [Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [Grice et al., (2015)](https://doi.org/10.1177/2158244015604192).
+
+## Example 1: Analysis of rating scale data
+
+### Specifying a hypothesis
+
+Hypotheses take the form of numeric vectors. For this example an hypothesis of a monotonic increase in the response variable across the three ordered experimental conditions will be used. This hypothesis is specified as:
+
+```{r}
+h1 <- 1:5
+```
+
+This hypothesis can be visualized with the `plot_hypothesis()` function.
+
+```{r}
+plot_hypothesis(h1) + ggtitle("Hypothesis 1")
+```
+
+### Data
+
+Subjective ratings of listening effort on a scale from 0 to 12 will be considered for twenty participants across five experimental conditions. Experimental conditions can be ordered by noise intensity.  
+
+Note that the `opa()` function expects data in __wide format__ with each row corresponding to an individual and each column corresponding to a measurement time or experimental condition.
+
+```{r}
+(effort <- data.frame(
+  individual = 1:20,
+  library    = c(0,0,2,NA,1,5,2,2,0,1,0,0,0,2,2,3,0,1,0,1),
+  office     = c(0,2,4,5,0,7,1,4,1,4,1,1,0,2,5,6,2,0,4,5),
+  cafe       = c(9,4,10,8,2,8,6,8,7,6,7,6,8,6,11,9,6,5,8,6),
+  traffic    = c(8,8,12,10,4,9,5,10,9,6,10,10,7,10,10,11,7,7,10,8),
+  foodcourt  = c(8,5,10,11,7,10,8,10,11,8,10,9,10,11,12,11,7,7,12,11)
+))
+```
+
+```{r, echo=FALSE}
+effort_long <- tidyr::gather(effort, 2:6, key = "condition", value = "rating")
+effort_long$individual <- factor(effort_long$individual)
+effort_long$condition <- factor(effort_long$condition,
+                                levels = c("library","office","cafe","traffic","foodcourt"),
+                                ordered = TRUE)
+```
+
+Plotting the data shows the patterns of ratings more clearly. There is a general upward trend with higher ratings of effort in higher noise intensity conditions.
+
+```{r, echo=FALSE, warning=FALSE, fig.width=4, fig.height=4}
+ggplot(effort_long, aes(x = condition, y = rating, group = individual)) +
+  geom_line(aes(colour = individual)) +
+  geom_point(size = 2, shape = 21, aes(fill = individual)) +
+  scale_y_continuous(breaks = 0:12) +
+  guides(fill = "none", colour = "none")
+```
+
+### Fitting an `opa` model
+
+Ordinal pattern analysis models are fitted using the `opa()` function. The `opa()` function must be provided with a `data.frame` consisting of response variable data in wide format, and a numeric vector representing an hypothesis. The length of the hypothesis vector must be equal to the number of columns in the data. The data passed to the model must consist only of response variable columns, so the first column of `small_dat` containing participant IDs is excluded. 
+
+```{r, echo = TRUE, results = 'hide'}
+opamod1 <- opa(effort[,2:6], h1, cval_method = "exact")
+```
+
+The results of fitting an ordinal pattern analysis model can be displayed with the `summary()` function.
+
+```{r}
+summary(opamod1)
+```
+
+Individual-level PCCs and c-values computed by the model can be visualized with the `plot()` function.
+
+```{r, fig.width=6, fig.height=4}
+plot(opamod1)
+```
+
+## Interpreting a fitted model
+
+From the results of a fitted `opa` model, inference can be drawn about the hypothesis in relation to individuals and also at the group level.
+
+```{r}
+pcc_threshold_plot(opamod1, 85)
+```
+
