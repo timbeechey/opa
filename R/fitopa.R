@@ -1,5 +1,4 @@
-#' Fit an ordinal pattern analysis model to determine the degree of match
-#' between data and a specified hypothesis.
+#' Fit an ordinal pattern analysis model
 #' @param dat a data.frame
 #' @param hypothesis a numeric vector
 #' @param pairing_type a string
@@ -11,6 +10,7 @@
 #' \dontrun{opa(dat, c(1,2,3,3), diff_threshold = 1)}
 #' \dontrun{opa(dat, c(1,2,3,3), group = group_vector)}
 #' @details
+#' Determines the degree of match between data and a specified hypothesis.
 #' Data is expected in \strong{wide} format with 1 row per individual and 1
 #' column per measurement condition. Data must contain only columns consisting
 #' of numerical values of the \emph{dependent} variable.

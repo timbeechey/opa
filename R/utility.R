@@ -54,8 +54,7 @@ print.opafit <- function(x, ...) {
   print(x$call)
 }
 
-#' Plots the percentage of correct classifications for each individual
-#' relative to a user-supplied PCC threshold value.
+#' Plots individual PCCs relative to a user-supplied PCC threshold value.
 #' @param m an object of class "opafit"
 #' @param pcc_threshold a numeric scalar
 #' @return an object of class "ggplot"
@@ -140,10 +139,13 @@ group_results <- function(m, ...) {
 #' @export
 group_results.default <- function(m, ...) .NotYetImplemented()
 
-#' Returns group-level PCC and chance values. If the model was fitted with
-#' no grouping variable, a single PCC and c-value are returned. If a grouping
-#' variable was specified in the call to \code{opa} then PCCs and c-values are
-#' returned for each factor level of the grouping variable.
+#' Returns group-level PCC and chance values.
+#'
+#' @details
+#' If the model was fitted with no grouping variable, a single PCC and c-value
+#' are returned. If a grouping variable was specified in the call to \code{opa}
+#' then PCCs and c-values are returned for each factor level of the grouping
+#' variable.
 #' @param m an object of class "opafit" produced by \code{opa()}.
 #' @param digits a positive integer.
 #' @examples
@@ -170,11 +172,14 @@ individual_results <- function(m, ...) {
 #' @export
 individual_results.default <- function(m, ...) .NotYetImplemented()
 
-#' Returns individual-level PCC and chance values. If the model was fitted with
-#' no grouping variable, a matrix of PCCs and c-values are returned
-#' corresponding to the order of rows in the data. If the \code{opa} model was
-#' fitted with a grouping variable specified, a table of PCCs and c-values is
-#' returned ordered by factor level of the grouping variable.
+#' Returns individual-level PCC and chance values.
+#'
+#' @details
+#' If the model was fitted with no grouping variable, a matrix of PCCs and
+#' c-values are returned corresponding to the order of rows in the data. If the
+#' \code{opa} model was fitted with a grouping variable specified, a table of
+#' PCCs and c-values is returned ordered by factor level of the grouping
+#' variable.
 #' @param m an object of class "opafit" produced by \code{opa()}
 #' @param digits an integer
 #' @examples
