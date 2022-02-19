@@ -1,7 +1,7 @@
 Package: opa
 Type: Package
 Title: An implementation of Ordinal Pattern Analysis
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("Timothy", "Beechey", email = "tim.beechey@protonmail.com",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8858-946X"))
 Description: An implementation of ordinal pattern analysis for quantifying
