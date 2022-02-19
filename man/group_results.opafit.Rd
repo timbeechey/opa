@@ -2,10 +2,7 @@
 % Please edit documentation in R/utility.R
 \name{group_results.opafit}
 \alias{group_results.opafit}
-\title{Returns group-level PCC and chance values. If the model was fitted with
-no grouping variable, a single PCC and c-value are returned. If a grouping
-variable was specified in the call to \code{opa} then PCCs and c-values are
-returned for each factor level of the grouping variable.}
+\title{Returns group-level PCC and chance values.}
 \usage{
 \method{group_results}{opafit}(m, digits = 2)
 }
@@ -15,10 +12,13 @@ returned for each factor level of the grouping variable.}
 \item{digits}{a positive integer.}
 }
 \description{
-Returns group-level PCC and chance values. If the model was fitted with
-no grouping variable, a single PCC and c-value are returned. If a grouping
-variable was specified in the call to \code{opa} then PCCs and c-values are
-returned for each factor level of the grouping variable.
+Returns group-level PCC and chance values.
+}
+\details{
+If the model was fitted with no grouping variable, a single PCC and c-value
+are returned. If a grouping variable was specified in the call to \code{opa}
+then PCCs and c-values are returned for each factor level of the grouping
+variable.
 }
 \examples{
 \dontrun{group_results(fitted_model)}

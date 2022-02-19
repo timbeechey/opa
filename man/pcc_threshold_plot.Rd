@@ -2,8 +2,7 @@
 % Please edit documentation in R/utility.R
 \name{pcc_threshold_plot}
 \alias{pcc_threshold_plot}
-\title{Plots the percentage of correct classifications for each individual
-relative to a user-supplied PCC threshold value.}
+\title{Plots individual PCCs relative to a user-supplied PCC threshold value.}
 \usage{
 pcc_threshold_plot(m, pcc_threshold = 75)
 }
@@ -16,8 +15,7 @@ pcc_threshold_plot(m, pcc_threshold = 75)
 an object of class "ggplot"
 }
 \description{
-Plots the percentage of correct classifications for each individual
-relative to a user-supplied PCC threshold value.
+Plots individual PCCs relative to a user-supplied PCC threshold value.
 }
 \examples{
 \dontrun{pcc_threshold_plot(opa_model)}

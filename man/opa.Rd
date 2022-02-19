@@ -2,8 +2,7 @@
 % Please edit documentation in R/fitopa.R
 \name{opa}
 \alias{opa}
-\title{Fit an ordinal pattern analysis model to determine the degree of match
-between data and a specified hypothesis.}
+\title{Fit an ordinal pattern analysis model}
 \usage{
 opa(
   dat,
@@ -28,10 +27,10 @@ opa(
 an object of class "opafit"
 }
 \description{
-Fit an ordinal pattern analysis model to determine the degree of match
-between data and a specified hypothesis.
+Fit an ordinal pattern analysis model
 }
 \details{
+Determines the degree of match between data and a specified hypothesis.
 Data is expected in \strong{wide} format with 1 row per individual and 1
 column per measurement condition. Data must contain only columns consisting
 of numerical values of the \emph{dependent} variable.
