@@ -49,3 +49,50 @@ dat <- data.frame(individual = c(1, 2, 3, 4),
                   t3 = c(8, 5, 10, 11))
 ```
 
+```
+  individual  t1  t2  t3
+1          1   9   8   8
+2          2   4   8   5
+3          3  10  12  10
+4          4   8  10  11
+```
+
+an ordinal pattern analysis model to consider how well an hypothesis of a monotonic increase in the response variable across three conditions can be fitted using:
+
+```r
+h <- c(1, 2, 3)
+
+opamod <- opa(dat[,2:4], h)
+```
+
+A summary of the model output can be viewed using:
+
+```r
+summary(opamod)
+```
+
+```
+Ordinal Pattern Analysis of 3 observations for 4 individuals in 1 group 
+
+Group-level results:
+  pcc  cval 
+50.00  0.59 
+
+Individual-level results:
+     PCC cval
+1   0.00 1.00
+2  66.67 0.51
+3  33.33 0.70
+4 100.00 0.16
+
+PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
+Chance-values were calculated using the stochastic method.
+```
+
+Inidividual results can be visualized using:
+
+```r
+plot(opamod)
+```
+
+![Rplot](https://user-images.githubusercontent.com/66388815/154843106-856b52ea-1e67-48a7-ac1f-21cb78fa02d9.jpeg)
