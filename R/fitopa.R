@@ -10,11 +10,33 @@
 #' column per measurement condition. Data must contain only columns consisting
 #' of numerical values of the \emph{dependent} variable.
 #'
+#' The length of the \code{hypothesis} must be equal to the number of columns in
+#' the dependent variable data.frame \code{dat}.
+#'
 #' Any \emph{independent} variable must be passed separately as a vector with the
 #' \code{group} keyword. The grouping vector must be a \emph{factor}.
 #'
-#' The length of the \code{hypothesis} must be equal to the number of columns in
-#' the dependent variable data.frame \code{dat}.
+#' \code{pairing_type} must be either "pairwise" or "adjacent". The "pairwise"
+#' option considered the relative ordering of every pair of observations in
+#' the data and every pair of elements of the hypothesis. The "adjacent" option
+#' considered the ordering of adjacent pairs only. If unspecified, the default
+#' is "pairwise".
+#'
+#' \code{diff_threshold} may be a positive integer or double. If unspecified
+#' a default zero threshold is used. The \code{diff_threshold} is never applied
+#' to the hypothesis.
+#'
+#' \code{cval_method} is either "stochastic" or "exact". The "stochastic" option
+#' generates random reorderings of each data row. The "exact" method generates
+#' every possible permutation of each data row. Care must be taken using the
+#' "exact" method since the number of permutations is the factorial of the
+#' number of columns in the data. For large numbers of data columns it is best
+#' to use the default "stochastic" method to sample orderings.
+#'
+#' \code{nreps} specifies the number of random reorderigs to generate when
+#' using the "stochastic" method for computing chance values. The default
+#' value of \code{nreps} is 1000. If the \code{cval_method = "exact"} option
+#' is specified, \code{nreps} is ignored.
 #'
 #' @references
 #' Grice, J. W., Craig, D. P. A., & Abramson, C. I. (2015). A Simple and
@@ -79,6 +101,9 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
   assertthat::assert_that(cval_method %in% c("exact", "stochastic"))
   assertthat::assert_that(class(diff_threshold) %in% c("integer", "numeric"))
   assertthat::assert_that(assertthat::is.count(nreps))
+  assertthat::assert_that(assertthat::is.scalar(diff_threshold))
+  assertthat::assert_that(assertthat::is.count(nreps))
+  assertthat::assert_that(assertthat::are_equal(diff_threshold >= 0, TRUE))
 
   if (is.null(group)) { # single groups
     # convert the data.frame input to a matrix for speed
