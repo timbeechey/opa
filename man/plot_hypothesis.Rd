@@ -16,6 +16,6 @@ an object of class "ggplot"
 Convenience function for plotting a hypothesis.
 }
 \examples{
-\dontrun{my_hypothesis <- c(1,2,3,3,3)
-plot_hypothesis(my_hypothesis)}
+my_hypothesis <- c(1,2,3,3,3)
+plot_hypothesis(my_hypothesis)
 }

@@ -1,21 +1,11 @@
 #' Fit an ordinal pattern analysis model
-#' @param dat a data frame
-#' @param hypothesis a numeric vector
-#' @param group an optional factor vector
-#' @param pairing_type a string
-#' @param diff_threshold a positive integer or floating point number
-#' @param cval_method a string, either "exact" or "stochastic
-#' @param nreps an integer, ignored if \code{cval_method = "exact"}
-#' @return an object of class "opafit"
-#' @examples
-#' \dontrun{opa(dat, c(1,2,3,3))}
-#' \dontrun{opa(dat, c(1,2,3,3), nreps = 10000)}
-#' \dontrun{opa(dat, c(1,2,3,3), cval_method = "exact")}
-#' \dontrun{opa(dat, c(1,2,3,3), pairing_type = "adjacent")}
-#' \dontrun{opa(dat, c(1,2,3,3), diff_threshold = 1)}
-#' \dontrun{opa(dat, c(1,2,3,3), group = group_vector)}
+#'
+#' \code{opa} is used to fit ordinal pattern analysis models by computing the
+#' percentage of pair orderings in each row of data which are matched by
+#' corresponding pair orderings in an hypothesis, in addition the chance of a
+#' permutation of the data producing a percentage match as great.
+#'
 #' @details
-#' Determines the degree of match between data and a specified hypothesis.
 #' Data is expected in \strong{wide} format with 1 row per individual and 1
 #' column per measurement condition. Data must contain only columns consisting
 #' of numerical values of the \emph{dependent} variable.
@@ -25,9 +15,61 @@
 #'
 #' The length of the \code{hypothesis} must be equal to the number of columns in
 #' the dependent variable data.frame \code{dat}.
+#'
 #' @references
-#' Grice, J. W., Craig, D. P. A., & Abramson, C. I. (2015). A Simple and Transparent Alternative to Repeated Measures ANOVA. SAGE Open, 5(3), 215824401560419. <https://doi.org/10.1177/2158244015604192>
-#' Thorngate, W. (1987). Ordinal Pattern Analysis: A Method for Assessing Theory-Data Fit. Advances in Psychology, 40, 345–364. <https://doi.org/10.1016/S0166-4115(08)60083-7>
+#' Grice, J. W., Craig, D. P. A., & Abramson, C. I. (2015). A Simple and
+#' Transparent Alternative to Repeated Measures ANOVA. SAGE Open, 5(3),
+#' 215824401560419. <https://doi.org/10.1177/2158244015604192>
+#'
+#' Thorngate, W. (1987). Ordinal Pattern Analysis: A Method for Assessing
+#' Theory-Data Fit. Advances in Psychology, 40, 345–364.
+#' <https://doi.org/10.1016/S0166-4115(08)60083-7>
+#'
+#' @param dat a data frame
+#' @param hypothesis a numeric vector
+#' @param group an optional factor vector
+#' @param pairing_type a string
+#' @param diff_threshold a positive integer or floating point number
+#' @param cval_method a string, either "exact" or "stochastic
+#' @param nreps an integer, ignored if \code{cval_method = "exact"}
+#' @return \code{opa} returns an object of class "opafit".
+#'
+#' An object of class "opafit" is a list containing the folllowing components:
+#' \describe{
+#'   \item{group_pcc}{the percentage of pairwise orderings from all pooled data
+#'   rows which were correctly classified by the hypothesis.}
+#'   \item{individual_pccs}{a vector containing the percentage of pairwise
+#'   orderings that were correctly classified by the hypothesis for each data
+#'   row.}
+#'   \item{correct_pairs}{an integer representing the number of pairwise
+#'   orderings pooled across all data rows that were correctly classified by the
+#'   hypothesis.}
+#'   \item{total_pairs}{an integer, the number of pair orderings contained in
+#'   the data.}
+#'   \item{group_cval}{the group-level chance value.}
+#'   \item{individual_cvals}{a vector containing chance values for each data
+#'   row}
+#'   \item{n_permutations}{an integer, the number of permutations of the data
+#'   used to compute chance values.}
+#'   \item{pccs_geq_observed}{an integer, the number of permutations which
+#'   generated PCC values at least as great as the PCC of the observed data.}
+#'   \item{pcc_replicates}{a matrix containing PCC values, one column per data
+#'   row, computed from all permutations used to compute chance values. }
+#'   \item{call}{the matched call}
+#'   }
+#' @examples
+#' dat <- data.frame(group = c("a", "b", "a", "b"),
+#'                   t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' dat$group <- factor(dat$group, levels = c("a", "b"))
+#' opamod <- opa(dat[,2:4], 1:3)
+#' opa(dat[,2:4], 1:3)
+#' opa(dat[,2:4], 1:3, nreps = 500)
+#' opa(dat[,2:4], 1:3, cval_method = "exact")
+#' opa(dat[,2:4], 1:3, pairing_type = "adjacent")
+#' opa(dat[,2:4], 1:3, diff_threshold = 1)
+#' opa(dat[,2:4], 1:3, group = dat$group)
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, cval_method = "stochastic", nreps = 1000) {

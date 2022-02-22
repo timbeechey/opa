@@ -13,10 +13,17 @@
 
 \item{digits}{an integer used for rounding values in the output.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Prints a summary of results from a fitted ordinal pattern analysis model.
 }
 \examples{
-\dontrun{summary(opa_model)}
-\dontrun{summary(opa_model, digits = 3)}
+dat <- data.frame(t1 = c(9, 4, 8, 10),
+                  t2 = c(8, 8, 12, 10),
+                  t3 = c(8, 5, 10, 11))
+opamod <- opa(dat, 1:3)
+summary(opamod)
+summary(opamod, digits = 3)
 }

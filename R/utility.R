@@ -28,9 +28,14 @@ conform <- function(xs, h) {
 #' @param object an object of class "opafit".
 #' @param digits an integer used for rounding values in the output.
 #' @param ... ignored
+#' @return No return value, called for side effects.
 #' @examples
-#' \dontrun{summary(opa_model)}
-#' \dontrun{summary(opa_model, digits = 3)}
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' summary(opamod)
+#' summary(opamod, digits = 3)
 #' @export
 summary.opafit <- function(object, ..., digits = 2L) {
   if (is.null(object$groups)) {
@@ -60,8 +65,12 @@ print.opafit <- function(x, ...) {
 #' @param pcc_threshold a numeric scalar
 #' @return an object of class "ggplot"
 #' @examples
-#' \dontrun{pcc_threshold_plot(opa_model)}
-#' \dontrun{pcc_threshold_plot(opa_model, pcc_threshold = 85)}
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' pcc_threshold_plot(opamod)
+#' pcc_threshold_plot(opamod, pcc_threshold = 85)
 #' @export
 pcc_threshold_plot <- function(m, pcc_threshold = 75) {
   Individual <- group <- PCC <- NULL # bind variables to function
@@ -96,8 +105,13 @@ pcc_threshold_plot <- function(m, pcc_threshold = 75) {
 #' Plots individual-level PCCs and chance-values.
 #' @param x an object of class "opafit" produced by \code{opa()}
 #' @param ... ignored
+#' @return an object of class "ggplot"
 #' @examples
-#' \dontrun{plot(fitted_model)}
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' plot(opamod)
 #' @export
 plot.opafit <- function(x, ...) {
   Individual <- stat <- group <- value <- NULL
@@ -135,13 +149,6 @@ plot.opafit <- function(x, ...) {
   }
 }
 
-group_results <- function(m, digits) {
-  UseMethod("group_results")
-}
-
-#' @export
-group_results.default <- function(m, digits) .NotYetImplemented()
-
 #' Returns group-level PCC and chance values.
 #'
 #' @details
@@ -151,13 +158,31 @@ group_results.default <- function(m, digits) .NotYetImplemented()
 #' variable.
 #' @param m an object of class "opafit" produced by \code{opa()}.
 #' @param digits a positive integer.
+#' @return a matrix with 1 row per group.
 #' @examples
-#' \dontrun{group_results(fitted_model)}
-#' \dontrun{group_results(fitted_model, digits = 3)}
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' group_results(opamod)
+#' @export
+group_results <- function(m, digits) {
+  UseMethod("group_results")
+}
+
+#' @rdname group_results
+#' @export
+group_results.default <- function(m, digits) .NotYetImplemented()
+
+#' @rdname group_results
 #' @export
 group_results.opafit <- function(m, digits = 2) {
   if (is.null(m$groups)) {
-    return(c(pcc = round(m$group_pcc, digits), cval = round(m$group_cval, digits)))
+    out <- matrix(c(round(m$group_pcc, digits), round(m$group_cval, digits)),
+                  nrow = 1)
+    colnames(out) <- c("PCC", "cval")
+    rownames(out) <- "pooled"
+    return(out)
   }
   else {
     out <- cbind(round(m$group_pcc, digits), round(m$group_cval, digits))
@@ -166,13 +191,6 @@ group_results.opafit <- function(m, digits = 2) {
     return(out)
   }
 }
-
-individual_results <- function(m, digits) {
-  UseMethod("individual_results")
-}
-
-#' @export
-individual_results.default <- function(m, digits) .NotYetImplemented()
 
 #' Returns individual-level PCC and chance values.
 #'
@@ -184,9 +202,24 @@ individual_results.default <- function(m, digits) .NotYetImplemented()
 #' variable.
 #' @param m an object of class "opafit" produced by \code{opa()}
 #' @param digits an integer
+#' @return a matrix containing a column of PCC values and a column of c-values
+#' with 1 row per row of data.
 #' @examples
-#' \dontrun{individual_results(fitted_model)}
-#' \dontrun{individual_results(fitted_model, digits = 3)}
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' individual_results(opamod)
+#' @export
+individual_results <- function(m, digits) {
+  UseMethod("individual_results")
+}
+
+#' @rdname individual_results
+#' @export
+individual_results.default <- function(m, digits) .NotYetImplemented()
+
+#' @rdname individual_results
 #' @export
 individual_results.opafit <- function(m, digits = 2) {
   if (is.null(m$groups)) {
@@ -206,8 +239,8 @@ individual_results.opafit <- function(m, digits = 2) {
 #' @param h a numeric vector
 #' @return an object of class "ggplot"
 #' @examples
-#' \dontrun{my_hypothesis <- c(1,2,3,3,3)
-#' plot_hypothesis(my_hypothesis)}
+#' my_hypothesis <- c(1,2,3,3,3)
+#' plot_hypothesis(my_hypothesis)
 #' @export
 plot_hypothesis <- function(h) {
   condition <- hypothesis <- NULL
