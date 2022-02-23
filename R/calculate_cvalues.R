@@ -1,3 +1,21 @@
+# <opa, an R package implementing ordinal pattern analysis.>
+# Copyright (C) <2022>  <Timothy Beechey>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
 compare_perm_pccs <- function(perms_list, m, indiv_idx, H_ord) {
   perm_pcc <- numeric(length(perms_list))
   n_perms_greater_eq <- 0
@@ -54,11 +72,11 @@ cval_exact <- function(pcc_out) {
   group_cval <- total_perms_greater_eq / total_perms
 
   return(list(individual_cvals = individual_cvals,
-         group_cval = group_cval,
-         pcc_replicates = individual_perm_pccs,
-         total_perms = total_perms,
-         perm_pccs_geq_obs_pcc = total_perms_greater_eq,
-         observed_group_pcc = pcc_out$group_pcc))
+              group_cval = group_cval,
+              pcc_replicates = individual_perm_pccs,
+              total_perms = total_perms,
+              perm_pccs_geq_obs_pcc = total_perms_greater_eq,
+              observed_group_pcc = pcc_out$group_pcc))
 }
 
 cval_stochastic <- function(pcc_out, nreps) {
