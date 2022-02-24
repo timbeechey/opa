@@ -8,15 +8,19 @@ The `opa` package implements ordinal pattern analysis, as described by [Grice et
 
 ## Installation
 
-`opa` is not available on cran yet. The package can be installed from github using the devtools package.
+`opa` can be installed from CRAN using:
+
+```r
+install.packages("opa")
+```
+
+The latest development version of the package can be installed from github using the devtools package. In order to build the C++ functions it is necessary to have installed Rtools on Windows or Xcode commandline tools on mac prior to installing `opa` with this method.
 
 ```r
 install.packages("devtools")
 
 devtools::install_github("timbeechey/opa")
 ```
-
-In order to build the C++ functions it is necessary to have installed Rtools on Windows or Xcode commandline tools on mac prior to installing `opa`.
 
 ## How ordinal pattern analysis works
 
