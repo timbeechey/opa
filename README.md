@@ -1,3 +1,5 @@
+![](https://www.r-pkg.org/badges/version-ago/opa) ![](https://cranlogs.r-pkg.org/badges/grand-total/opa) [![](https://cranlogs.r-pkg.org/badges/opa)](https://cran.r-project.org/package=opa)
+
 # opa
 
 An R package for ordinal pattern analysis.
@@ -12,14 +14,6 @@ The `opa` package implements ordinal pattern analysis, as described by [Grice et
 
 ```r
 install.packages("opa")
-```
-
-The latest development version of the package can be installed from github using the devtools package. In order to build the C++ functions it is necessary to have installed Rtools on Windows or Xcode commandline tools on mac prior to installing `opa` with this method.
-
-```r
-install.packages("devtools")
-
-devtools::install_github("timbeechey/opa")
 ```
 
 ## How ordinal pattern analysis works
