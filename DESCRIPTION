@@ -10,7 +10,6 @@ Description: Quantifies hypothesis to data fit for repeated measures
     <doi:10.1177/2158244015604192>. Hypothesis and data are encoded as
     pairwise relative orderings which are then compared to determine the
     percentage of orderings in the data that are matched by the hypothesis.
-    Further details can be found in Beechey (2022) <doi:10.17605/OSF.IO/W32DK>.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
