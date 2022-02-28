@@ -80,3 +80,19 @@ NumericVector c_all_diffs(NumericVector xs) {
   }
   return(diffs);
 }
+
+
+/*
+ * Returns a matrix of randomly shuffled vectors
+ * param n: an integer indicating the number of random reorderings
+ * param v: a numeric vector to be shuffled
+ * return: a NumericMatrix with nrows = n and ncols = v.length()
+ */
+// [[Rcpp::export]]
+NumericMatrix c_random_shuffles(int n, NumericVector v) {
+  NumericMatrix rand_orders(v.length(), n);
+  for (int i = 0; i < n; i++) {
+    rand_orders(_, i) = sample(v, v.length());
+  }
+  return(rand_orders);
+}

@@ -31,9 +31,9 @@ compare_perm_pccs <- function(perms_list, m, indiv_idx, H_ord) {
 }
 
 compare_rand_pccs <- function(perms_list, m, indiv_idx, H_ord) {
-  perm_pcc <- numeric(ncol(perms_list))
+  perm_pcc <- numeric(dim(perms_list)[2])
   n_perms_greater_eq <- 0
-  for (i in 1:ncol(perms_list)) {
+  for (i in 1:dim(perms_list)[2]) {
     perm_pcc[i] <- mean(ordering(perms_list[,i], # orderings in a matrix
                                  m$pairing_type,
                                  m$diff_threshold) == H_ord) * 100
@@ -48,10 +48,10 @@ compare_rand_pccs <- function(perms_list, m, indiv_idx, H_ord) {
 # using a permutation test. This function generates every possible permutation
 # of each data row
 cval_exact <- function(pcc_out) {
-  individual_cvals <- numeric(nrow(pcc_out$data))
+  individual_cvals <- numeric(dim(pcc_out$data)[1])
   individual_perm_pccs <- matrix(numeric(0),
-                                 ncol=nrow(pcc_out$data),
-                                 nrow=factorial(ncol(pcc_out$data)))
+                                 ncol=dim(pcc_out$data)[1],
+                                 nrow=factorial(dim(pcc_out$data)[2]))
   total_perms <- 0
   total_perms_greater_eq <- 0
   progress_bar <- utils::txtProgressBar(min = 0,
@@ -59,7 +59,7 @@ cval_exact <- function(pcc_out) {
                                  initial = 0,
                                  width = 60,
                                  style = 3)
-  for (i in 1:nrow(pcc_out$data)) {
+  for (i in 1:dim(pcc_out$data)[1]) {
     if (any(is.na(unlist(pcc_out$data[i,])))) {
       hypothesis_no_nas <- conform(pcc_out$data[i,], pcc_out$hypothesis)
     } else {
@@ -94,22 +94,21 @@ cval_exact <- function(pcc_out) {
 }
 
 cval_stochastic <- function(pcc_out, nreps) {
-  individual_cvals <- numeric(nrow(pcc_out$data))
+  individual_cvals <- numeric(dim(pcc_out$data)[1])
   individual_perm_pccs <- matrix(numeric(0),
-                                 ncol=nrow(pcc_out$data),
+                                 ncol=dim(pcc_out$data)[1],
                                  nrow=nreps)
   total_perms_greater_eq <- 0
   progress_bar <- utils::txtProgressBar(min = 0, max = nrow(pcc_out$data),
                                  initial = 0, width = 60, style = 3)
-  for (i in 1:nrow(pcc_out$data)) {
+  for (i in 1:dim(pcc_out$data)[1]) {
     if (any(is.na(unlist(pcc_out$data[i,])))) {
       hypothesis_no_nas <- conform(pcc_out$data[i,], pcc_out$hypothesis)
     } else {
       hypothesis_no_nas <- pcc_out$hypothesis
     }
 
-    permutations <- replicate(nreps,
-                              sample(stats::na.omit(pcc_out$data[i,])))
+    permutations <- c_random_shuffles(nreps, stats::na.omit(pcc_out$data[i,]))
 
     h_ordering <- ordering(hypothesis_no_nas, pcc_out$pairing_type, 0)
 

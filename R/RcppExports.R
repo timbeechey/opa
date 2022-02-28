@@ -9,3 +9,7 @@ c_all_diffs <- function(xs) {
     .Call(`_opa_c_all_diffs`, xs)
 }
 
+c_random_shuffles <- function(n, v) {
+    .Call(`_opa_c_random_shuffles`, n, v)
+}
+

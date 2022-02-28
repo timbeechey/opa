@@ -33,10 +33,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// c_random_shuffles
+NumericMatrix c_random_shuffles(int n, NumericVector v);
+RcppExport SEXP _opa_c_random_shuffles(SEXP nSEXP, SEXP vSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
+    rcpp_result_gen = Rcpp::wrap(c_random_shuffles(n, v));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_opa_c_sign_with_threshold", (DL_FUNC) &_opa_c_sign_with_threshold, 2},
     {"_opa_c_all_diffs", (DL_FUNC) &_opa_c_all_diffs, 1},
+    {"_opa_c_random_shuffles", (DL_FUNC) &_opa_c_random_shuffles, 2},
     {NULL, NULL, 0}
 };
 

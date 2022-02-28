@@ -43,11 +43,11 @@ row_pcc <- function(xs, h, pairing_type, diff_threshold) {
 
 pcc <- function(dat, h, pairing_type, diff_threshold) {
 
-  individual_pccs <- numeric(nrow(dat))
+  individual_pccs <- numeric(dim(dat)[1])
   total_pairs <- 0
   correct_pairs <- 0
 
-  for (r in 1:nrow(dat)) {
+  for (r in 1:dim(dat)[1]) {
     result <- row_pcc(dat[r,], h, pairing_type, diff_threshold)
     individual_pccs[r] <- result$pcc
     total_pairs <- total_pairs + result$n_pairs
