@@ -59,16 +59,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // c_compare_rand_pccs
-List c_compare_rand_pccs(NumericMatrix perms_list, List m, int indiv_idx, IntegerVector H_ord);
-RcppExport SEXP _opa_c_compare_rand_pccs(SEXP perms_listSEXP, SEXP mSEXP, SEXP indiv_idxSEXP, SEXP H_ordSEXP) {
+List c_compare_rand_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVector H_ord);
+RcppExport SEXP _opa_c_compare_rand_pccs(SEXP permsSEXP, SEXP mSEXP, SEXP indiv_idxSEXP, SEXP H_ordSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type perms_list(perms_listSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type perms(permsSEXP);
     Rcpp::traits::input_parameter< List >::type m(mSEXP);
     Rcpp::traits::input_parameter< int >::type indiv_idx(indiv_idxSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type H_ord(H_ordSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_compare_rand_pccs(perms_list, m, indiv_idx, H_ord));
+    rcpp_result_gen = Rcpp::wrap(c_compare_rand_pccs(perms, m, indiv_idx, H_ord));
     return rcpp_result_gen;
 END_RCPP
 }

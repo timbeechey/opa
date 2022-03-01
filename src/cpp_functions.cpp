@@ -97,15 +97,16 @@ NumericMatrix c_random_shuffles(int n, NumericVector v) {
   return(rand_orders);
 }
 
-// Generates pairwise ordinal relations from a vector, consisting of integers
-// from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
-// calling ordering() on a vector of length N produces a vector of length N-1.
-// When the pairing_type = "pairwise" option is used, calling ordering() on an
-// N-length vector returns a vector of length ((N-1) * N)/2
-// param: xs a numeric vector
-// param: pairing_type a character string, either "adjacent" or "pairwise"
-// param: diff_threshold: a numeric scalar
-// return: a numeric vector
+/* Generates pairwise ordinal relations from a vector, consisting of integers
+ * from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
+ * calling ordering() on a vector of length N produces a vector of length N-1.
+ * When the pairing_type = "pairwise" option is used, calling ordering() on an
+ * N-length vector returns a vector of length ((N-1) * N)/2
+ * param: xs a NumericVector
+ * param: pairing_type a String, either "adjacent" or "pairwise"
+ * param: diff_threshold: a double
+ * return: an IntegerVector
+*/
 // [[Rcpp::export]]
 IntegerVector c_ordering(NumericVector xs, String pairing_type, double diff_threshold) {
   if (pairing_type == "pairwise")
@@ -114,18 +115,29 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, double diff_thre
     return(c_sign_with_threshold(diff(xs), diff_threshold));
 }
 
+/*
+ * Calculates a PCC for each reordered vector and compares it to the PCC of the
+ * corresponding observed PCC from m. Increments n_perms_greater_eq for each
+ * reordering with a PCC >= observed PCC. Returns a list containing the count
+ * n_perms_greater_eq and a vector of PCC values.
+ * param: perms, a NumericMatrix or randomly orderings of a data row
+ * param: m, a list containing computed PCCs from observed data
+ * param: indiv_idx, an int representing the current individual
+ * param: H_ord, an IntegerVector of the ordinal relations in the hypothesis
+ * return: a list containing a count n_perms_greater_eq and a vector of PCCs
+ */
 // [[Rcpp::export]]
-List c_compare_rand_pccs(NumericMatrix perms_list, List m, int indiv_idx, IntegerVector H_ord) {
+List c_compare_rand_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVector H_ord) {
   int n_perms_greater_eq = 0;
   double diff_threshold = m["diff_threshold"];
   String pairing_type = m["pairing_type"];
   NumericVector obs_pcc = m["individual_pccs"];
-  NumericVector perm_pcc(perms_list.ncol());
+  NumericVector perm_pcc(perms.ncol());
   LogicalVector comps(H_ord.length());
 
-  for (int i = 0; i < perms_list.ncol(); i++) {
+  for (int i = 0; i < perms.ncol(); i++) {
     NumericVector perm_ordering(H_ord.length());
-    perm_ordering = c_ordering(perms_list(_,i), pairing_type, diff_threshold);
+    perm_ordering = c_ordering(perms(_,i), pairing_type, diff_threshold);
     for (int j = 0; j < perm_ordering.length(); j++) {
       comps[j] = perm_ordering[j] == H_ord[j];
     }
