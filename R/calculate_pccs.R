@@ -26,8 +26,8 @@ row_pcc <- function(xs, h, pairing_type, diff_threshold) {
   }
 
   # get ordinal relations in hypothesis and data row
-  hypothesis_ordering <- ordering(hypothesis_no_nas, pairing_type, 0)
-  row_ordering <- ordering(stats::na.omit(xs), pairing_type, diff_threshold)
+  hypothesis_ordering <- c_ordering(hypothesis_no_nas, pairing_type, 0)
+  row_ordering <- c_ordering(stats::na.omit(xs), pairing_type, diff_threshold)
 
   # compare ordinal relations in hypothesis and data row
   match <- row_ordering == hypothesis_ordering

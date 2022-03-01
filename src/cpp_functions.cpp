@@ -96,3 +96,45 @@ NumericMatrix c_random_shuffles(int n, NumericVector v) {
   }
   return(rand_orders);
 }
+
+// Generates pairwise ordinal relations from a vector, consisting of integers
+// from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
+// calling ordering() on a vector of length N produces a vector of length N-1.
+// When the pairing_type = "pairwise" option is used, calling ordering() on an
+// N-length vector returns a vector of length ((N-1) * N)/2
+// param: xs a numeric vector
+// param: pairing_type a character string, either "adjacent" or "pairwise"
+// param: diff_threshold: a numeric scalar
+// return: a numeric vector
+// [[Rcpp::export]]
+IntegerVector c_ordering(NumericVector xs, String pairing_type, double diff_threshold) {
+  if (pairing_type == "pairwise")
+    return(c_sign_with_threshold(c_all_diffs(xs), diff_threshold));
+  else
+    return(c_sign_with_threshold(diff(xs), diff_threshold));
+}
+
+// [[Rcpp::export]]
+List c_compare_rand_pccs(NumericMatrix perms_list, List m, int indiv_idx, IntegerVector H_ord) {
+  int n_perms_greater_eq = 0;
+  double diff_threshold = m["diff_threshold"];
+  String pairing_type = m["pairing_type"];
+  NumericVector obs_pcc = m["individual_pccs"];
+  NumericVector perm_pcc(perms_list.ncol());
+  LogicalVector comps(H_ord.length());
+
+  for (int i = 0; i < perms_list.ncol(); i++) {
+    NumericVector perm_ordering(H_ord.length());
+    perm_ordering = c_ordering(perms_list(_,i), pairing_type, diff_threshold);
+    for (int j = 0; j < perm_ordering.length(); j++) {
+      comps[j] = perm_ordering[j] == H_ord[j];
+    }
+    perm_pcc[i] = mean(comps) * 100;
+    if (perm_pcc[i] >= obs_pcc[indiv_idx - 1]) {
+      n_perms_greater_eq += 1;
+    }
+  }
+  List out = List::create(Named("n_perms_greater_eq") = n_perms_greater_eq, _["perm_pcc"] = perm_pcc);
+  return(out);
+}
+

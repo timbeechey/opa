@@ -45,11 +45,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// c_ordering
+IntegerVector c_ordering(NumericVector xs, String pairing_type, double diff_threshold);
+RcppExport SEXP _opa_c_ordering(SEXP xsSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type xs(xsSEXP);
+    Rcpp::traits::input_parameter< String >::type pairing_type(pairing_typeSEXP);
+    Rcpp::traits::input_parameter< double >::type diff_threshold(diff_thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(c_ordering(xs, pairing_type, diff_threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// c_compare_rand_pccs
+List c_compare_rand_pccs(NumericMatrix perms_list, List m, int indiv_idx, IntegerVector H_ord);
+RcppExport SEXP _opa_c_compare_rand_pccs(SEXP perms_listSEXP, SEXP mSEXP, SEXP indiv_idxSEXP, SEXP H_ordSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type perms_list(perms_listSEXP);
+    Rcpp::traits::input_parameter< List >::type m(mSEXP);
+    Rcpp::traits::input_parameter< int >::type indiv_idx(indiv_idxSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type H_ord(H_ordSEXP);
+    rcpp_result_gen = Rcpp::wrap(c_compare_rand_pccs(perms_list, m, indiv_idx, H_ord));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_opa_c_sign_with_threshold", (DL_FUNC) &_opa_c_sign_with_threshold, 2},
     {"_opa_c_all_diffs", (DL_FUNC) &_opa_c_all_diffs, 1},
     {"_opa_c_random_shuffles", (DL_FUNC) &_opa_c_random_shuffles, 2},
+    {"_opa_c_ordering", (DL_FUNC) &_opa_c_ordering, 3},
+    {"_opa_c_compare_rand_pccs", (DL_FUNC) &_opa_c_compare_rand_pccs, 4},
     {NULL, NULL, 0}
 };
 

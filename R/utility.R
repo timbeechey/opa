@@ -15,24 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
-# Generates pairwise ordinal relations from a vector, consisting of integers
-# from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
-# calling ordering() on a vector of length N produces a vector of length N-1.
-# When the pairing_type = "pairwise" option is used, calling ordering() on an
-# N-length vector returns a vector of length ((N-1) * N)/2
-# param: xs a numeric vector
-# param: pairing_type a character string, either "adjacent" or "pairwise"
-# param: diff_threshold: a numeric scalar
-# return: a numeric vector
-ordering <- function(xs, pairing_type, diff_threshold) {
-  if (pairing_type == "pairwise") {
-    c_sign_with_threshold(c_all_diffs(xs), diff_threshold)
-  } else if (pairing_type == "adjacent") {
-    c_sign_with_threshold(diff(xs), diff_threshold)
-  }
-}
-
 # Removes elements of a hypothesis vector that correspond to the position of
 # NAs in a numeric vector of data (a data row).
 # param: xs a numeric vector

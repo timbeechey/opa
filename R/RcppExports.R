@@ -13,3 +13,11 @@ c_random_shuffles <- function(n, v) {
     .Call(`_opa_c_random_shuffles`, n, v)
 }
 
+c_ordering <- function(xs, pairing_type, diff_threshold) {
+    .Call(`_opa_c_ordering`, xs, pairing_type, diff_threshold)
+}
+
+c_compare_rand_pccs <- function(perms_list, m, indiv_idx, H_ord) {
+    .Call(`_opa_c_compare_rand_pccs`, perms_list, m, indiv_idx, H_ord)
+}
+
