@@ -121,7 +121,7 @@ plot.opafit <- function(x, ...) {
                      value = c(x$individual_pccs, x$individual_cvals))
     df$stat <- factor(df$stat, levels = c("PCCs", "c-values"))
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
-      ggplot2::scale_x_continuous(breaks = 1:length(x$individual_pccs)) +
+      ggplot2::scale_x_reverse(breaks = 1:length(x$individual_pccs)) +
       ggplot2::geom_segment(ggplot2::aes(x=Individual, xend=Individual, y=0, yend=value), colour="black", size=0.3) +
       ggplot2::geom_point(size=2, shape=21, ggplot2::aes(fill=stat)) +
       ggplot2::facet_wrap(~ stat, nrow=1, scale="free") +
@@ -137,7 +137,7 @@ plot.opafit <- function(x, ...) {
                      value = c(x$individual_pccs, x$individual_cvals))
     df$stat <- factor(df$stat, levels = c("PCCs", "c-values"))
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
-      ggplot2::scale_x_continuous(breaks = 1:length(x$individual_idx), labels=x$individual_idx) +
+      ggplot2::scale_x_reverse(breaks = 1:length(x$individual_idx), labels=x$individual_idx) +
       ggplot2::geom_segment(ggplot2::aes(x=Individual, xend=Individual, y=0, yend=value), colour="black", size=0.3) +
       ggplot2::geom_point(size=2, shape=21, ggplot2::aes(fill=group)) +
       ggplot2::facet_wrap(~ stat, nrow=1, scale="free") +
