@@ -116,4 +116,5 @@ Inidividual results can be visualized using:
 plot(opamod)
 ```
 
+![Rplot](https://user-images.githubusercontent.com/66388815/156453535-285ebc6c-eccc-48c1-aa34-fa298ab86444.jpeg)
 
