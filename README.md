@@ -120,7 +120,8 @@ Individual-level model output can be visualized using:
 plot(opamod)
 ```
 
-![Rplot](https://user-images.githubusercontent.com/66388815/156453535-285ebc6c-eccc-48c1-aa34-fa298ab86444.jpeg)
+![Rplot01](https://user-images.githubusercontent.com/66388815/156462419-2497aba2-f8df-42ae-a04e-7667f22b817b.jpeg)
+
 
 
 ### Multiple groups 
@@ -190,5 +191,6 @@ Similarly, plotting the output shows individual PCCs and c-values by group.
 plot(opamod2)
 ```
 
-![Rplot](https://user-images.githubusercontent.com/66388815/156456800-0bfb72b4-814a-4db9-9c4d-84aa3cf68d78.jpeg)
+![Rplot03](https://user-images.githubusercontent.com/66388815/156462646-187a8fc0-4621-4c96-81f6-3d9dcc52727d.jpeg)
+
 
