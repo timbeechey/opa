@@ -122,3 +122,72 @@ plot(opamod)
 
 ![Rplot](https://user-images.githubusercontent.com/66388815/156453535-285ebc6c-eccc-48c1-aa34-fa298ab86444.jpeg)
 
+
+### Multiple groups 
+
+Often, data consist of multiple groups:
+
+```r
+dat$group <- c(rep("A", 3), rep("B", 3), rep("C", 4))
+dat$group <- factor(dat$group, levels = c("A", "B", "C"))
+```
+
+```
+          t1        t2       t3 group
+1  14.397621 12.238490 13.85205     A
+2  12.624826 12.487375 16.23597     A
+3   9.469710 14.464952 17.21970     A
+4  11.086388 10.967872 16.41518     B
+5   9.171320 10.014986 14.27269     B
+6   9.047506 15.351394 15.11950     B
+7   8.422794 11.117674 13.59081     C
+8   8.810765 10.553868 13.56556     C
+9  13.301815  9.527454 16.76930     C
+10  9.891944  9.430569 12.96881     C
+```
+
+A categorical grouping variable can be passed with the `group` keyword to prod
+
+```r
+opamod2 <- opa(dat[, 1:3], 1:3, group = dat$group, cval_method = "exact")
+```
+
+The summary output displays results organised by group.
+
+```r
+summary(opamod2)
+```
+
+```
+Ordinal Pattern Analysis of 3 observations for 10 individuals in 3 groups 
+
+Group-level results:
+    PCC cval
+A 66.67 0.50
+B 77.78 0.39
+C 83.33 0.33
+
+Individual-level results:
+  Individual    PCC cval
+A          1  33.33 0.83
+A          2  66.67 0.50
+A          3 100.00 0.17
+B          4  66.67 0.50
+B          5 100.00 0.17
+B          6  66.67 0.50
+C          7 100.00 0.17
+C          8 100.00 0.17
+C          9  66.67 0.50
+C         10  66.67 0.50
+
+PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
+Chance-values were calculated using the exact method.
+```
+
+Similarly, plotting the output shows individual PCCs and c-values by group.
+
+```r
+plot(opamod2)
+```
+
+
