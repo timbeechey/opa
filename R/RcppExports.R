@@ -21,3 +21,7 @@ c_compare_rand_pccs <- function(perms, m, indiv_idx, H_ord) {
     .Call(`_opa_c_compare_rand_pccs`, perms, m, indiv_idx, H_ord)
 }
 
+c_compare_perm_pccs <- function(perms, m, indiv_idx, H_ord) {
+    .Call(`_opa_c_compare_perm_pccs`, perms, m, indiv_idx, H_ord)
+}
+

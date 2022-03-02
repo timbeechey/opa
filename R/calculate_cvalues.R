@@ -33,18 +33,21 @@ compare_perm_pccs <- function(perms_list, m, indiv_idx, H_ord) {
 # Calculate exact chance-values for percent correct classification values
 # using a permutation test. This function generates every possible permutation
 # of each data row
-cval_exact <- function(pcc_out) {
+cval_exact <- function(pcc_out, progress) {
   individual_cvals <- numeric(dim(pcc_out$data)[1])
   individual_perm_pccs <- matrix(numeric(0),
                                  ncol=dim(pcc_out$data)[1],
                                  nrow=factorial(dim(pcc_out$data)[2]))
   total_perms <- 0
   total_perms_greater_eq <- 0
-  progress_bar <- utils::txtProgressBar(min = 0,
-                                 max = nrow(pcc_out$data),
-                                 initial = 0,
-                                 width = 60,
-                                 style = 3)
+  # display a progress bar
+  if (progress == TRUE) {
+    progress_bar <- utils::txtProgressBar(min = 0,
+                                   max = nrow(pcc_out$data),
+                                   initial = 0,
+                                   width = 60,
+                                   style = 3)
+  }
   for (i in 1:dim(pcc_out$data)[1]) {
     if (any(is.na(unlist(pcc_out$data[i,])))) {
       hypothesis_no_nas <- conform(pcc_out$data[i,], pcc_out$hypothesis)
@@ -58,7 +61,7 @@ cval_exact <- function(pcc_out) {
 
     h_ordering <- c_ordering(hypothesis_no_nas,pcc_out$pairing_type,0)
 
-    comp <- compare_perm_pccs(permutations, pcc_out, i, h_ordering)
+    comp <- c_compare_perm_pccs(permutations, pcc_out, i, h_ordering)
     n_perms_greater_eq <- comp$n_perms_greater_eq
     individual_perm_pccs[1:length(comp$perm_pcc),i] <- comp$perm_pcc
 
@@ -66,9 +69,11 @@ cval_exact <- function(pcc_out) {
     individual_cvals[i] <- n_perms_greater_eq / n_perms
     # Increment the count of permutations with PCCs >= the observed PCC
     total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
-    utils::setTxtProgressBar(progress_bar, i)
+    if (progress == TRUE)
+      utils::setTxtProgressBar(progress_bar, i)
   }
-  close(progress_bar)
+  if (progress == TRUE)
+    close(progress_bar)
   group_cval <- total_perms_greater_eq / total_perms
 
   return(list(individual_cvals = individual_cvals,
@@ -79,14 +84,19 @@ cval_exact <- function(pcc_out) {
               observed_group_pcc = pcc_out$group_pcc))
 }
 
-cval_stochastic <- function(pcc_out, nreps) {
+cval_stochastic <- function(pcc_out, nreps, progress) {
   individual_cvals <- numeric(dim(pcc_out$data)[1])
   individual_perm_pccs <- matrix(numeric(0),
                                  ncol=dim(pcc_out$data)[1],
                                  nrow=nreps)
   total_perms_greater_eq <- 0
-  progress_bar <- utils::txtProgressBar(min = 0, max = nrow(pcc_out$data),
-                                 initial = 0, width = 60, style = 3)
+
+  # show a progress bar
+  if (progress == TRUE) {
+    progress_bar <- utils::txtProgressBar(min = 0, max = nrow(pcc_out$data),
+                                          initial = 0, width = 60, style = 3)
+  }
+
   for (i in 1:dim(pcc_out$data)[1]) {
     if (any(is.na(unlist(pcc_out$data[i,])))) {
       hypothesis_no_nas <- conform(pcc_out$data[i,], pcc_out$hypothesis)
@@ -106,9 +116,13 @@ cval_stochastic <- function(pcc_out, nreps) {
     individual_cvals[i] <- n_perms_greater_eq / nreps
     # Increment the count of permutations with PCCs >= the observed PCC
     total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
-    utils::setTxtProgressBar(progress_bar, i)
+
+    if (progress == TRUE)
+      utils::setTxtProgressBar(progress_bar, i)
   }
-  close(progress_bar)
+  if (progress == TRUE)
+    close(progress_bar)
+
   group_cval <- total_perms_greater_eq / (nreps * nrow(pcc_out$data))
 
   return(list(individual_cvals = individual_cvals,
