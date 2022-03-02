@@ -48,7 +48,13 @@ It is also possible to calculate a chance-value for a PCC which is equal to the 
 
 ## Using `opa`
 
-Considering four individuals who provide ratings in each of three experimental conditions on a scale from 0 to 12:
+A hypothesis of a monotonic increase in the dependent variable across a series of three measurements can be specified as:
+
+```r
+h <- c(1, 2, 3)
+```
+
+Data should be in _wide_ format with one column per measurement condition and one row per individual:
 
 ```r
 set.seed(123)
@@ -72,11 +78,9 @@ dat <- data.frame(t1 = rnorm(10, mean = 10, sd = 2),
 10  9.891944  9.430569 12.96881
 ```
 
-an ordinal pattern analysis model to consider how well an hypothesis of a monotonic increase in the response variable across three conditions can be fitted using:
+An ordinal pattern analysis model to consider how well the hypothesis of a monotonic increase in the response variable across three conditions, `h` matches each individual pattern of results in `dat` can be fitted using:
 
 ```r
-h <- c(1, 2, 3)
-
 opamod <- opa(dat, h, cval_method = "exact")
 ```
 
@@ -110,7 +114,7 @@ PCCs were calculated for pairwise ordinal relationships using a difference thres
 Chance-values were calculated using the exact method.
 ```
 
-Inidividual results can be visualized using:
+Individual-level model output can be visualized using:
 
 ```r
 plot(opamod)
