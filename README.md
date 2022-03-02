@@ -190,4 +190,5 @@ Similarly, plotting the output shows individual PCCs and c-values by group.
 plot(opamod2)
 ```
 
+![Rplot](https://user-images.githubusercontent.com/66388815/156456800-0bfb72b4-814a-4db9-9c4d-84aa3cf68d78.jpeg)
 
