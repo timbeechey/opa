@@ -1,5 +1,5 @@
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/timbeechey/opa/workflows/R-CMD-check/badge.svg)](https://github.com/timbeechey/opa/actions) ![](https://www.r-pkg.org/badges/version-ago/opa?color=orange) ![](https://cranlogs.r-pkg.org/badges/grand-total/opa) [![](https://cranlogs.r-pkg.org/badges/opa?color=yellow)](https://cran.r-project.org/package=opa)
+![](https://www.r-pkg.org/badges/version-ago/opa?color=orange) ![](https://cranlogs.r-pkg.org/badges/grand-total/opa) [![](https://cranlogs.r-pkg.org/badges/opa?color=yellow)](https://cran.r-project.org/package=opa)
 <!-- badges: end -->
 
 # opa
