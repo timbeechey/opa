@@ -149,7 +149,7 @@ dat$group <- factor(dat$group, levels = c("A", "B", "C"))
 A categorical grouping variable can be passed with the `group` keyword to produce results for each group within the data, in addition to individual results.
 
 ```r
-opamod2 <- opa(dat[, 1:3], 1:3, group = dat$group, cval_method = "exact")
+opamod2 <- opa(dat[, 1:3], h, group = dat$group, cval_method = "exact")
 ```
 
 The summary output displays results organised by group.
