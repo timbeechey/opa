@@ -1,5 +1,5 @@
 <!-- badges: start -->
-![](https://www.r-pkg.org/badges/version-ago/opa?color=orange) ![](https://cranlogs.r-pkg.org/badges/grand-total/opa) [![](https://cranlogs.r-pkg.org/badges/opa?color=yellow)](https://cran.r-project.org/package=opa)
+![](https://www.r-pkg.org/badges/version-ago/opa?color=orange) ![](https://cranlogs.r-pkg.org/badges/grand-total/opa) [![](https://cranlogs.r-pkg.org/badges/opa)](https://cran.r-project.org/package=opa)
 <!-- badges: end -->
 
 # opa
@@ -125,7 +125,7 @@ plot(opamod)
 
 ### Multiple groups 
 
-Often, data consist of multiple groups:
+If the data consist of multiple groups:
 
 ```r
 dat$group <- c(rep("A", 3), rep("B", 3), rep("C", 4))
@@ -146,7 +146,7 @@ dat$group <- factor(dat$group, levels = c("A", "B", "C"))
 10  9.891944  9.430569 12.96881     C
 ```
 
-A categorical grouping variable can be passed with the `group` keyword to produce results for each group within the data, in addition to individual results.
+a categorical grouping variable can be passed with the `group` keyword to produce results for each group within the data, in addition to individual results.
 
 ```r
 opamod2 <- opa(dat[, 1:3], h, group = dat$group, cval_method = "exact")

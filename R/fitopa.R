@@ -176,7 +176,8 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       subgroup_dat <- dat[idx,]
       subgroup_mat <- as.matrix(subgroup_dat)
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
-      cat("Fitting group", i, "of", nlevels(group), "\n")
+      if (progress == TRUE)
+        cat("Fitting group", i, "of", nlevels(group), "\n")
       if (cval_method == "exact") {
         subgroup_cvalues <- cval_exact(subgroup_pccs, progress)
       } else if (cval_method == "stochastic") {
