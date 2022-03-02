@@ -15,21 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
-compare_perm_pccs <- function(perms_list, m, indiv_idx, H_ord) {
-  perm_pcc <- numeric(length(perms_list))
-  n_perms_greater_eq <- 0
-  for (i in 1:length(perms_list)) {
-    perm_pcc[i] <- mean(c_ordering(unlist(perms_list[i]), # orderings in a list
-                                 m$pairing_type,
-                                 m$diff_threshold) == H_ord) * 100
-    if (perm_pcc[i] >= m$individual_pccs[indiv_idx])
-      n_perms_greater_eq <- n_perms_greater_eq + 1
-  }
-  list(n_perms_greater_eq = n_perms_greater_eq,
-       perm_pcc = perm_pcc)
-}
-
 # Calculate exact chance-values for percent correct classification values
 # using a permutation test. This function generates every possible permutation
 # of each data row
@@ -55,8 +40,9 @@ cval_exact <- function(pcc_out, progress) {
       hypothesis_no_nas <- pcc_out$hypothesis
     }
 
-    permutations <- combinat::permn(stats::na.omit(pcc_out$data[i,]))
-    n_perms <- length(permutations)
+    permutations <- matrix(unlist(combinat::permn(stats::na.omit(pcc_out$data[i,]))),
+                           nrow = length(stats::na.omit(pcc_out$data[i,])))
+    n_perms <- dim(permutations)[2]
     total_perms <- total_perms + n_perms
 
     h_ordering <- c_ordering(hypothesis_no_nas,pcc_out$pairing_type,0)
@@ -108,7 +94,7 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
 
     h_ordering <- c_ordering(hypothesis_no_nas, pcc_out$pairing_type, 0)
 
-    comp <- c_compare_rand_pccs(permutations, pcc_out, i, h_ordering)
+    comp <- c_compare_perm_pccs(permutations, pcc_out, i, h_ordering)
     n_perms_greater_eq <- comp$n_perms_greater_eq
     individual_perm_pccs[,i] <- comp$perm_pcc
 
