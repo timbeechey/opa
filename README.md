@@ -78,7 +78,7 @@ dat <- data.frame(t1 = rnorm(10, mean = 10, sd = 2),
 10  9.891944  9.430569 12.96881
 ```
 
-An ordinal pattern analysis model to consider how well the hypothesis of a monotonic increase in the response variable across three conditions, `h` matches each individual pattern of results in `dat` can be fitted using:
+An ordinal pattern analysis model to consider how the hypothesis `h` matches each individual pattern of results in `dat` can be fitted using:
 
 ```r
 opamod <- opa(dat, h, cval_method = "exact")
