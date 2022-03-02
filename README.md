@@ -16,6 +16,12 @@ The `opa` package implements ordinal pattern analysis, as described by [Grice et
 install.packages("opa")
 ```
 
+The latest development version can be installed with:
+
+```r
+devtools::install_github("timbeechey/opa")
+```
+
 ## How ordinal pattern analysis works
 
 Ordinal pattern analysis is similar to Kendall's Tau. Whereas Kendall's tau is a measure of similarity between two data sets in terms of rank ordering, ordinal pattern analysis is intended to quantify the match between an hypothesis and patterns of individual-level data across conditions or mesaurement instances.
