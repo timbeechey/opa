@@ -4,7 +4,7 @@
 \alias{group_results}
 \alias{group_results.default}
 \alias{group_results.opafit}
-\title{Returns group-level PCC and chance values.}
+\title{Group-level PCC and chance values.}
 \usage{
 group_results(m, digits)
 
@@ -21,7 +21,7 @@ group_results(m, digits)
 a matrix with 1 row per group.
 }
 \description{
-Returns group-level PCC and chance values.
+Group-level PCC and chance values.
 }
 \details{
 If the model was fitted with no grouping variable, a single PCC and c-value

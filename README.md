@@ -1,5 +1,7 @@
 <!-- badges: start -->
-![](https://www.r-pkg.org/badges/version-ago/opa?color=orange) ![](https://cranlogs.r-pkg.org/badges/grand-total/opa) [![](https://cranlogs.r-pkg.org/badges/opa)](https://cran.r-project.org/package=opa)
+![](https://www.r-pkg.org/badges/version-ago/opa?color=orange)
+[![R-CMD-check](https://github.com/timbeechey/opa/workflows/R-CMD-check/badge.svg)](https://github.com/timbeechey/opa/actions)
+![](https://cranlogs.r-pkg.org/badges/grand-total/opa) [![](https://cranlogs.r-pkg.org/badges/opa)](https://cran.r-project.org/package=opa)
 <!-- badges: end -->
 
 # opa
@@ -48,10 +50,16 @@ It is also possible to calculate a chance-value for a PCC which is equal to the 
 
 ## Using `opa`
 
-A hypothesis of a monotonic increase in the dependent variable across a series of three measurements can be specified as:
+A hypothesized relative ordering of the response variable across conditions is specified with a numeric vector:
 
 ```r
-h <- c(1, 2, 3)
+h <- c(1, 2, 4, 3)
+```
+
+The hypothesis can be visualized with the `plot_hypothesis()` function:
+
+```r
+plot_hypothesis(h)
 ```
 
 Data should be in _wide_ format with one column per measurement condition and one row per individual:
@@ -59,23 +67,36 @@ Data should be in _wide_ format with one column per measurement condition and on
 ```r
 set.seed(123)
 
-dat <- data.frame(t1 = rnorm(10, mean = 10, sd = 2),
-                  t2 = rnorm(10, mean = 12, sd = 2),
-                  t3 = rnorm(10, mean = 15, sd = 2))
+dat <- data.frame(t1 = rnorm(20, mean = 12, sd = 2),
+                  t2 = rnorm(20, mean = 15, sd = 2),
+                  t3 = rnorm(20, mean = 20, sd = 2),
+                  t4 = rnorm(20, mean = 17, sd = 2))
+                  
+round(dat, 2)
 ```
 
 ```
-          t1        t2       t3
-1  14.397621 12.238490 13.85205
-2  12.624826 12.487375 16.23597
-3   9.469710 14.464952 17.21970
-4  11.086388 10.967872 16.41518
-5   9.171320 10.014986 14.27269
-6   9.047506 15.351394 15.11950
-7   8.422794 11.117674 13.59081
-8   8.810765 10.553868 13.56556
-9  13.301815  9.527454 16.76930
-10  9.891944  9.430569 12.96881
+      t1    t2    t3    t4
+1  15.20 16.70 24.00 16.30
+2  11.82 14.11 20.13 18.41
+3  14.16 15.35 23.73 16.79
+4  13.26 15.15 17.30 14.48
+5  11.77 15.86 20.04 20.37
+6   8.93 15.05 22.50 18.82
+7  10.96 11.67 18.57 17.47
+8  11.02 16.47 18.49 19.44
+9  12.09 15.77 18.12 14.32
+10 14.60 14.47 17.89 18.32
+11 16.59 15.24 19.13 15.95
+12 15.10 15.27 20.66 18.37
+13 11.73 15.44 15.97 16.88
+14  8.49 18.28 20.42 18.27
+15 11.22 14.56 22.47 19.67
+16 12.18 15.34 24.08 17.01
+17 13.69 17.34 22.60 19.04
+18 13.93 17.11 21.51 14.62
+19 13.37 17.29 16.55 15.56
+20  9.21 13.85 18.80 20.04
 ```
 
 An ordinal pattern analysis model to consider how the hypothesis `h` matches each individual pattern of results in `dat` can be fitted using:
@@ -91,24 +112,34 @@ summary(opamod)
 ```
 
 ```
-Ordinal Pattern Analysis of 3 observations for 10 individuals in 1 group 
+Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
 
 Group-level results:
-         PCC cval
-pooled 76.67  0.4
+        PCC cval
+pooled 87.5 0.15
 
 Individual-level results:
       PCC cval
-1   33.33 0.83
-2   66.67 0.50
-3  100.00 0.17
-4   66.67 0.50
-5  100.00 0.17
-6   66.67 0.50
-7  100.00 0.17
-8  100.00 0.17
-9   66.67 0.50
-10  66.67 0.50
+1   83.33 0.17
+2  100.00 0.04
+3  100.00 0.04
+4   83.33 0.17
+5   83.33 0.17
+6  100.00 0.04
+7  100.00 0.04
+8   83.33 0.17
+9   83.33 0.17
+10  66.67 0.38
+11  66.67 0.38
+12 100.00 0.04
+13  83.33 0.17
+14  83.33 0.17
+15 100.00 0.04
+16 100.00 0.04
+17 100.00 0.04
+18  83.33 0.17
+19  66.67 0.38
+20  83.33 0.17
 
 PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
 Chance-values were calculated using the exact method.
@@ -129,28 +160,14 @@ plot(opamod)
 If the data consist of multiple groups:
 
 ```r
-dat$group <- c(rep("A", 3), rep("B", 3), rep("C", 4))
-dat$group <- factor(dat$group, levels = c("A", "B", "C"))
-```
-
-```
-          t1        t2       t3 group
-1  14.397621 12.238490 13.85205     A
-2  12.624826 12.487375 16.23597     A
-3   9.469710 14.464952 17.21970     A
-4  11.086388 10.967872 16.41518     B
-5   9.171320 10.014986 14.27269     B
-6   9.047506 15.351394 15.11950     B
-7   8.422794 11.117674 13.59081     C
-8   8.810765 10.553868 13.56556     C
-9  13.301815  9.527454 16.76930     C
-10  9.891944  9.430569 12.96881     C
+dat$group <- rep(c("A", "B", "C", "D"), 5)
+dat$group <- factor(dat$group, levels = c("A", "B", "C", "D"))
 ```
 
 a categorical grouping variable can be passed with the `group` keyword to produce results for each group within the data, in addition to individual results.
 
 ```r
-opamod2 <- opa(dat[, 1:3], h, group = dat$group, cval_method = "exact")
+opamod2 <- opa(dat[, 1:4], h, group = dat$group, cval_method = "exact")
 ```
 
 The summary output displays results organised by group.
@@ -160,26 +177,37 @@ summary(opamod2)
 ```
 
 ```
-Ordinal Pattern Analysis of 3 observations for 10 individuals in 3 groups 
+Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 
 Group-level results:
     PCC cval
-A 66.67 0.50
-B 77.78 0.39
-C 83.33 0.33
+A 90.00 0.13
+B 80.00 0.21
+C 93.33 0.09
+D 93.33 0.09
 
 Individual-level results:
   Individual    PCC cval
-A          1  33.33 0.83
-A          2  66.67 0.50
-A          3 100.00 0.17
-B          4  66.67 0.50
-B          5 100.00 0.17
-B          6  66.67 0.50
-C          7 100.00 0.17
-C          8 100.00 0.17
-C          9  66.67 0.50
-C         10  66.67 0.50
+A          1 100.00 0.04
+A          5  83.33 0.17
+A          9 100.00 0.04
+A         13 100.00 0.04
+A         17  66.67 0.38
+B          2  83.33 0.17
+B          6  66.67 0.38
+B         10  83.33 0.17
+B         14  83.33 0.17
+B         18  83.33 0.17
+C          3  83.33 0.17
+C          7 100.00 0.04
+C         11 100.00 0.04
+C         15  83.33 0.17
+C         19 100.00 0.04
+D          4 100.00 0.04
+D          8  83.33 0.17
+D         12  83.33 0.17
+D         16 100.00 0.04
+D         20 100.00 0.04
 
 PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
 Chance-values were calculated using the exact method.

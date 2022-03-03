@@ -149,7 +149,7 @@ plot.opafit <- function(x, ...) {
   }
 }
 
-#' Returns group-level PCC and chance values.
+#' Group-level PCC and chance values.
 #'
 #' @details
 #' If the model was fitted with no grouping variable, a single PCC and c-value
@@ -192,7 +192,7 @@ group_results.opafit <- function(m, digits = 2) {
   }
 }
 
-#' Returns individual-level PCC and chance values.
+#' Individual-level PCC and chance values.
 #'
 #' @details
 #' If the model was fitted with no grouping variable, a matrix of PCCs and
@@ -235,7 +235,7 @@ individual_results.opafit <- function(m, digits = 2) {
   }
 }
 
-#' Convenience function for plotting a hypothesis.
+#' Visualize a hypothesis.
 #' @param h a numeric vector
 #' @return an object of class "ggplot"
 #' @examples

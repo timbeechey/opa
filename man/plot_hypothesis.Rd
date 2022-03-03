@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility.R
 \name{plot_hypothesis}
 \alias{plot_hypothesis}
-\title{Convenience function for plotting a hypothesis.}
+\title{Visualize a hypothesis.}
 \usage{
 plot_hypothesis(h)
 }
@@ -13,7 +13,7 @@ plot_hypothesis(h)
 an object of class "ggplot"
 }
 \description{
-Convenience function for plotting a hypothesis.
+Visualize a hypothesis.
 }
 \examples{
 my_hypothesis <- c(1,2,3,3,3)

@@ -4,7 +4,7 @@
 \alias{individual_results}
 \alias{individual_results.default}
 \alias{individual_results.opafit}
-\title{Returns individual-level PCC and chance values.}
+\title{Individual-level PCC and chance values.}
 \usage{
 individual_results(m, digits)
 
@@ -22,7 +22,7 @@ a matrix containing a column of PCC values and a column of c-values
 with 1 row per row of data.
 }
 \description{
-Returns individual-level PCC and chance values.
+Individual-level PCC and chance values.
 }
 \details{
 If the model was fitted with no grouping variable, a matrix of PCCs and
