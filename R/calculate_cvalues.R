@@ -40,8 +40,7 @@ cval_exact <- function(pcc_out, progress) {
       hypothesis_no_nas <- pcc_out$hypothesis
     }
 
-    permutations <- matrix(unlist(combinat::permn(stats::na.omit(pcc_out$data[i,]))),
-                           nrow = length(stats::na.omit(pcc_out$data[i,])))
+    permutations <- quickperm(stats::na.omit(pcc_out$data[i,]))
     n_perms <- dim(permutations)[2]
     total_perms <- total_perms + n_perms
 

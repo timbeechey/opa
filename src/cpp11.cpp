@@ -23,6 +23,7 @@ extern SEXP _opa_c_compare_perm_pccs(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _opa_c_ordering(SEXP, SEXP, SEXP);
 extern SEXP _opa_c_random_shuffles(SEXP, SEXP);
 extern SEXP _opa_c_sign_with_threshold(SEXP, SEXP);
+extern SEXP _opa_quickperm(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_opa_c_all_diffs",           (DL_FUNC) &_opa_c_all_diffs,           1},
@@ -31,6 +32,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_opa_c_random_shuffles",     (DL_FUNC) &_opa_c_random_shuffles,     2},
     {"_opa_c_sign_with_threshold", (DL_FUNC) &_opa_c_sign_with_threshold, 2},
     {"_opa_fun",                   (DL_FUNC) &_opa_fun,                   0},
+    {"_opa_quickperm",             (DL_FUNC) &_opa_quickperm,             1},
     {NULL, NULL, 0}
 };
 }

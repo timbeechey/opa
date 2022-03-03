@@ -72,3 +72,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// quickperm
+NumericMatrix quickperm(NumericVector a);
+RcppExport SEXP _opa_quickperm(SEXP aSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    rcpp_result_gen = Rcpp::wrap(quickperm(a));
+    return rcpp_result_gen;
+END_RCPP
+}

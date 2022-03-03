@@ -155,3 +155,47 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
   List out = List::create(Named("n_perms_greater_eq") = n_perms_greater_eq, _["perm_pcc"] = perm_pcc);
   return(out);
 }
+
+/*
+ * Generate every permutation of a numeric vector using the quickperm algorith
+ * (https://www.quickperm.org/). Returns a NumericMatrix with nrows equal to
+ * the length of the input vector, and ncol equal to the factorial of the length
+ * of the input vector. The number of permutations is always the factorial of
+ * the length of the input vector, even when there are duplicate orderings
+ * produced by repeated elements of the input vector.
+ * param: a, a Numeric Vector
+ * return: out, a NumericMatrix
+ */
+// [[Rcpp::export]]
+NumericMatrix quickperm(NumericVector a) {
+  int N = a.length();
+  // calculate factorial of N to pre-size matrix
+  int nperms = 1;
+  for (int i = 1; i <= N; ++i)
+    nperms *= i;
+  // pre-allocate the matrix
+  NumericMatrix out(N, nperms);
+  out(_,0) = a; // use the unaltered input vector as the first permutation
+  int m = 1; // start with second column
+  IntegerVector p (N + 1);
+  for (int k = 0; k < N; k++) {
+    p[k] = k;
+  }
+  int i = 1;
+  while (i < N) {
+    p[i]--;
+    int j = i % 2 * p[i];
+    double tmp = a[j];
+    // swap elements to form the next permutation
+    a[j] = a[i];
+    a[i] = tmp;
+    out(_,m) = a; // write the permutation to the matrix
+    m++; // go to the next column
+    i = 1;
+    while (p[i] == 0) {
+      p[i] = i;
+      i++;
+    }
+  }
+  return out;
+}
