@@ -72,17 +72,3 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-
-static const R_CallMethodDef CallEntries[] = {
-    {"_opa_c_sign_with_threshold", (DL_FUNC) &_opa_c_sign_with_threshold, 2},
-    {"_opa_c_all_diffs", (DL_FUNC) &_opa_c_all_diffs, 1},
-    {"_opa_c_random_shuffles", (DL_FUNC) &_opa_c_random_shuffles, 2},
-    {"_opa_c_ordering", (DL_FUNC) &_opa_c_ordering, 3},
-    {"_opa_c_compare_perm_pccs", (DL_FUNC) &_opa_c_compare_perm_pccs, 4},
-    {NULL, NULL, 0}
-};
-
-RcppExport void R_init_opa(DllInfo *dll) {
-    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(dll, FALSE);
-}

@@ -18,7 +18,13 @@
 
 
 #include <Rcpp.h>
+#include <cpp11.hpp>
+
 using namespace Rcpp;
+using namespace cpp11;
+
+[[cpp11::register]]
+void fun() {}
 
 /*
  * Returns the sign of every element of a vector conditional on a
