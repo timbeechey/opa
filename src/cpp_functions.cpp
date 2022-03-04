@@ -168,7 +168,7 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
 NumericMatrix c_generate_permutations(NumericVector v) {
   int N = v.length();
   // calculate factorial of N to pre-size matrix
-  // tgamma(n+1) === factorial(n)
+  // tgamma(n+1) is equivalent to factorial(n)
   int nperms = tgamma(N + 1);
   // preallocate matrix
   NumericMatrix perms(N, nperms);
