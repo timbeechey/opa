@@ -10,7 +10,7 @@ An R package for ordinal pattern analysis.
 
 ## Introduction
 
-The `opa` package implements ordinal pattern analysis, as described by [Grice et al., (2015)](https://doi.org/10.1177/2158244015604192) and [Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7). Ordinal pattern analysis is a non-parametric statistical method suitable for analyzing time series and repeated measures data. It is a suitable replacement for many applications of repeated measures ANOVA. Further details can be found in [Beechey (2022)](https://doi.org/10.17605/OSF.IO/W32DK).
+The `opa` package implements ordinal pattern analysis, as described by [Grice et al., (2015)](https://doi.org/10.1177/2158244015604192) and [Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7). Ordinal pattern analysis is a non-parametric statistical method suitable for analyzing repeated measures and longitudinal data. It is an alternative to repeated measures ANOVA. Further details of the implementation of opa in R can be found in [Beechey (2022)](https://doi.org/10.17605/OSF.IO/W32DK).
 
 ## Installation
 

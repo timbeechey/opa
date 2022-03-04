@@ -35,8 +35,8 @@ void fun() {}
  * and larger than -diff_threshold. This function is equivalent to R's
  * built-in sign() function when diff_threshold = 0.
  *
- * param: xs a numeric vector
- * param: diff_threshold a floating point number
+ * param: xs a numeric vector.
+ * param: diff_threshold a floating point number.
  * return: an integer from the set {1, 0, -1}.
  */
 // [[Rcpp::export]]
@@ -53,21 +53,20 @@ IntegerVector c_sign_with_threshold(NumericVector xs, double diff_threshold) {
         sign_vector[i] = 0;
     }
   }
-  return(sign_vector);
+  return sign_vector;
 }
 
 /*
- * Calculates the difference between every pair of elements in a vector.
+ * Calculate the difference between every pair of elements in a vector.
  * This function is called when the pairing_type = "pairwise" option is used.
  * When the pairing_type = "adjacent" option is used, R's built-in diff()
  * function is used instead. For an input vector of length N, the output vector
  * has length equal to the Nth-1 triangular number, calculated as (N-1 * N) / 2.
- * param xs: a numeric vector
- * return: a numeric vector
+ * param xs: a numeric vector.
+ * return: a numeric vector.
  */
 // [[Rcpp::export]]
 NumericVector c_all_diffs(NumericVector xs) {
-
   // Initialize variables
   int count = 0;
   // Calculate the length of the vector as the Nth-1 triangular number.
@@ -75,7 +74,6 @@ NumericVector c_all_diffs(NumericVector xs) {
   int n_pairs = ((xs.length() - 1) * xs.length()) / 2;
   // Create empty vector of the correct size to hold all pairwise differences.
   NumericVector diffs(n_pairs);
-
   // Fill the diffs vector with the difference between each pair of
   // vector elements
   for (int i = 0; i < xs.length(); i++) {
@@ -84,15 +82,14 @@ NumericVector c_all_diffs(NumericVector xs) {
       count++;
     }
   }
-  return(diffs);
+  return diffs;
 }
 
-
 /*
- * Returns a matrix of randomly shuffled vectors
- * param n: an integer indicating the number of random reorderings
- * param v: a numeric vector to be shuffled
- * return: a NumericMatrix with nrows = n and ncols = v.length()
+ * Generate a matrix of randomly shuffled vectors.
+ * param n: an integer indicating the number of random reorderings.
+ * param v: a numeric vector to be shuffled.
+ * return: a NumericMatrix with nrows = n and ncols = v.length().
  */
 // [[Rcpp::export]]
 NumericMatrix c_random_shuffles(int n, NumericVector v) {
@@ -100,32 +97,32 @@ NumericMatrix c_random_shuffles(int n, NumericVector v) {
   for (int i = 0; i < n; i++) {
     rand_orders(_, i) = sample(v, v.length());
   }
-  return(rand_orders);
+  return rand_orders;
 }
 
-/* Generates pairwise ordinal relations from a vector, consisting of integers
+/* Generate pairwise ordinal relations from a vector, consisting of integers
  * from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
- * calling ordering() on a vector of length N produces a vector of length N-1.
- * When the pairing_type = "pairwise" option is used, calling ordering() on an
+ * calling c_ordering() on a vector of length N produces a vector of length N-1.
+ * When the pairing_type = "pairwise" option is used, calling c_ordering() on an
  * N-length vector returns a vector of length ((N-1) * N)/2
- * param: xs a NumericVector
- * param: pairing_type a String, either "adjacent" or "pairwise"
- * param: diff_threshold: a double
- * return: an IntegerVector
+ * param: xs a NumericVector.
+ * param: pairing_type a String, either "adjacent" or "pairwise".
+ * param: diff_threshold: a positive double.
+ * return: an IntegerVector.
 */
 // [[Rcpp::export]]
 IntegerVector c_ordering(NumericVector xs, String pairing_type, double diff_threshold) {
   if (pairing_type == "pairwise")
     return(c_sign_with_threshold(c_all_diffs(xs), diff_threshold));
   else
-    return(c_sign_with_threshold(diff(xs), diff_threshold));
+    return c_sign_with_threshold(diff(xs), diff_threshold);
 }
 
 /*
- * Calculates a PCC for each reordered vector and compares it to the PCC of the
- * corresponding observed PCC from m. Increments n_perms_greater_eq for each
- * reordering with a PCC >= observed PCC. Returns a list containing the count
- * n_perms_greater_eq and a vector of PCC values.
+ * Calculate a PCC for each reordered vector and compare it to the corresponding
+ * observed PCC from m. Increments n_perms_greater_eq for each reordering with a
+ * PCC >= observed PCC. Returns a list containing the count n_perms_greater_eq
+ * and a vector of PCC values.
  * param: perms, a NumericMatrix of permutations or random orderings of a vector
  * param: m, a list containing computed PCCs from observed data
  * param: indiv_idx, an int representing the current individual
@@ -153,49 +150,33 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
     }
   }
   List out = List::create(Named("n_perms_greater_eq") = n_perms_greater_eq, _["perm_pcc"] = perm_pcc);
-  return(out);
+  return out;
 }
 
 /*
- * Generate every permutation of a numeric vector using the quickperm algorith
- * (https://www.quickperm.org/). Returns a NumericMatrix with nrows equal to
- * the length of the input vector, and ncol equal to the factorial of the length
- * of the input vector. The number of permutations is always the factorial of
- * the length of the input vector, even when there are duplicate orderings
- * produced by repeated elements of the input vector.
- * param: a, a Numeric Vector
- * return: out, a NumericMatrix
+ * Generate every permutation of a numeric vector using the next_permutation()
+ * function from the C++ standard library.
+ * Returns a NumericMatrix with 1 row for each element of the input vector, and
+ * number of columns equal to the factorial of the length of the input vector.
+ * The number of permutations is always the factorial of the length of the input
+ * vector, even when there are duplicate permutations due to repeated elements
+ * of the input vector.
+ * param: v, a Numeric Vector
+ * return: perms, a NumericMatrix
  */
 // [[Rcpp::export]]
-NumericMatrix quickperm(NumericVector a) {
-  int N = a.length();
-  // calculate factorial of N to pre-size matrix
+NumericMatrix c_generate_permutations(NumericVector v) {
+  int N = v.length();
+  // calculate factorial of N to presize matrix
   int nperms = 1;
   for (int i = 1; i <= N; ++i)
     nperms *= i;
-  // pre-allocate the matrix
-  NumericMatrix out(N, nperms);
-  out(_,0) = a; // use the unaltered input vector as the first permutation
-  int m = 1; // start with second column
-  IntegerVector p (N + 1);
-  for (int k = 0; k < N; k++) {
-    p[k] = k;
+  // preallocate matrix
+  NumericMatrix perms(N, nperms);
+  perms(_,0) = v; // a is the first permutation
+  for (int m = 1; m < nperms; m++) {
+    std::next_permutation(v.begin(), v.end());
+    perms(_,m) = v;
   }
-  int i = 1;
-  while (i < N) {
-    p[i]--;
-    int j = i % 2 * p[i];
-    double tmp = a[j];
-    // swap elements to form the next permutation
-    a[j] = a[i];
-    a[i] = tmp;
-    out(_,m) = a; // write the permutation to the matrix
-    m++; // go to the next column
-    i = 1;
-    while (p[i] == 0) {
-      p[i] = i;
-      i++;
-    }
-  }
-  return out;
+  return perms;
 }
