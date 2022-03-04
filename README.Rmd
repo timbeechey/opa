@@ -1,42 +1,38 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      fig.path = "README-",
-                      fig.align = "center")
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-set.seed(123)
-ggplot2::theme_set(ggplot2::theme_bw())
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
 ```
+
+# opa
 
 <!-- badges: start -->
 ![](https://www.r-pkg.org/badges/version-ago/opa?color=orange)
 ![](https://cranlogs.r-pkg.org/badges/grand-total/opa) 
 <!-- badges: end -->
 
-# opa
-
 An R package for ordinal pattern analysis.
-
-## Introduction
-
-The `opa` package implements ordinal pattern analysis, as described by [Grice et al., (2015)](https://doi.org/10.1177/2158244015604192) and [Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7). Ordinal pattern analysis is a non-parametric statistical method suitable for analyzing repeated measures and longitudinal data. It is an alternative to repeated measures ANOVA. Further details of the implementation of opa in R can be found in [Beechey (2022)](https://doi.org/10.17605/OSF.IO/W32DK).
 
 ## Installation
 
-`opa` can be installed from CRAN using:
+opa can be installed from CRAN with:
 
 ```{r install_opa, eval=FALSE}
 install.packages("opa")
 ```
 
-The latest development version can be installed with:
+You can install the development version of opa from [GitHub](https://github.com/) with:
 
-```{r devtools_install_opa, eval=FALSE}
+```{r install_github, eval=FALSE}
+# install.packages("devtools")
 devtools::install_github("timbeechey/opa")
 ```
 
@@ -139,3 +135,5 @@ Similarly, plotting the output shows individual PCCs and c-values by group.
 ```{r plot_opamod2, fig.width=7, fig.height=4, fig.align="center"}
 plot(opamod2)
 ```
+
+

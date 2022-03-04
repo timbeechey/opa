@@ -1,35 +1,29 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# opa
+
 <!-- badges: start -->
 
 ![](https://www.r-pkg.org/badges/version-ago/opa?color=orange)
 ![](https://cranlogs.r-pkg.org/badges/grand-total/opa)
 <!-- badges: end -->
 
-# opa
-
 An R package for ordinal pattern analysis.
-
-## Introduction
-
-The `opa` package implements ordinal pattern analysis, as described by
-[Grice et al., (2015)](https://doi.org/10.1177/2158244015604192) and
-[Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7).
-Ordinal pattern analysis is a non-parametric statistical method suitable
-for analyzing repeated measures and longitudinal data. It is an
-alternative to repeated measures ANOVA. Further details of the
-implementation of opa in R can be found in [Beechey
-(2022)](https://doi.org/10.17605/OSF.IO/W32DK).
 
 ## Installation
 
-`opa` can be installed from CRAN using:
+opa can be installed from CRAN with:
 
 ``` r
 install.packages("opa")
 ```
 
-The latest development version can be installed with:
+You can install the development version of opa from
+[GitHub](https://github.com/) with:
 
 ``` r
+# install.packages("devtools")
 devtools::install_github("timbeechey/opa")
 ```
 
@@ -103,7 +97,7 @@ The hypothesis can be visualized with the `plot_hypothesis()` function:
 plot_hypothesis(h)
 ```
 
-<img src="README-plot_hypothesis-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot_hypothesis-1.png" style="display: block; margin: auto;" />
 
 Data should be in *wide* format with one column per measurement
 condition and one row per individual:
@@ -115,29 +109,28 @@ dat <- data.frame(t1 = rnorm(20, mean = 12, sd = 2),
                   t4 = rnorm(20, mean = 17, sd = 2))
                   
 round(dat, 2)
+#>       t1    t2    t3    t4
+#> 1  12.42 14.91 18.50 17.59
+#> 2   9.71 15.10 22.88 19.51
+#> 3  10.36 19.06 21.55 16.03
+#> 4  10.48 18.37 24.43 20.32
+#> 5  12.31 11.19 17.24 16.72
+#> 6  12.89 13.51 22.61 17.57
+#> 7  14.41  9.85 22.17 15.80
+#> 8  13.73 14.29 16.06 18.07
+#> 9   9.73 16.42 18.47 14.83
+#> 10 14.91 15.58 20.19 18.27
+#> 11 11.50 13.11 21.82 18.52
+#> 12 13.09 12.92 19.89 17.80
+#> 13 11.82 16.56 21.09 18.38
+#> 14 10.76 14.91 24.62 15.97
+#> 15 18.88 16.47 14.80 18.97
+#> 16 13.38 15.22 22.06 17.81
+#> 17  7.88 14.23 17.87 15.69
+#> 18 12.48 18.05 18.41 17.44
+#> 19 12.75 15.27 20.53 15.32
+#> 20 14.79 14.12 23.12 18.61
 ```
-
-    ##       t1    t2    t3    t4
-    ## 1  10.88 12.86 18.61 17.76
-    ## 2  11.54 14.56 19.58 16.00
-    ## 3  15.12 12.95 17.47 16.33
-    ## 4  12.14 13.54 24.34 14.96
-    ## 5  12.26 13.75 22.42 14.86
-    ## 6  15.43 11.63 17.75 17.61
-    ## 7  12.92 16.68 19.19 17.90
-    ## 8   9.47 15.31 19.07 17.11
-    ## 9  10.63 12.72 21.56 18.84
-    ## 10 11.11 17.51 19.83 21.10
-    ## 11 14.45 15.85 20.51 16.02
-    ## 12 12.72 14.41 19.94 12.38
-    ## 13 12.80 16.79 19.91 19.01
-    ## 14 12.22 16.76 22.74 15.58
-    ## 15 10.89 16.64 19.55 15.62
-    ## 16 15.57 16.38 23.03 19.05
-    ## 17 13.00 16.11 16.90 16.43
-    ## 18  8.07 14.88 21.17 14.56
-    ## 19 13.40 14.39 20.25 17.36
-    ## 20 11.05 14.24 20.43 16.72
 
 An ordinal pattern analysis model to consider how the hypothesis `h`
 matches each individual pattern of results in `dat` can be fitted using:
@@ -150,39 +143,38 @@ A summary of the model output can be viewed using:
 
 ``` r
 summary(opamod)
+#> Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
+#> 
+#> Group-level results:
+#>        PCC cval
+#> pooled  90 0.13
+#> 
+#> Individual-level results:
+#>       PCC cval
+#> 1  100.00 0.04
+#> 2  100.00 0.04
+#> 3   83.33 0.17
+#> 4  100.00 0.04
+#> 5   83.33 0.17
+#> 6  100.00 0.04
+#> 7   83.33 0.17
+#> 8   83.33 0.17
+#> 9   83.33 0.17
+#> 10 100.00 0.04
+#> 11 100.00 0.04
+#> 12  83.33 0.17
+#> 13 100.00 0.04
+#> 14 100.00 0.04
+#> 15  33.33 0.83
+#> 16 100.00 0.04
+#> 17 100.00 0.04
+#> 18  83.33 0.17
+#> 19 100.00 0.04
+#> 20  83.33 0.17
+#> 
+#> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
+#> Chance-values were calculated using the exact method.
 ```
-
-    ## Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
-    ## 
-    ## Group-level results:
-    ##          PCC cval
-    ## pooled 93.33  0.1
-    ## 
-    ## Individual-level results:
-    ##       PCC cval
-    ## 1  100.00 0.04
-    ## 2  100.00 0.04
-    ## 3   83.33 0.17
-    ## 4  100.00 0.04
-    ## 5  100.00 0.04
-    ## 6   83.33 0.17
-    ## 7  100.00 0.04
-    ## 8  100.00 0.04
-    ## 9  100.00 0.04
-    ## 10  83.33 0.17
-    ## 11 100.00 0.04
-    ## 12  66.67 0.38
-    ## 13 100.00 0.04
-    ## 14  83.33 0.17
-    ## 15  83.33 0.17
-    ## 16 100.00 0.04
-    ## 17 100.00 0.04
-    ## 18  83.33 0.17
-    ## 19 100.00 0.04
-    ## 20 100.00 0.04
-    ## 
-    ## PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-    ## Chance-values were calculated using the exact method.
 
 Individual-level model output can be visualized using:
 
@@ -190,7 +182,7 @@ Individual-level model output can be visualized using:
 plot(opamod)
 ```
 
-<img src="README-plot_opamod1-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot_opamod1-1.png" style="display: block; margin: auto;" />
 
 ### Multiple groups
 
@@ -209,42 +201,41 @@ The summary output displays results organised by group.
 
 ``` r
 summary(opamod2)
+#> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
+#> 
+#> Group-level results:
+#>     PCC cval
+#> A 93.33 0.09
+#> B 96.67 0.07
+#> C 80.00 0.25
+#> D 90.00 0.12
+#> 
+#> Individual-level results:
+#>   Individual    PCC cval
+#> A          1 100.00 0.04
+#> A          5  83.33 0.17
+#> A          9  83.33 0.17
+#> A         13 100.00 0.04
+#> A         17 100.00 0.04
+#> B          2 100.00 0.04
+#> B          6 100.00 0.04
+#> B         10 100.00 0.04
+#> B         14 100.00 0.04
+#> B         18  83.33 0.17
+#> C          3  83.33 0.17
+#> C          7  83.33 0.17
+#> C         11 100.00 0.04
+#> C         15  33.33 0.83
+#> C         19 100.00 0.04
+#> D          4 100.00 0.04
+#> D          8  83.33 0.17
+#> D         12  83.33 0.17
+#> D         16 100.00 0.04
+#> D         20  83.33 0.17
+#> 
+#> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
+#> Chance-values were calculated using the exact method.
 ```
-
-    ## Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
-    ## 
-    ## Group-level results:
-    ##      PCC cval
-    ## A 100.00 0.04
-    ## B  86.67 0.14
-    ## C  93.33 0.09
-    ## D  93.33 0.11
-    ## 
-    ## Individual-level results:
-    ##   Individual    PCC cval
-    ## A          1 100.00 0.04
-    ## A          5 100.00 0.04
-    ## A          9 100.00 0.04
-    ## A         13 100.00 0.04
-    ## A         17 100.00 0.04
-    ## B          2 100.00 0.04
-    ## B          6  83.33 0.17
-    ## B         10  83.33 0.17
-    ## B         14  83.33 0.17
-    ## B         18  83.33 0.17
-    ## C          3  83.33 0.17
-    ## C          7 100.00 0.04
-    ## C         11 100.00 0.04
-    ## C         15  83.33 0.17
-    ## C         19 100.00 0.04
-    ## D          4 100.00 0.04
-    ## D          8 100.00 0.04
-    ## D         12  66.67 0.38
-    ## D         16 100.00 0.04
-    ## D         20 100.00 0.04
-    ## 
-    ## PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-    ## Chance-values were calculated using the exact method.
 
 Similarly, plotting the output shows individual PCCs and c-values by
 group.
@@ -253,4 +244,4 @@ group.
 plot(opamod2)
 ```
 
-<img src="README-plot_opamod2-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot_opamod2-1.png" style="display: block; margin: auto;" />
