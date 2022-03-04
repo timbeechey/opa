@@ -103,7 +103,7 @@ The hypothesis can be visualized with the `plot_hypothesis()` function:
 plot_hypothesis(h)
 ```
 
-<img src="man/figures/README-plot_hypothesis-1.png" style="display: block; margin: auto;" />
+<img src="README-plot_hypothesis-1.png" style="display: block; margin: auto;" />
 
 Data should be in *wide* format with one column per measurement
 condition and one row per individual:
@@ -190,7 +190,7 @@ Individual-level model output can be visualized using:
 plot(opamod)
 ```
 
-<img src="man/figures/README-plot opamod1-1.png" style="display: block; margin: auto;" />
+<img src="README-plot_opamod1-1.png" style="display: block; margin: auto;" />
 
 ### Multiple groups
 
@@ -253,4 +253,4 @@ group.
 plot(opamod2)
 ```
 
-<img src="man/figures/README-plot_opamod2-1.png" style="display: block; margin: auto;" />
+<img src="README-plot_opamod2-1.png" style="display: block; margin: auto;" />

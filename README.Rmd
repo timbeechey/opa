@@ -6,7 +6,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
-                      fig.path = "man/figures/README-",
+                      fig.path = "README-",
                       fig.align = "center")
 
 set.seed(123)
@@ -113,7 +113,7 @@ summary(opamod)
 
 Individual-level model output can be visualized using:
 
-```{r plot opamod1, fig.width=7, fig.height=3.5, fig.align="center"}
+```{r plot_opamod1, fig.width=7, fig.height=3.5, fig.align="center"}
 plot(opamod)
 ```
 
