@@ -1,9 +1,7 @@
 <!-- badges: start -->
 
 ![](https://www.r-pkg.org/badges/version-ago/opa?color=orange)
-[![R-CMD-check](https://github.com/timbeechey/opa/workflows/R-CMD-check/badge.svg)](https://github.com/timbeechey/opa/actions)
 ![](https://cranlogs.r-pkg.org/badges/grand-total/opa)
-[![](https://cranlogs.r-pkg.org/badges/opa)](https://cran.r-project.org/package=opa)
 <!-- badges: end -->
 
 # opa
@@ -105,7 +103,7 @@ The hypothesis can be visualized with the `plot_hypothesis()` function:
 plot_hypothesis(h)
 ```
 
-<img src="README_files/figure-markdown_github/plot_hypothesis-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot_hypothesis-1.png" style="display: block; margin: auto;" />
 
 Data should be in *wide* format with one column per measurement
 condition and one row per individual:
@@ -192,7 +190,7 @@ Individual-level model output can be visualized using:
 plot(opamod)
 ```
 
-<img src="README_files/figure-markdown_github/plot opamod1-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot opamod1-1.png" style="display: block; margin: auto;" />
 
 ### Multiple groups
 
@@ -255,4 +253,4 @@ group.
 plot(opamod2)
 ```
 
-<img src="README_files/figure-markdown_github/plot_opamod2-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot_opamod2-1.png" style="display: block; margin: auto;" />
