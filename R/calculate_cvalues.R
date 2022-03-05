@@ -28,7 +28,7 @@ cval_exact <- function(pcc_out, progress) {
   # display a progress bar
   if (progress == TRUE) {
     progress_bar <- utils::txtProgressBar(min = 0,
-                                   max = nrow(pcc_out$data),
+                                   max = dim(pcc_out$data)[1],
                                    initial = 0,
                                    width = 60,
                                    style = 3)
@@ -78,7 +78,7 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
 
   # show a progress bar
   if (progress == TRUE) {
-    progress_bar <- utils::txtProgressBar(min = 0, max = nrow(pcc_out$data),
+    progress_bar <- utils::txtProgressBar(min = 0, max = dim(pcc_out$data)[1],
                                           initial = 0, width = 60, style = 3)
   }
 
@@ -108,12 +108,12 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
   if (progress == TRUE)
     close(progress_bar)
 
-  group_cval <- total_perms_greater_eq / (nreps * nrow(pcc_out$data))
+  group_cval <- total_perms_greater_eq / (nreps * dim(pcc_out$data)[1])
 
   return(list(individual_cvals = individual_cvals,
          group_cval = group_cval,
          pcc_replicates = individual_perm_pccs,
-         total_perms = nreps * nrow(pcc_out$data),
+         total_perms = nreps * dim(pcc_out$data)[1],
          perm_pccs_geq_obs_pcc = total_perms_greater_eq,
          observed_group_pcc = pcc_out$group_pcc))
 }

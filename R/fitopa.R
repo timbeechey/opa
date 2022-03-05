@@ -116,7 +116,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, cval_method = "stochastic", nreps = 1000,
                 progress = FALSE) {
   # verify the arguments
-  assertthat::assert_that(assertthat::are_equal(ncol(dat), length(hypothesis)))
+  assertthat::assert_that(assertthat::are_equal(dim(dat)[2], length(hypothesis)))
   assertthat::assert_that(pairing_type %in% c("pairwise", "adjacent"))
   assertthat::assert_that(cval_method %in% c("exact", "stochastic"))
   assertthat::assert_that(class(diff_threshold) %in% c("integer", "numeric"))

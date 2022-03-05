@@ -39,11 +39,11 @@ conform <- function(xs, h) {
 #' @export
 summary.opafit <- function(object, ..., digits = 2L) {
   if (is.null(object$groups)) {
-    cat("Ordinal Pattern Analysis of", ncol(object$data), "observations for",
-        nrow(object$data), "individuals in 1 group \n\n")
+    cat("Ordinal Pattern Analysis of", dim(object$data)[2], "observations for",
+        dim(object$data)[1], "individuals in 1 group \n\n")
   } else {
-    cat("Ordinal Pattern Analysis of", ncol(object$data), "observations for",
-        nrow(object$data), "individuals in", nlevels(object$groups), "groups \n\n")
+    cat("Ordinal Pattern Analysis of", dim(object$data)[2], "observations for",
+        dim(object$data)[1], "individuals in", nlevels(object$groups), "groups \n\n")
   }
   cat("Group-level results:\n")
   print(group_results(object, digits))
@@ -75,7 +75,7 @@ print.opafit <- function(x, ...) {
 pcc_threshold_plot <- function(m, pcc_threshold = 75) {
   Individual <- group <- PCC <- NULL # bind variables to function
   if (is.null(m$groups)) { # single group
-    df <- data.frame(Individual = 1:nrow(m$data),
+    df <- data.frame(Individual = 1:dim(m$data)[1],
                      PCC = m$individual_pccs)
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = PCC)) +
       ggplot2::scale_x_continuous(breaks = 1:length(m$individual_pccs)) +
@@ -116,8 +116,8 @@ pcc_threshold_plot <- function(m, pcc_threshold = 75) {
 plot.opafit <- function(x, ...) {
   Individual <- stat <- group <- value <- NULL
   if (is.null(x$groups)) { # single group
-    df <- data.frame(Individual = rep(1:nrow(x$data), 2),
-                     stat = c(rep("PCCs", nrow(x$data)), rep("c-values", nrow(x$data))),
+    df <- data.frame(Individual = rep(1:dim(x$data)[1], 2),
+                     stat = c(rep("PCCs", dim(x$data)[1]), rep("c-values", dim(x$data)[1])),
                      value = c(x$individual_pccs, x$individual_cvals))
     df$stat <- factor(df$stat, levels = c("PCCs", "c-values"))
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
@@ -133,7 +133,7 @@ plot.opafit <- function(x, ...) {
   } else { # multiple groups
     df <- data.frame(Individual = rep(1:length(x$individual_pccs), 2),
                      group = rep(factor(x$group_labels), 2),
-                     stat = c(rep("PCCs", nrow(x$data)), rep("c-values", nrow(x$data))),
+                     stat = c(rep("PCCs", nrow(x$data)), rep("c-values", dim(x$data)[1])),
                      value = c(x$individual_pccs, x$individual_cvals))
     df$stat <- factor(df$stat, levels = c("PCCs", "c-values"))
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
