@@ -1,5 +1,5 @@
-# <opa: An Implementation of Ordinal Pattern Analysis.>
-# Copyright (C) <2022>  <Timothy Beechey; tim.beechey@protonmail.com>
+# opa: An Implementation of Ordinal Pattern Analysis.
+# Copyright (C) 2022 Timothy Beechey (tim.beechey@protonmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
