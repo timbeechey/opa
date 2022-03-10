@@ -42,7 +42,7 @@ void fun() {}
 // [[Rcpp::export]]
 IntegerVector c_sign_with_threshold(NumericVector xs, float diff_threshold) {
   IntegerVector sign_vector(xs.length());
-  for (unsigned int i = 0; i < xs.length(); i++) {
+  for (int i = 0; i < xs.length(); i++) {
     if (NumericVector::is_na(xs[i])) {
         sign_vector[i] = NA_INTEGER;
     } else if (xs[i] > diff_threshold) {
@@ -68,7 +68,7 @@ IntegerVector c_sign_with_threshold(NumericVector xs, float diff_threshold) {
 // [[Rcpp::export]]
 NumericVector c_all_diffs(NumericVector xs) {
   // Initialize variables
-  unsigned int count {0};
+  int count {0};
   // Calculate the length of the vector as the Nth-1 triangular number.
   // This is needed to pre-size an empty vector.
   long n_pairs {((xs.length() - 1) * xs.length()) / 2};
@@ -76,8 +76,8 @@ NumericVector c_all_diffs(NumericVector xs) {
   NumericVector diffs(n_pairs);
   // Fill the diffs vector with the difference between each pair of
   // vector elements
-  for (unsigned int i = 0; i < xs.length(); i++) {
-    for (unsigned int j = i + 1; j < xs.length(); j++) {
+  for (int i = 0; i < xs.length(); i++) {
+    for (int j = i + 1; j < xs.length(); j++) {
       diffs[count] = xs[j] - xs[i];
       count++;
     }
@@ -94,7 +94,7 @@ NumericVector c_all_diffs(NumericVector xs) {
 // [[Rcpp::export]]
 NumericMatrix c_random_shuffles(int n, NumericVector v) {
   NumericMatrix rand_orders(v.length(), n);
-  for (unsigned int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     rand_orders(_, i) = sample(v, v.length());
   }
   return rand_orders;
@@ -130,18 +130,18 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
  * return: a List containing a count n_perms_greater_eq and a vector of PCCs
  */
 // [[Rcpp::export]]
-List c_compare_perm_pccs(NumericMatrix perms, List m, unsigned int indiv_idx, IntegerVector H_ord) {
-  unsigned int n_perms_greater_eq {0};
+List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVector H_ord) {
+  int n_perms_greater_eq {0};
   float diff_threshold = m["diff_threshold"];
   String pairing_type = m["pairing_type"];
   NumericVector obs_pcc = m["individual_pccs"];
   NumericVector perm_pcc(perms.ncol());
   LogicalVector comps(H_ord.length());
 
-  for (unsigned int i = 0; i < perms.ncol(); i++) {
+  for (int i = 0; i < perms.ncol(); i++) {
     NumericVector perm_ordering(H_ord.length());
     perm_ordering = c_ordering(perms(_,i), pairing_type, diff_threshold);
-    for (unsigned int j = 0; j < perm_ordering.length(); j++) {
+    for (int j = 0; j < perm_ordering.length(); j++) {
       comps[j] = perm_ordering[j] == H_ord[j];
     }
     perm_pcc[i] = mean(comps) * 100;
@@ -169,12 +169,12 @@ NumericMatrix c_generate_permutations(NumericVector v) {
   long N {v.length()};
   // calculate factorial of N to pre-size matrix
   unsigned long nperms {1};
-  for (unsigned int i = 1; i <= N; ++i)
+  for (int i = 1; i <= N; ++i)
     nperms *= i;
   // preallocate matrix
   NumericMatrix perms(N, nperms);
   perms(_,0) = v; // a is the first permutation
-  for (unsigned int m = 1; m < nperms; m++) {
+  for (int m = 1; m < nperms; m++) {
     std::next_permutation(v.begin(), v.end());
     perms(_,m) = v;
   }
