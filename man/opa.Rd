@@ -11,7 +11,7 @@ opa(
   pairing_type = "pairwise",
   diff_threshold = 0,
   cval_method = "stochastic",
-  nreps = 1000,
+  nreps = 1000L,
   progress = FALSE
 )
 }

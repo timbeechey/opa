@@ -113,7 +113,7 @@
 #' opa(dat[,2:4], 1:3, group = dat$group)
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
-                diff_threshold = 0, cval_method = "stochastic", nreps = 1000,
+                diff_threshold = 0, cval_method = "stochastic", nreps = 1000L,
                 progress = FALSE) {
   # verify the arguments
   assertthat::assert_that(assertthat::are_equal(dim(dat)[2], length(hypothesis)))

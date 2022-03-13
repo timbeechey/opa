@@ -43,7 +43,7 @@ void fun() {}
 IntegerVector c_sign_with_threshold(NumericVector xs, float diff_threshold) {
   IntegerVector sign_vector(xs.length());
   for (int i = 0; i < xs.length(); i++) {
-    if (NumericVector::is_na(xs[i])) {
+    if (is_na(xs[i])) {
         sign_vector[i] = NA_INTEGER;
     } else if (xs[i] > diff_threshold) {
         sign_vector[i] = 1;
@@ -71,7 +71,7 @@ NumericVector c_all_diffs(NumericVector xs) {
   int count {0};
   // Calculate the length of the vector as the Nth-1 triangular number.
   // This is needed to pre-size an empty vector.
-  long n_pairs {((xs.length() - 1) * xs.length()) / 2};
+  long long n_pairs {((xs.length() - 1) * xs.length()) / 2};
   // Create empty vector of the correct size to hold all pairwise differences.
   NumericVector diffs(n_pairs);
   // Fill the diffs vector with the difference between each pair of
@@ -166,15 +166,15 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
  */
 // [[Rcpp::export]]
 NumericMatrix c_generate_permutations(NumericVector v) {
-  long N {v.length()};
+  long long N {v.length()};
   // calculate factorial of N to pre-size matrix
-  unsigned long nperms {1};
-  for (int i = 1; i <= N; ++i)
+  long nperms {1};
+  for (long i = 1; i <= N; ++i)
     nperms *= i;
   // preallocate matrix
   NumericMatrix perms(N, nperms);
   perms(_,0) = v; // a is the first permutation
-  for (int m = 1; m < nperms; m++) {
+  for (long m = 1; m < nperms; m++) {
     std::next_permutation(v.begin(), v.end());
     perms(_,m) = v;
   }
