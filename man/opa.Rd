@@ -42,6 +42,9 @@ An object of class "opafit" is a list containing the folllowing components:
   \item{individual_pccs}{a vector containing the percentage of pairwise
   orderings that were correctly classified by the hypothesis for each data
   row.}
+  \item{condition_pccs}{a matrix containing PCCs for each pair of
+  conditions, or a list containing such a matrix for each group level if a
+  grouping variable is passed to \code{opa}}
   \item{correct_pairs}{an integer representing the number of pairwise
   orderings pooled across all data rows that were correctly classified by the
   hypothesis.}

@@ -42,7 +42,7 @@ devtools::install_github("timbeechey/opa")
 
 To cite opa in your work you can use the output of:
 
-```{r citation, results='hide', message=FALSE, warning=FALSE}
+```{r citation, eval=FALSE, message=FALSE, warning=FALSE}
 citation(package = "opa")
 ```
 
@@ -115,6 +115,13 @@ Individual-level model output can be visualized using:
 plot(opamod)
 ```
 
+Pairwise comparisons of conditions are returned by `opa()` and can be accessed with the `condition_pccs` method:
+
+```{r}
+opamod$condition_pccs
+```
+
+
 ### Multiple groups 
 
 If the data consist of multiple groups a categorical grouping variable can be passed with the `group` keyword to produce results for each group within the data, in addition to individual results.
@@ -138,4 +145,9 @@ Similarly, plotting the output shows individual PCCs and c-values by group.
 plot(opamod2)
 ```
 
+Pairwise comparisons of conditions within each group are returned as a list and can be accessed with the `condition_pccs` method:
+
+```{r}
+opamod2$condition_pccs
+```
 

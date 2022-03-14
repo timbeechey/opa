@@ -110,26 +110,26 @@ dat <- data.frame(t1 = rnorm(20, mean = 12, sd = 2),
                   
 round(dat, 2)
 #>       t1    t2    t3    t4
-#> 1  14.13 13.92 22.06 18.31
-#> 2  14.70 16.45 24.32 20.44
-#> 3   9.82 14.76 19.56 20.56
-#> 4  12.45 11.56 17.23 17.21
-#> 5  12.19 16.84 18.56 17.29
-#> 6  12.63 15.58 23.22 13.34
-#> 7  10.32 15.56 19.16 15.83
-#> 8  14.42 13.64 19.91 17.18
-#> 9  10.12 13.31 15.49 16.98
-#> 10 13.23 17.15 20.54 19.11
-#> 11 12.04 15.12 18.43 18.05
-#> 12 14.78 16.27 19.07 16.06
-#> 13 10.01 12.27 23.63 15.94
-#> 14 10.11 12.59 18.51 17.77
-#> 15 10.79 15.94 22.91 18.23
-#> 16 11.70 14.01 17.82 18.04
-#> 17  9.24 15.10 18.40 17.52
-#> 18  9.33 17.77 20.40 16.03
-#> 19 10.42 16.42 21.21 18.77
-#> 20 13.95 15.85 20.50 17.76
+#> 1  15.03 16.16 20.13 16.87
+#> 2   9.79 15.85 21.00 20.76
+#> 3  11.43 15.12 20.41 15.42
+#> 4  11.02 16.03 22.30 14.49
+#> 5  11.95 18.35 18.37 19.08
+#> 6  15.10 15.62 18.88 17.68
+#> 7  10.68 17.91 18.23 18.29
+#> 8  12.03 15.15 19.81 19.40
+#> 9  12.46 15.15 19.37 16.55
+#> 10  9.39 13.41 19.97 17.12
+#> 11  8.14 17.32 18.26 13.96
+#> 12 13.56 15.01 25.51 14.91
+#> 13 10.95 11.16 22.56 15.54
+#> 14 14.08 13.87 21.67 17.84
+#> 15 13.34 14.10 18.52 14.65
+#> 16 11.50 14.41 19.78 16.12
+#> 17  8.49 13.84 16.40 18.13
+#> 18 12.13 15.63 19.84 18.06
+#> 19 10.48 16.85 19.96 14.96
+#> 20 11.96 12.81 18.21 19.21
 ```
 
 An ordinal pattern analysis model to consider how the hypothesis `h`
@@ -145,32 +145,32 @@ A summary of the model output can be viewed using:
 summary(opamod)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
 #> 
-#> Group-level results:
+#> Between subjects results:
 #>         PCC cval
 #> pooled 92.5  0.1
 #> 
-#> Individual-level results:
+#> Within subjects results:
 #>       PCC cval
-#> 1   83.33 0.17
+#> 1  100.00 0.04
 #> 2  100.00 0.04
-#> 3   83.33 0.17
+#> 3  100.00 0.04
 #> 4   83.33 0.17
-#> 5  100.00 0.04
-#> 6   83.33 0.17
-#> 7  100.00 0.04
-#> 8   83.33 0.17
-#> 9   83.33 0.17
+#> 5   83.33 0.17
+#> 6  100.00 0.04
+#> 7   83.33 0.17
+#> 8  100.00 0.04
+#> 9  100.00 0.04
 #> 10 100.00 0.04
-#> 11 100.00 0.04
+#> 11  83.33 0.17
 #> 12  83.33 0.17
 #> 13 100.00 0.04
-#> 14 100.00 0.04
+#> 14  83.33 0.17
 #> 15 100.00 0.04
-#> 16  83.33 0.17
-#> 17 100.00 0.04
-#> 18  83.33 0.17
-#> 19 100.00 0.04
-#> 20 100.00 0.04
+#> 16 100.00 0.04
+#> 17  83.33 0.17
+#> 18 100.00 0.04
+#> 19  83.33 0.17
+#> 20  83.33 0.17
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
 #> Chance-values were calculated using the exact method.
@@ -183,6 +183,17 @@ plot(opamod)
 ```
 
 <img src="man/figures/README-plot_opamod1-1.png" style="display: block; margin: auto;" />
+
+Pairwise comparisons of conditions are returned by `opa()` and can be
+accessed with the `condition_pccs` method:
+
+``` r
+opamod$condition_pccs
+#>      2  3   4
+#> 1 0.95  1 1.0
+#> 2   NA  1 0.8
+#> 3   NA NA 0.8
+```
 
 ### Multiple groups
 
@@ -203,35 +214,35 @@ The summary output displays results organised by group.
 summary(opamod2)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 #> 
-#> Group-level results:
+#> Between subjects results:
 #>     PCC cval
 #> A 93.33 0.09
-#> B 93.33 0.09
-#> C 96.67 0.07
-#> D 86.67 0.14
+#> B 96.67 0.07
+#> C 90.00 0.12
+#> D 90.00 0.12
 #> 
-#> Individual-level results:
+#> Within subjects results:
 #>   Individual    PCC cval
-#> A          1  83.33 0.17
-#> A          5 100.00 0.04
-#> A          9  83.33 0.17
+#> A          1 100.00 0.04
+#> A          5  83.33 0.17
+#> A          9 100.00 0.04
 #> A         13 100.00 0.04
-#> A         17 100.00 0.04
+#> A         17  83.33 0.17
 #> B          2 100.00 0.04
-#> B          6  83.33 0.17
+#> B          6 100.00 0.04
 #> B         10 100.00 0.04
-#> B         14 100.00 0.04
-#> B         18  83.33 0.17
-#> C          3  83.33 0.17
-#> C          7 100.00 0.04
-#> C         11 100.00 0.04
+#> B         14  83.33 0.17
+#> B         18 100.00 0.04
+#> C          3 100.00 0.04
+#> C          7  83.33 0.17
+#> C         11  83.33 0.17
 #> C         15 100.00 0.04
-#> C         19 100.00 0.04
+#> C         19  83.33 0.17
 #> D          4  83.33 0.17
-#> D          8  83.33 0.17
+#> D          8 100.00 0.04
 #> D         12  83.33 0.17
-#> D         16  83.33 0.17
-#> D         20 100.00 0.04
+#> D         16 100.00 0.04
+#> D         20  83.33 0.17
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
 #> Chance-values were calculated using the exact method.
@@ -245,3 +256,33 @@ plot(opamod2)
 ```
 
 <img src="man/figures/README-plot_opamod2-1.png" style="display: block; margin: auto;" />
+
+Pairwise comparisons of conditions within each group are returned as a
+list and can be accessed with the `condition_pccs` method:
+
+``` r
+opamod2$condition_pccs
+#> [[1]]
+#>    2  3   4
+#> 1  1  1 1.0
+#> 2 NA  1 1.0
+#> 3 NA NA 0.6
+#> 
+#> [[2]]
+#>     2  3 4
+#> 1 0.8  1 1
+#> 2  NA  1 1
+#> 3  NA NA 1
+#> 
+#> [[3]]
+#>    2  3   4
+#> 1  1  1 1.0
+#> 2 NA  1 0.6
+#> 3 NA NA 0.8
+#> 
+#> [[4]]
+#>    2  3   4
+#> 1  1  1 1.0
+#> 2 NA  1 0.6
+#> 3 NA NA 0.8
+```

@@ -45,9 +45,9 @@ summary.opafit <- function(object, ..., digits = 2L) {
     cat("Ordinal Pattern Analysis of", dim(object$data)[2], "observations for",
         dim(object$data)[1], "individuals in", nlevels(object$groups), "groups \n\n")
   }
-  cat("Group-level results:\n")
+  cat("Between subjects results:\n")
   print(group_results(object, digits))
-  cat("\nIndividual-level results:\n")
+  cat("\nWithin subjects results:\n")
   print(individual_results(object, digits))
   cat("\nPCCs were calculated for ", object$pairing_type,
       " ordinal relationships using a difference threshold of ", object$diff_threshold,
