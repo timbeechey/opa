@@ -140,23 +140,13 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
     }
 
     # create an upper triangle matrix of PCCs for pairs of conditions
-    cond_pccs <- matrix(numeric(0), nrow = dim(dat)[2], ncol = dim(dat)[2]) # pre-size matrix
-    # calculate PCCs and assign to lower triangle
-    cond_pccs[lower.tri(cond_pccs)] <- apply(pccs$match, 2, mean, na.rm = TRUE)
-    # transpose to upper triangle such that rows are from cond and cols are to cond
-    cond_pccs <- t(cond_pccs)
-    # drop the first column and last row which are all NAs
-    cond_pccs <- cond_pccs[-nrow(cond_pccs),]
-    cond_pccs <- cond_pccs[,-1]
-    # assign meaningful row and column names
-    colnames(cond_pccs) <- 2:(ncol(cond_pccs) + 1)
-    rownames(cond_pccs) <- 1:nrow(cond_pccs)
+    cond_pccs <- condition_pair_pccs(pccs)
 
     return(
       structure(
         list(group_pcc = pccs$group_pcc,
              individual_pccs = pccs$individual_pccs,
-             condition_pccs = cond_pccs,
+             condition_pccs = cond_pccs$mat,
              correct_pairs = pccs$correct_pairs,
              total_pairs = pccs$total_pairs,
              group_cval = cvalues$group_cval,
@@ -196,17 +186,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
 
       # create an upper triangle matrix of PCCs for pairs of conditions
-      cond_pccs[[i]] <- matrix(numeric(0), nrow = dim(subgroup_dat)[2], ncol = dim(subgroup_dat)[2]) # pre-size matrix
-      # calculate PCCs and assign to lower triangle
-      cond_pccs[[i]][lower.tri(cond_pccs[[i]])] <- apply(subgroup_pccs$match, 2, mean, na.rm = TRUE)
-      # transpose to upper triangle such that rows are from cond and cols are to cond
-      cond_pccs[[i]] <- t(cond_pccs[[i]])
-      # drop the first column and last row which are all NAs
-      cond_pccs[[i]] <- cond_pccs[[i]][-nrow(cond_pccs[[i]]),]
-      cond_pccs[[i]] <- cond_pccs[[i]][,-1]
-      # assign meaningful row and column names
-      colnames(cond_pccs[[i]]) <- 2:(ncol(cond_pccs[[i]]) + 1)
-      rownames(cond_pccs[[i]]) <- 1:nrow(cond_pccs[[i]])
+      cond_pccs[[i]] <- condition_pair_pccs(subgroup_pccs)$mat
 
       if (progress == TRUE)
         cat("Fitting group", i, "of", nlevels(group), "\n")

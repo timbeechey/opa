@@ -33,8 +33,8 @@ row_pcc <- function(xs, h, pairing_type, diff_threshold) {
   # compare ordinal relations in hypothesis and data row
   match <- row_ordering == hypothesis_ordering
 
-  # get match vector that is same length regardless of NAs to construct matrix os matches
-  match_with_nas <- c_ordering(h, pairing_type, 0) == c_ordering(xs, pairing_type, diff_threshold)
+  # get match vector that is same length regardless of NAs to construct matrix of matches
+  match_with_nas <- c_ordering(h, "pairwise", 0) == c_ordering(xs, "pairwise", diff_threshold)
 
   n_pairs <- length(match)
   correct_pairs <- sum(match)
@@ -52,7 +52,7 @@ pcc <- function(dat, h, pairing_type, diff_threshold) {
   total_pairs <- 0
   correct_pairs <- 0
 
-  match_mat <- matrix(numeric(0), nrow = dim(dat)[1], ncol = length(c_ordering(h, pairing_type, 0)))
+  match_mat <- matrix(numeric(0), nrow = dim(dat)[1], ncol = length(c_ordering(h, "pairwise", 0)))
 
   for (r in 1:dim(dat)[1]) {
     result <- row_pcc(dat[r,], h, pairing_type, diff_threshold)
@@ -73,4 +73,21 @@ pcc <- function(dat, h, pairing_type, diff_threshold) {
        hypothesis = h,
        pairing_type = pairing_type,
        diff_threshold = diff_threshold)
+}
+
+condition_pair_pccs <- function(pcc_out) {
+  # create an upper triangle matrix of PCCs for pairs of conditions
+  mat <- matrix(numeric(0), nrow = dim(pcc_out$data)[2], ncol = dim(pcc_out$data)[2]) # pre-size matrix
+  # calculate PCCs and assign to lower triangle
+  pccs <- apply(pcc_out$matches, 2, mean, na.rm = TRUE)
+  mat[lower.tri(mat)] <- pccs
+  # transpose to upper triangle such that rows are from cond and cols are to cond
+  mat <- t(mat)
+  # drop the first column and last row which are all NAs
+  mat <- mat[-nrow(mat),]
+  mat <- mat[,-1]
+  # assign meaningful row and column names
+  colnames(mat) <- 2:(ncol(mat) + 1)
+  rownames(mat) <- 1:nrow(mat)
+  list(pccs=pccs, mat=mat)
 }
