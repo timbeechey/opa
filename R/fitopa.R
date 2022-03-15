@@ -209,7 +209,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
     }
     names(group_pccs) <- levels(group)
     names(group_cvals) <- levels(group)
-    names(cond_pccs) <- group_labels_vec
+    names(cond_pccs) <- levels(group)
 
     return(
       structure(
