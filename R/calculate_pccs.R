@@ -79,7 +79,7 @@ condition_pair_pccs <- function(pcc_out) {
   # create an upper triangle matrix of PCCs for pairs of conditions
   mat <- matrix(numeric(0), nrow = dim(pcc_out$data)[2], ncol = dim(pcc_out$data)[2]) # pre-size matrix
   # calculate PCCs and assign to lower triangle
-  pccs <- apply(pcc_out$matches, 2, mean, na.rm = TRUE)
+  pccs <- (apply(pcc_out$matches, 2, mean, na.rm = TRUE) * 100)
   mat[lower.tri(mat)] <- pccs
   # transpose to upper triangle such that rows are from cond and cols are to cond
   mat <- t(mat)
