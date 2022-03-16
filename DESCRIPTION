@@ -21,7 +21,6 @@ LinkingTo:
     Rcpp
 Imports: 
     Rcpp,
-    assertthat,
     ggplot2
 Suggests: 
     rmarkdown,

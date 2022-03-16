@@ -119,14 +119,15 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, cval_method = "stochastic", nreps = 1000L,
                 progress = FALSE) {
   # verify the arguments
-  assertthat::assert_that(assertthat::are_equal(dim(dat)[2], length(hypothesis)))
-  assertthat::assert_that(pairing_type %in% c("pairwise", "adjacent"))
-  assertthat::assert_that(cval_method %in% c("exact", "stochastic"))
-  assertthat::assert_that(class(diff_threshold) %in% c("integer", "numeric"))
-  assertthat::assert_that(assertthat::is.count(nreps))
-  assertthat::assert_that(assertthat::is.scalar(diff_threshold))
-  assertthat::assert_that(assertthat::is.count(nreps))
-  assertthat::assert_that(assertthat::are_equal(diff_threshold >= 0, TRUE))
+  stopifnot("Hypothesis and data rows are not the same length"= dim(dat)[2] == length(hypothesis))
+  stopifnot("pairing_type must be 'pairwise' or 'adjacent'"= pairing_type %in% c("pairwise", "adjacent"))
+  stopifnot("cval_method must be 'exact' or 'stochastic'"= cval_method %in% c("exact", "stochastic"))
+  stopifnot("diff_threshold must be a number"= class(diff_threshold) %in% c("integer", "numeric"))
+  stopifnot("diff_threshold must be a non-negative number"= diff_threshold >= 0)
+  stopifnot("nreps must be a whole number"= nreps == as.integer(nreps))
+  stopifnot("nreps must be a positive number"= nreps >= 1)
+  stopifnot("nreps must be a single number"= length(nreps) == 1)
+  stopifnot("diff_threshold must be a single number"= length(diff_threshold) == 1)
 
   if (is.null(group)) { # single groups
     # convert the data.frame input to a matrix for speed
@@ -164,7 +165,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
         class = "opafit"))
 
   } else { # multiple groups
-    assertthat::assert_that(is.factor(group) == TRUE, msg = "The grouping vector must be a factor.")
+    stopifnot("The grouping vector must be a factor"=is.factor(group))
     groups <- levels(group)
     group_pccs <- numeric(nlevels(group))
     group_cvals <- numeric(nlevels(group))
