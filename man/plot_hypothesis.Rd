@@ -2,20 +2,34 @@
 % Please edit documentation in R/utility.R
 \name{plot_hypothesis}
 \alias{plot_hypothesis}
-\title{Visualize a hypothesis.}
+\title{Plot a hypothesis.}
 \usage{
-plot_hypothesis(h)
+plot_hypothesis(
+  h,
+  xlabels = 1:length(h),
+  point_size = 2,
+  fill_color = "#CCCCCC"
+)
 }
 \arguments{
 \item{h}{a numeric vector}
+
+\item{xlabels}{a character or numeric vector}
+
+\item{point_size}{a number}
+
+\item{fill_color}{a string containing a hex value or recognised colour name}
 }
 \value{
-an object of class "ggplot"
+no return value, called for side-effects only
 }
 \description{
-Visualize a hypothesis.
+Plot a hypothesis.
 }
 \examples{
-my_hypothesis <- c(1,2,3,3,3)
-plot_hypothesis(my_hypothesis)
+h <- c(1,2,3,3,3)
+plot_hypothesis(h)
+plot_hypothesis(h, xlabels = c("A", "B", "C", "D", "E"))
+plot_hypothesis(h, point_size = 1)
+plot_hypothesis(h, fill_color = "royalblue")
 }

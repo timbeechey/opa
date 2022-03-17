@@ -235,22 +235,34 @@ individual_results.opafit <- function(m, digits = 2) {
   }
 }
 
-#' Visualize a hypothesis.
+#' Plot a hypothesis.
 #' @param h a numeric vector
-#' @return an object of class "ggplot"
+#' @param xlabels a character or numeric vector
+#' @param point_size a number
+#' @param fill_color a string containing a hex value or recognised colour name
+#' @return no return value, called for side-effects only
 #' @examples
-#' my_hypothesis <- c(1,2,3,3,3)
-#' plot_hypothesis(my_hypothesis)
+#' h <- c(1,2,3,3,3)
+#' plot_hypothesis(h)
+#' plot_hypothesis(h, xlabels = c("A", "B", "C", "D", "E"))
+#' plot_hypothesis(h, point_size = 1)
+#' plot_hypothesis(h, fill_color = "royalblue")
 #' @export
-plot_hypothesis <- function(h) {
-  condition <- hypothesis <- NULL
-  df <- data.frame(condition = 1:length(h), hypothesis = h)
-  ggplot2::ggplot(df, ggplot2::aes(x = condition, y = hypothesis)) +
-    ggplot2::geom_point(size = 4, shape = 21, fill = "royalblue") +
-    ggplot2::scale_x_continuous(labels = as.character(df$condition), breaks = df$condition) +
-    ggplot2::scale_y_continuous(labels = as.character(df$hypothesis), breaks = df$hypothesis) +
-    ggplot2::labs(x = "Condition", y = "Relative Value") +
-    ggplot2::theme(panel.grid.minor = ggplot2::element_blank())
+plot_hypothesis <- function(h, xlabels = 1:length(h), point_size = 2, fill_color = "#CCCCCC") {
+
+  stopifnot("hypothesis must be a numeric vector"= (class(h) == "numeric") || (class(h) == "integer"))
+  stopifnot("xlabels must be same length as the hypothesis"= length(h) == length(xlabels))
+  stopifnot("point size must be a number"= typeof(point_size) == "double" || typeof(point_size) == "integer")
+  stopifnot("point_size must be a single number"= length(point_size) == 1)
+  stopifnot("fill_color must be a single- or double-quoted string"= class(fill_color) == "character")
+
+  graphics::par(mar = c(4, 4, 0.5, 0.5))
+  plot(1:length(h), h, pch = 21, cex = point_size, bg = fill_color,
+       xlab = "", ylab = "Relative Value",
+       xlim = c(0.7,length(h) + 0.3), ylim = c(min(h) - 0.3, max(h) + 0.3),
+       xaxt = "n", yaxt = "n")
+  graphics::axis(1, at = 1:length(xlabels), labels = c(xlabels))
+  graphics::axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las=1)
 }
 
 # Clean up C++ when package is unloaded.
