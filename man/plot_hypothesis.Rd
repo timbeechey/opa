@@ -4,24 +4,13 @@
 \alias{plot_hypothesis}
 \title{Plot a hypothesis.}
 \usage{
-plot_hypothesis(
-  h,
-  xlabels = 1:length(h),
-  point_size = 2,
-  fill_color = "#CCCCCC"
-)
+plot_hypothesis(h)
 }
 \arguments{
 \item{h}{a numeric vector}
-
-\item{xlabels}{a character or numeric vector}
-
-\item{point_size}{a number}
-
-\item{fill_color}{a string containing a hex value or recognised colour name}
 }
 \value{
-no return value, called for side-effects only
+an object of class "ggplot"
 }
 \description{
 Plot a hypothesis.
@@ -29,7 +18,4 @@ Plot a hypothesis.
 \examples{
 h <- c(1,2,3,3,3)
 plot_hypothesis(h)
-plot_hypothesis(h, xlabels = c("A", "B", "C", "D", "E"))
-plot_hypothesis(h, point_size = 1)
-plot_hypothesis(h, fill_color = "royalblue")
 }

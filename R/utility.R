@@ -114,6 +114,7 @@ pcc_threshold_plot <- function(m, pcc_threshold = 75) {
 #' plot(opamod)
 #' @export
 plot.opafit <- function(x, ...) {
+
   Individual <- stat <- group <- value <- NULL
   if (is.null(x$groups)) { # single group
     df <- data.frame(Individual = rep(1:dim(x$data)[1], 2),
@@ -123,11 +124,12 @@ plot.opafit <- function(x, ...) {
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
       ggplot2::scale_x_reverse(breaks = 1:length(x$individual_pccs)) +
       ggplot2::geom_segment(ggplot2::aes(x=Individual, xend=Individual, y=0, yend=value), colour="black", size=0.3) +
-      ggplot2::geom_point(size=2, shape=21, ggplot2::aes(fill=stat)) +
+      ggplot2::geom_point(size=2.5, shape=21, ggplot2::aes(fill=stat)) +
       ggplot2::facet_wrap(~ stat, nrow=1, scale="free") +
       ggplot2::ylab(NULL) +
       ggplot2::guides(fill="none") +
       ggplot2::coord_flip() +
+      ggplot2::theme_bw() +
       ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                      panel.grid.minor.y = ggplot2::element_blank())
   } else { # multiple groups
@@ -139,10 +141,11 @@ plot.opafit <- function(x, ...) {
     ggplot2::ggplot(df, ggplot2::aes(x = Individual, y = value)) +
       ggplot2::scale_x_reverse(breaks = 1:length(x$individual_idx), labels=x$individual_idx) +
       ggplot2::geom_segment(ggplot2::aes(x=Individual, xend=Individual, y=0, yend=value), colour="black", size=0.3) +
-      ggplot2::geom_point(size=2, shape=21, ggplot2::aes(fill=group)) +
+      ggplot2::geom_point(size=2.5, shape=21, ggplot2::aes(fill=group)) +
       ggplot2::facet_wrap(~ stat, nrow=1, scale="free") +
       ggplot2::ylab(NULL) +
       ggplot2::coord_flip() +
+      ggplot2::theme_bw() +
       ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                      panel.grid.minor.y = ggplot2::element_blank(),
                      legend.position = "bottom")
@@ -237,33 +240,21 @@ individual_results.opafit <- function(m, digits = 2) {
 
 #' Plot a hypothesis.
 #' @param h a numeric vector
-#' @param xlabels a character or numeric vector
-#' @param point_size a number
-#' @param fill_color a string containing a hex value or recognised colour name
-#' @return no return value, called for side-effects only
+#' @return an object of class "ggplot"
 #' @examples
 #' h <- c(1,2,3,3,3)
 #' plot_hypothesis(h)
-#' plot_hypothesis(h, xlabels = c("A", "B", "C", "D", "E"))
-#' plot_hypothesis(h, point_size = 1)
-#' plot_hypothesis(h, fill_color = "royalblue")
 #' @export
-plot_hypothesis <- function(h, xlabels = 1:length(h), point_size = 2, fill_color = "#CCCCCC") {
-
-  stopifnot("hypothesis must be a numeric vector"= (class(h) == "numeric") || (class(h) == "integer"))
-  stopifnot("xlabels must be same length as the hypothesis"= length(h) == length(xlabels))
-  stopifnot("point size must be a number"= typeof(point_size) == "double" || typeof(point_size) == "integer")
-  stopifnot("point_size must be a single number"= length(point_size) == 1)
-  stopifnot("fill_color must be a single- or double-quoted string"= class(fill_color) == "character")
-
-  graphics::par(mar = c(4, 4, 0.5, 0.5))
-  plot(1:length(h), h, pch = 21, cex = point_size, bg = fill_color,
-       xlab = "", ylab = "Relative Value",
-       xlim = c(0.7,length(h) + 0.3), ylim = c(min(h) - 0.3, max(h) + 0.3),
-       xaxt = "n", yaxt = "n")
-  graphics::axis(1, at = 1:length(xlabels), labels = c(xlabels))
-  graphics::axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las=1)
-}
+plot_hypothesis <- function(h) {
+  condition <- hypothesis <- NULL
+  df <- data.frame(condition = 1:length(h), hypothesis = h)
+  ggplot2::ggplot(df, ggplot2::aes(x = condition, y = hypothesis)) +
+    ggplot2::geom_point(size = 4, shape = 21, fill = "royalblue") +
+    ggplot2::scale_x_continuous(labels = as.character(df$condition), breaks = df$condition) +
+    ggplot2::scale_y_continuous(labels = as.character(df$hypothesis), breaks = df$hypothesis) +
+    ggplot2::labs(x = "Condition", y = "Relative Value") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(panel.grid = ggplot2::element_blank())}
 
 # Clean up C++ when package is unloaded.
 .onUnload <- function(libpath) {
