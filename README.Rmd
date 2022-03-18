@@ -151,3 +151,6 @@ Pairwise comparisons of conditions within each group are returned as a list and 
 opamod2$condition_pccs
 ```
 
+## Acknowledgements
+
+Development of `opa` was supported by a [Medical Research Foundation](https://www.medicalresearchfoundation.org.uk/) Fellowship (MRF-049-0004-F-BEEC-C0899).
