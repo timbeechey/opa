@@ -140,14 +140,11 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       cvalues <- cval_stochastic(pccs, nreps, progress)
     }
 
-    # create an upper triangle matrix of PCCs for pairs of conditions
-    cond_pccs <- condition_pair_pccs(pccs)
-
     return(
       structure(
         list(group_pcc = pccs$group_pcc,
              individual_pccs = pccs$individual_pccs,
-             condition_pccs = cond_pccs$mat,
+             condition_pccs = "This method is deprecated. Please use compare_conditions().",
              correct_pairs = pccs$correct_pairs,
              total_pairs = pccs$total_pairs,
              group_cval = cvalues$group_cval,
@@ -186,9 +183,6 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       subgroup_mat <- as.matrix(subgroup_dat)
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
 
-      # create an upper triangle matrix of PCCs for pairs of conditions
-      cond_pccs[[i]] <- condition_pair_pccs(subgroup_pccs)$mat
-
       if (progress == TRUE)
         cat("Fitting group", i, "of", nlevels(group), "\n")
       if (cval_method == "exact") {
@@ -216,7 +210,6 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       structure(
         list(group_pcc = group_pccs,
              individual_pccs = individual_pccs,
-             condition_pccs = cond_pccs,
              correct_pairs = correct_pairs,
              total_pairs = total_pairs,
              group_cval = group_cvals,

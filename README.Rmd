@@ -115,12 +115,16 @@ Individual-level model output can be visualized using:
 plot(opamod)
 ```
 
-Pairwise comparisons of conditions are returned by `opa()` and can be accessed with the `condition_pccs` method:
+### Pairwise comparison of measurement conditions
+
+Pairwise comparisons of measurement conditions can be calculated by applying the `compare_conditions()` function to an `opafit` object produced by a call to `opa()`:
 
 ```{r}
-opamod$condition_pccs
-```
+condition_comparisons <- compare_conditions(opamod)
 
+condition_comparisons$pccs
+condition_comparisons$cvals
+```
 
 ### Multiple groups 
 
@@ -143,12 +147,6 @@ Similarly, plotting the output shows individual PCCs and c-values by group.
 
 ```{r plot_opamod2, fig.width=7, fig.height=4, fig.align="center"}
 plot(opamod2)
-```
-
-Pairwise comparisons of conditions within each group are returned as a list and can be accessed with the `condition_pccs` method:
-
-```{r}
-opamod2$condition_pccs
 ```
 
 ## Acknowledgements
