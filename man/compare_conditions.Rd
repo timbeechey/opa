@@ -35,8 +35,6 @@ compare_conditions(
 \item{nreps}{an integer, ignored if \code{cval_method = "exact"}}
 
 \item{progress}{a boolean indicating whether to display a progress bar}
-
-\item{...}{ignored}
 }
 \value{
 A list with the following elements

@@ -20,7 +20,6 @@
 #' @param cval_method a string, either "exact" or "stochastic
 #' @param nreps an integer, ignored if \code{cval_method = "exact"}
 #' @param progress a boolean indicating whether to display a progress bar
-#' @param ... ignored
 #' @return A list with the following elements
 #'
 #' \describe{
