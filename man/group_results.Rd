@@ -2,15 +2,9 @@
 % Please edit documentation in R/utility.R
 \name{group_results}
 \alias{group_results}
-\alias{group_results.default}
-\alias{group_results.opafit}
 \title{Group-level PCC and chance values.}
 \usage{
 group_results(m, digits)
-
-\method{group_results}{default}(m, digits)
-
-\method{group_results}{opafit}(m, digits = 2)
 }
 \arguments{
 \item{m}{an object of class "opafit" produced by \code{opa()}.}

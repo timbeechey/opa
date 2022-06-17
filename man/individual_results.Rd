@@ -2,15 +2,9 @@
 % Please edit documentation in R/utility.R
 \name{individual_results}
 \alias{individual_results}
-\alias{individual_results.default}
-\alias{individual_results.opafit}
 \title{Individual-level PCC and chance values.}
 \usage{
 individual_results(m, digits)
-
-\method{individual_results}{default}(m, digits)
-
-\method{individual_results}{opafit}(m, digits = 2)
 }
 \arguments{
 \item{m}{an object of class "opafit" produced by \code{opa()}}

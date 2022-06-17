@@ -2,25 +2,9 @@
 % Please edit documentation in R/condition_comparison.R
 \name{compare_conditions}
 \alias{compare_conditions}
-\alias{compare_conditions.default}
-\alias{compare_conditions.opafit}
 \title{Calculates PCCs and c-values based on pairwise comparison of conditions.}
 \usage{
 compare_conditions(
-  result,
-  cval_method = "exact",
-  nreps = 1000L,
-  progress = FALSE
-)
-
-\method{compare_conditions}{default}(
-  result,
-  cval_method = "exact",
-  nreps = 1000L,
-  progress = FALSE
-)
-
-\method{compare_conditions}{opafit}(
   result,
   cval_method = "exact",
   nreps = 1000L,
@@ -37,7 +21,7 @@ compare_conditions(
 \item{progress}{a boolean indicating whether to display a progress bar}
 }
 \value{
-A list with the following elements
+\code{compare_conditions} returns a list with the following elements
 
 \describe{
   \item{pccs}{An upper triangle matrix containing PCCs calculated from each

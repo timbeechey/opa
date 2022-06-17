@@ -173,11 +173,9 @@ group_results <- function(m, digits) {
   UseMethod("group_results")
 }
 
-#' @rdname group_results
 #' @export
 group_results.default <- function(m, digits) .NotYetImplemented()
 
-#' @rdname group_results
 #' @export
 group_results.opafit <- function(m, digits = 2) {
   if (is.null(m$groups)) {
@@ -218,11 +216,9 @@ individual_results <- function(m, digits) {
   UseMethod("individual_results")
 }
 
-#' @rdname individual_results
 #' @export
 individual_results.default <- function(m, digits) .NotYetImplemented()
 
-#' @rdname individual_results
 #' @export
 individual_results.opafit <- function(m, digits = 2) {
   if (is.null(m$groups)) {

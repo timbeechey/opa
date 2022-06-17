@@ -20,7 +20,7 @@
 #' @param cval_method a string, either "exact" or "stochastic
 #' @param nreps an integer, ignored if \code{cval_method = "exact"}
 #' @param progress a boolean indicating whether to display a progress bar
-#' @return A list with the following elements
+#' @return \code{compare_conditions} returns a list with the following elements
 #'
 #' \describe{
 #'   \item{pccs}{An upper triangle matrix containing PCCs calculated from each
@@ -41,11 +41,9 @@ compare_conditions <- function(result, cval_method = "exact", nreps = 1000L, pro
   UseMethod("compare_conditions")
 }
 
-#' @rdname compare_conditions
 #' @export
 compare_conditions.default <- function(result, cval_method = "exact", nreps = 1000L, progress = FALSE) .NotYetImplemented()
 
-#' @rdname compare_conditions
 #' @export
 compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 1000L, progress = FALSE) {
   dat <- result$data
