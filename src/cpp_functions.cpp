@@ -71,6 +71,8 @@ NumericVector c_all_diffs(NumericVector xs) {
   int count {0};
   // Calculate the length of the vector as the Nth-1 triangular number.
   // This is needed to pre-size an empty vector.
+  // Note that brace initialisation of n_pairs catches narrowing from R's
+  // long long int if n_pairs is initialised with type int or size_t.
   long long n_pairs {((xs.length() - 1) * xs.length()) / 2};
   // Create empty vector of the correct size to hold all pairwise differences.
   NumericVector diffs(n_pairs);
@@ -132,7 +134,7 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
 // [[Rcpp::export]]
 List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVector H_ord) {
   int n_perms_greater_eq {0};
-  float diff_threshold = m["diff_threshold"];
+  double diff_threshold {m["diff_threshold"]};
   String pairing_type = m["pairing_type"];
   NumericVector obs_pcc = m["individual_pccs"];
   NumericVector perm_pcc(perms.ncol());
