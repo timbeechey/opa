@@ -77,18 +77,14 @@ compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 100
   # assign PCCs and c-values to matrix lower triangles
   pcc_mat[lower.tri(pcc_mat)] <- pccs
   cval_mat[lower.tri(cval_mat)] <- cvals
-  # transpose to upper triangle such that rows are from cond and cols are to cond
-  pcc_mat <- t(pcc_mat)
-  cval_mat <- t(cval_mat)
-  # drop the first column and last row which are all NAs
-  pcc_mat <- pcc_mat[-nrow(pcc_mat),]
-  pcc_mat <- pcc_mat[,-1]
-  cval_mat <- cval_mat[-nrow(cval_mat),]
-  cval_mat <- cval_mat[,-1]
-  # assign meaningful row and column names
-  colnames(pcc_mat) <- 2:(ncol(pcc_mat) + 1)
-  rownames(pcc_mat) <- 1:nrow(pcc_mat)
-  colnames(cval_mat) <- 2:(ncol(cval_mat) + 1)
-  rownames(cval_mat) <- 1:nrow(cval_mat)
-  list(pccs = pcc_mat, cvals = cval_mat)
+  # put "-" in empty cells in the upper triangle
+  pcc_mat[upper.tri(pcc_mat, diag = TRUE)] <- "-"
+  cval_mat[upper.tri(cval_mat, diag = TRUE)] <- "-"
+  # convert matrices to data.frames for pretty pinting
+  pcc_df <- as.data.frame(pcc_mat)
+  cval_df <- as.data.frame(cval_mat)
+  # set column names to condition numbers
+  colnames(pcc_df) <- 1:ncol(pcc_df)
+  colnames(cval_df) <- 1:ncol(cval_df)
+  list(pccs = pcc_df, cvals = cval_df)
 }

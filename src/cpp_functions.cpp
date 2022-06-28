@@ -68,12 +68,12 @@ IntegerVector c_sign_with_threshold(NumericVector xs, float diff_threshold) {
 // [[Rcpp::export]]
 NumericVector c_all_diffs(NumericVector xs) {
   // Initialize variables
-  int count {0};
+  int count{0};
   // Calculate the length of the vector as the Nth-1 triangular number.
   // This is needed to pre-size an empty vector.
   // Note that brace initialisation of n_pairs catches narrowing from R's
   // long long int if n_pairs is initialised with type int or size_t.
-  long long n_pairs {((xs.length() - 1) * xs.length()) / 2};
+  long long n_pairs{((xs.length() - 1) * xs.length()) / 2};
   // Create empty vector of the correct size to hold all pairwise differences.
   NumericVector diffs(n_pairs);
   // Fill the diffs vector with the difference between each pair of
@@ -133,8 +133,8 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
  */
 // [[Rcpp::export]]
 List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVector H_ord) {
-  int n_perms_greater_eq {0};
-  double diff_threshold {m["diff_threshold"]};
+  int n_perms_greater_eq{0};
+  double diff_threshold{m["diff_threshold"]};
   String pairing_type = m["pairing_type"];
   NumericVector obs_pcc = m["individual_pccs"];
   NumericVector perm_pcc(perms.ncol());
@@ -168,9 +168,9 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
  */
 // [[Rcpp::export]]
 NumericMatrix c_generate_permutations(NumericVector v) {
-  long long N {v.length()};
+  long long N{v.length()};
   // calculate factorial of N to pre-size matrix
-  long nperms {1};
+  long nperms{1};
   for (long i = 1; i <= N; ++i)
     nperms *= i;
   // preallocate matrix

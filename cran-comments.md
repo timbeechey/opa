@@ -2,12 +2,6 @@
 There were no ERRORs or WARNINGs. 
 
 There was 1 NOTE:
-    
-* Found the following (possibly) invalid URLs:
-  URL: https://doi.org/10.1177/2158244015604192
-    From: README.md
-    Status: 503
-    Message: Service Unavailable
 
 * Found the following (possibly) invalid DOIs:
     DOI: 10.1177/2158244015604192
