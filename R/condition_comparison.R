@@ -58,7 +58,7 @@ compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 100
       # get a pair of elements from the hypothesis
       h_subset <- result$hypothesis[c(i,j)]
       # get a pair of columns from the data
-      dat_subset <- na.omit(dat[,c(i,j)])
+      dat_subset <- stats::na.omit(dat[,c(i,j)])
       if (progress == TRUE) {
         cat(n, "/", n_condition_pairs, "\n", sep = "")
       }
