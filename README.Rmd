@@ -85,7 +85,7 @@ h <- c(1, 2, 4, 3)
 
 The hypothesis can be visualized with the `plot_hypothesis()` function:
 
-```{r plot_hypothesis, fig.width=3.5, fig.height=3.5, fig.align="center"}
+```{r plot_hypothesis, fig.width=4, fig.height=4, fig.align="center"}
 plot_hypothesis(h)
 ```
 
@@ -114,7 +114,7 @@ summary(opamod)
 
 Individual-level model output can be visualized using:
 
-```{r plot_opamod1, fig.width=7, fig.height=3.5, fig.align="center"}
+```{r plot_opamod1, fig.width=8, fig.height=4, fig.align="center"}
 plot(opamod)
 ```
 
@@ -148,7 +148,7 @@ summary(opamod2)
 
 Similarly, plotting the output shows individual PCCs and c-values by group.
 
-```{r plot_opamod2, fig.width=7, fig.height=4, fig.align="center"}
+```{r plot_opamod2, fig.width=8, fig.height=4.5, fig.align="center"}
 plot(opamod2)
 ```
 
