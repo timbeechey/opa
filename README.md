@@ -191,15 +191,10 @@ be plotted relative to specified thresholds:
 
 ``` r
 pcc_plot(opamod, threshold = 90)
-```
-
-<img src="man/figures/README-threshold plots-1.png" style="display: block; margin: auto;" />
-
-``` r
 cval_plot(opamod, threshold = 0.1)
 ```
 
-<img src="man/figures/README-threshold plots-2.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-threshold plots-1.png" width="50%" style="display: block; margin: auto;" /><img src="man/figures/README-threshold plots-2.png" width="50%" style="display: block; margin: auto;" />
 
 ### Pairwise comparison of measurement conditions
 
