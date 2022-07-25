@@ -12,11 +12,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r}
-palette("Set 2")
-palette(adjustcolor(palette(), alpha.f = 0.7))
-```
-
 # opa
 
 <!-- badges: start -->
@@ -86,6 +81,10 @@ h <- c(1, 2, 4, 3)
 The hypothesis can be visualized with the `plot_hypothesis()` function:
 
 ```{r plot_hypothesis, fig.width=4, fig.height=4, fig.align="center"}
+# set plot colors
+palette("Set 2")
+palette(adjustcolor(palette(), alpha.f = 0.7))
+
 plot_hypothesis(h)
 ```
 
