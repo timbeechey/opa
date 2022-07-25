@@ -12,3 +12,5 @@ There was 1 NOTE:
 I have manually checked that this DOI is correct and that 
 https://doi.org/10.1177/2158244015604192 resolves to the valid URL
 https://journals.sagepub.com/doi/10.1177/2158244015604192
+
+THANK YOU!

@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 # set plot colors
 palette("Set 2")
-palette(adjustcolor(palette(), alpha.f = 0.7))
+#palette(adjustcolor(palette(), alpha.f = 0.7))
 ```
 
 # opa
@@ -91,6 +91,8 @@ plot_hypothesis(h)
 Data should be in _wide_ format with one column per measurement condition and one row per individual:
 
 ```{r load_data}
+set.seed(123)
+
 dat <- data.frame(t1 = rnorm(20, mean = 12, sd = 2),
                   t2 = rnorm(20, mean = 15, sd = 2),
                   t3 = rnorm(20, mean = 20, sd = 2),
@@ -147,7 +149,7 @@ summary(opamod2)
 
 Similarly, plotting the output shows individual PCCs and c-values by group.
 
-```{r plot_opamod2, fig.width=9, fig.height=5, fig.align="center"}
+```{r plot_opamod2, fig.width=9, fig.height=5.5, fig.align="center"}
 plot(opamod2)
 ```
 
