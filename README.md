@@ -186,6 +186,21 @@ plot(opamod)
 
 <img src="man/figures/README-plot_opamod1-1.png" style="display: block; margin: auto;" />
 
+To aid in visual interpretation, iIndividual PCCs and c-values can also
+be plotted relative to specified thresholds:
+
+``` r
+pcc_plot(opamod, threshold = 75)
+```
+
+![](man/figures/README-unnamed-chunk-1-1.png)<!-- -->
+
+``` r
+cval_plot(opamod, threshold = 0.1)
+```
+
+![](man/figures/README-unnamed-chunk-1-2.png)<!-- -->
+
 ### Pairwise comparison of measurement conditions
 
 Pairwise comparisons of measurement conditions can be calculated by

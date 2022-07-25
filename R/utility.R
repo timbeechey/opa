@@ -177,7 +177,7 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
              x1 = plot_dat$cval,
              y1 = seq(nrow(plot_dat)),
              yaxt = "n",
-             lty=ifelse(plot_dat$cval >= threshold, 1, 3))
+             lty=ifelse(plot_dat$cval >= threshold, 3, 1))
   }
   if (! is.null(threshold))
     abline(v=threshold, col="red", lty = 2)

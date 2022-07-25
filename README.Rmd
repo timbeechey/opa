@@ -119,6 +119,14 @@ Individual-level model output can be visualized using:
 plot(opamod)
 ```
 
+To aid in visual interpretation, iIndividual PCCs and c-values can also be plotted relative to specified thresholds:
+
+```{r}
+pcc_plot(opamod, threshold = 75)
+cval_plot(opamod, threshold = 0.1)
+```
+
+
 ### Pairwise comparison of measurement conditions
 
 Pairwise comparisons of measurement conditions can be calculated by applying the `compare_conditions()` function to an `opafit` object produced by a call to `opa()`:
