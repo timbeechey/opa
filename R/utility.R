@@ -340,7 +340,7 @@ plot_hypothesis <- function(h, title = TRUE) {
        yaxt = "n", xaxt="n",
        main = ifelse(title == TRUE, "Hypothesis", ""),
        frame.plot = FALSE)
-  graphics::points(seq(length(h)), h, pch=21, cex=2, bg = palette()[1])
+  graphics::points(seq(length(h)), h, pch=21, cex=2, bg = grDevices::palette()[1])
   graphics::axis(1, at=h, labels=h)
   graphics::axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
 }
