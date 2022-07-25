@@ -10,7 +10,9 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-"
 )
+```
 
+```{r}
 palette("Set 2")
 palette(adjustcolor(palette(), alpha.f = 0.7))
 ```
