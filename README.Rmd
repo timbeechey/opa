@@ -12,8 +12,8 @@ knitr::opts_chunk$set(
 )
 
 # set plot colors
-grDevices::palette("Set 2")
-grDevices::palette(adjustcolor(palette(), alpha.f = 0.7))
+palette("Set 2")
+palette(adjustcolor(palette(), alpha.f = 0.7))
 ```
 
 # opa

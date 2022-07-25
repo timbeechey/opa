@@ -27,7 +27,7 @@ cval_exact <- function(pcc_out, progress) {
   total_perms_greater_eq <- 0
   # display a progress bar
   if (progress == TRUE) {
-    progress_bar <- utils::txtProgressBar(min = 0,
+    progress_bar <- txtProgressBar(min = 0,
                                    max = dim(pcc_out$data)[1],
                                    initial = 0,
                                    width = 60,
@@ -40,7 +40,7 @@ cval_exact <- function(pcc_out, progress) {
       hypothesis_no_nas <- pcc_out$hypothesis
     }
 
-    permutations <- c_generate_permutations(stats::na.omit(pcc_out$data[i,]))
+    permutations <- c_generate_permutations(na.omit(pcc_out$data[i,]))
     n_perms <- dim(permutations)[2]
     total_perms <- total_perms + n_perms
 
@@ -55,7 +55,7 @@ cval_exact <- function(pcc_out, progress) {
     # Increment the count of permutations with PCCs >= the observed PCC
     total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
     if (progress == TRUE)
-      utils::setTxtProgressBar(progress_bar, i)
+      setTxtProgressBar(progress_bar, i)
   }
   if (progress == TRUE)
     close(progress_bar)
@@ -78,7 +78,7 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
 
   # show a progress bar
   if (progress == TRUE) {
-    progress_bar <- utils::txtProgressBar(min = 0, max = dim(pcc_out$data)[1],
+    progress_bar <- txtProgressBar(min = 0, max = dim(pcc_out$data)[1],
                                           initial = 0, width = 60, style = 3)
   }
 
@@ -89,7 +89,7 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
       hypothesis_no_nas <- pcc_out$hypothesis
     }
 
-    permutations <- c_random_shuffles(nreps, stats::na.omit(pcc_out$data[i,]))
+    permutations <- c_random_shuffles(nreps, na.omit(pcc_out$data[i,]))
 
     h_ordering <- c_ordering(hypothesis_no_nas, pcc_out$pairing_type, 0)
 
@@ -103,7 +103,7 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
     total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
 
     if (progress == TRUE)
-      utils::setTxtProgressBar(progress_bar, i)
+      setTxtProgressBar(progress_bar, i)
   }
   if (progress == TRUE)
     close(progress_bar)
