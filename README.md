@@ -190,16 +190,16 @@ To aid in visual interpretation, iIndividual PCCs and c-values can also
 be plotted relative to specified thresholds:
 
 ``` r
-pcc_plot(opamod, threshold = 75)
+pcc_plot(opamod, threshold = 90)
 ```
 
-![](man/figures/README-unnamed-chunk-1-1.png)<!-- -->
+![](man/figures/README-threshold%20plots-1.png)<!-- -->
 
 ``` r
 cval_plot(opamod, threshold = 0.1)
 ```
 
-![](man/figures/README-unnamed-chunk-1-2.png)<!-- -->
+![](man/figures/README-threshold%20plots-2.png)<!-- -->
 
 ### Pairwise comparison of measurement conditions
 

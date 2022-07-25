@@ -121,8 +121,8 @@ plot(opamod)
 
 To aid in visual interpretation, iIndividual PCCs and c-values can also be plotted relative to specified thresholds:
 
-```{r}
-pcc_plot(opamod, threshold = 75)
+```{r threshold plots}
+pcc_plot(opamod, threshold = 90)
 cval_plot(opamod, threshold = 0.1)
 ```
 
