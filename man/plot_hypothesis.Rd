@@ -4,7 +4,7 @@
 \alias{plot_hypothesis}
 \title{Plot a hypothesis.}
 \usage{
-plot_hypothesis(h)
+plot_hypothesis(h, title = TRUE)
 }
 \arguments{
 \item{h}{a numeric vector}
