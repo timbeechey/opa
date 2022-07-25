@@ -157,7 +157,7 @@ summary(opamod2)
 
 Similarly, plotting the output shows individual PCCs and c-values by group.
 
-```{r plot_opamod2, fig.width=10, fig.height=6, fig.align="center"}
+```{r plot_opamod2, fig.width=8, fig.height=5, fig.align="center"}
 plot(opamod2)
 ```
 
