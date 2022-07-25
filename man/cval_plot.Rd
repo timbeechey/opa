@@ -8,6 +8,12 @@ cval_plot(m, threshold = NULL, title = TRUE, legend = TRUE)
 }
 \arguments{
 \item{m}{an object of class "opafit"}
+
+\item{threshold}{a boolean indicating whether to plot a threshold abline}
+
+\item{title}{a boolean indicating whether to include a plot title}
+
+\item{legend}{a boolean indicating whether to include a legend when n groups > 1}
 }
 \value{
 No return value, called for side effects.

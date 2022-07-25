@@ -12,7 +12,7 @@
 \item{...}{ignored}
 }
 \value{
-an object of class "ggplot"
+No return value, called for side effects.
 }
 \description{
 Plots individual-level PCCs and chance-values.

@@ -62,6 +62,9 @@ print.opafit <- function(x, ...) {
 
 #' Plot individual PCCs.
 #' @param m an object of class "opafit"
+#' @param threshold a boolean indicating whether to plot a threshold abline
+#' @param title a boolean indicating whether to include a plot title
+#' @param legend a boolean indicating whether to include a legend when n groups > 1
 #' @return No return value, called for side effects.
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
@@ -73,15 +76,15 @@ print.opafit <- function(x, ...) {
 #' @export
 pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   if (is.null(m$groups)) {
-    par(mar = c(4, 4, 2, 1)) # no legend for single group
+    graphics::par(mar = c(4, 4, 2, 1)) # no legend for single group
     plot_dat <- data.frame(group = rep(1, length(m$individual_pccs)),
                            idx=1:length(m$individual_pccs),
                            pcc = m$individual_pccs)
   } else {
     if (legend == TRUE) {
-      par(mar = c(4, 4, 2, 6)) # make space for legend on the right
+      graphics::par(mar = c(4, 4, 2, 6)) # make space for legend on the right
     } else {
-      par(mar = c(4, 4, 2, 1))
+      graphics::par(mar = c(4, 4, 2, 1))
     }
     plot_dat <- data.frame(group = m$groups[m$individual_idx],
                            idx = m$individual_idx,
@@ -93,16 +96,16 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
        ylab = "Individual", xlab = "PCC",
        las = 1, frame.plot = FALSE,
        main = ifelse(title == TRUE, "Individual PCCs", ""))
-  grid(ny = NA)
+  graphics::grid(ny = NA)
   if (is.null(threshold)) {
-    segments(x0 = 0,
+    graphics::segments(x0 = 0,
              y0 = seq(nrow(plot_dat)),
              x1 = plot_dat$pcc,
              y1 = seq(nrow(plot_dat)),
              yaxt = "n",
              lty=1)
   } else {
-    segments(x0 = 0,
+    graphics::segments(x0 = 0,
              y0 = seq(nrow(plot_dat)),
              x1 = plot_dat$pcc,
              y1 = seq(nrow(plot_dat)),
@@ -110,17 +113,17 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
              lty=ifelse(plot_dat$pcc >= threshold, 1, 3))
   }
   if (! is.null(threshold))
-    abline(v=threshold, col="red", lty = 2)
-  points(plot_dat$pcc,
+    graphics::abline(v=threshold, col="red", lty = 2)
+  graphics::points(plot_dat$pcc,
          seq(nrow(plot_dat)),
          pch=21,
          cex=1.2,
          bg=plot_dat$group)
-  axis(2, at=seq(nrow(plot_dat)),
+  graphics::axis(2, at=seq(nrow(plot_dat)),
        labels = plot_dat$idx, las=1)
   if (!is.null(m$groups)) {
     if (legend == TRUE) {
-      legend("right", legend = levels(m$groups), title = "Group",
+      graphics::legend("right", legend = levels(m$groups), title = "Group",
              pch=21, pt.bg = m$groups, cex=1,
              xpd = TRUE, inset = c(-0.3, 0))
     }
@@ -129,6 +132,9 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 
 #' Plot individual chance values
 #' @param m an object of class "opafit"
+#' @param threshold a boolean indicating whether to plot a threshold abline
+#' @param title a boolean indicating whether to include a plot title
+#' @param legend a boolean indicating whether to include a legend when n groups > 1
 #' @return No return value, called for side effects.
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
@@ -140,13 +146,13 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 #' @export
 cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   if (is.null(m$groups)) {
-    par(mar = c(4, 4, 2, 1))
+    graphics::par(mar = c(4, 4, 2, 1))
     plot_dat <- data.frame(group = rep(1, length(m$individual_cvals)), idx=1:length(m$individual_cvals), cval = m$individual_cvals)
   } else {
     if (legend == TRUE) {
-      par(mar = c(4, 4, 2, 6)) # make space for legend on the right
+      graphics::par(mar = c(4, 4, 2, 6)) # make space for legend on the right
     } else {
-      par(mar = c(4, 4, 2, 1))
+      graphics::par(mar = c(4, 4, 2, 1))
     }
     plot_dat <- data.frame(group = m$groups[m$individual_idx], idx = m$individual_idx, cval = m$individual_cvals)
   }
@@ -157,16 +163,16 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
        ylab = "Individual", xlab = "c-value",
        las = 1, frame.plot = FALSE,
        main = ifelse(title == TRUE, "Individual c-values", ""))
-  grid(ny = NA)
+  graphics::grid(ny = NA)
   if (is.null(threshold)) {
-    segments(x0 = 0,
+    graphics::segments(x0 = 0,
              y0 = seq(nrow(plot_dat)),
              x1 = plot_dat$cval,
              y1 = seq(nrow(plot_dat)),
              yaxt = "n",
              lty=1)
   } else {
-    segments(x0 = 0,
+    graphics::segments(x0 = 0,
              y0 = seq(nrow(plot_dat)),
              x1 = plot_dat$cval,
              y1 = seq(nrow(plot_dat)),
@@ -174,16 +180,16 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
              lty=ifelse(plot_dat$cval >= threshold, 1, 3))
   }
   if (! is.null(threshold))
-    abline(v=threshold, col="red", lty = 2)
-  points(plot_dat$cval,
+    graphics::abline(v=threshold, col="red", lty = 2)
+  graphics::points(plot_dat$cval,
          seq(nrow(plot_dat)),
          pch=21, cex=1.2,
          bg=plot_dat$group)
-  axis(2, at=seq(nrow(plot_dat)),
+  graphics::axis(2, at=seq(nrow(plot_dat)),
        labels = plot_dat$idx, las=1)
   if (!is.null(m$groups)) {
     if (legend == TRUE) {
-      legend("right", legend = levels(m$groups), title = "Group",
+      graphics::legend("right", legend = levels(m$groups), title = "Group",
              pch=21, pt.bg = m$groups, cex=1,
              xpd = TRUE, inset = c(-0.3, 0))
     }
@@ -219,20 +225,20 @@ pcc_threshold_plot <- function(m, pcc_threshold = 75) {
 #' @export
 plot.opafit <- function(x, ...) {
   if (is.null(x$groups)) {
-    par(mfrow = c(1, 2))
+    graphics::par(mfrow = c(1, 2))
     pcc_plot(x)
     cval_plot(x)
-    par(mfrow = c(1, 1))
+    graphics::par(mfrow = c(1, 1))
   } else {
-    layout(matrix(c(1, 2, 3, 3), ncol = 2, byrow = TRUE), heights=c(4, 1))
-    par(mai = rep(0.5, 4))
+    graphics::layout(matrix(c(1, 2, 3, 3), ncol = 2, byrow = TRUE), heights=c(4, 1))
+    graphics::par(mai = rep(0.5, 4))
     pcc_plot(x, legend = FALSE)
     cval_plot(x, legend = FALSE)
-    par(mai = c(0, 0, 0, 0))
-    plot.new()
-    legend(x="center", horiz = TRUE, legend = levels(x$groups), title = "Group",
+    graphics::par(mai = c(0, 0, 0, 0))
+    graphics::plot.new()
+    graphics::legend(x="center", horiz = TRUE, legend = levels(x$groups), title = "Group",
            pch=21, pt.bg = x$groups, cex=1)
-    par(mfrow = c(1, 1))
+    graphics::par(mfrow = c(1, 1))
   }
 }
 
@@ -320,22 +326,23 @@ individual_results.opafit <- function(m, digits = 2) {
 
 #' Plot a hypothesis.
 #' @param h a numeric vector
+#' @param title a boolean indicating whether to include a plot title
 #' @return No return value, called for side effects.
 #' @examples
 #' h <- c(1,2,3,3,3)
 #' plot_hypothesis(h)
 #' @export
 plot_hypothesis <- function(h, title = TRUE) {
-  par(mar = c(4, 4, 2, 0.5))
+  graphics::par(mar = c(4, 4, 2, 0.5))
   plot(x = NULL, y = NULL, xlim = c(min(h), max(h)),
        ylim = c(min(h), max(h)),
        xlab = "x", ylab = "h(x)",
        yaxt = "n", xaxt="n",
        main = ifelse(title == TRUE, "Hypothesis", ""),
        frame.plot = FALSE)
-  points(seq(length(h)), h, pch=21, cex=2, bg = palette()[1])
-  axis(1, at=h, labels=h)
-  axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
+  graphics::points(seq(length(h)), h, pch=21, cex=2, bg = palette()[1])
+  graphics::axis(1, at=h, labels=h)
+  graphics::axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
 }
 
 # Clean up C++ when package is unloaded.

@@ -10,6 +10,10 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-"
 )
+
+# set plot colors
+grDevices::palette("Set 2")
+grDevices::palette(adjustcolor(palette(), alpha.f = 0.7))
 ```
 
 # opa
@@ -62,7 +66,7 @@ A row of individual data representing measurements across four conditions, such 
 dat <- c(65.3, 68.8, 67.0, 73.1)
 ```
 
-encodes the ordered pairwise relations `1 1 1 -1 1 1`. The percentage of orderings which are correctly classified by the hypothesis (PCC) is the main quantity of iterest in ordinal pattern analysis. Comparing `h` and `dat`, the PCC is `5/6 = 0.833` or 83.3%. An hypothesis which generates a greater PCC is preferred over an hypothesis which generates a lower PCC for given data.
+encodes the ordered pairwise relations `1 1 1 -1 1 1`. The percentage of orderings which are correctly classified by the hypothesis (PCC) is the main quantity of interest in ordinal pattern analysis. Comparing `h` and `dat`, the PCC is `5/6 = 0.833` or 83.3%. An hypothesis which generates a greater PCC is preferred over an hypothesis which generates a lower PCC for given data.
 
 It is also possible to calculate a chance-value for a PCC which is equal to the chance that a PCC at least as great as the PCC of the observed data could occur as a result of a random ordering of the data. Chance values can be computed using either a permutation test or a randomization test.
 
@@ -81,10 +85,6 @@ h <- c(1, 2, 4, 3)
 The hypothesis can be visualized with the `plot_hypothesis()` function:
 
 ```{r plot_hypothesis, fig.width=4, fig.height=4, fig.align="center"}
-# set plot colors
-palette("Set 2")
-palette(adjustcolor(palette(), alpha.f = 0.7))
-
 plot_hypothesis(h)
 ```
 
