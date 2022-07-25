@@ -121,7 +121,7 @@ plot(opamod)
 
 To aid in visual interpretation, iIndividual PCCs and c-values can also be plotted relative to specified thresholds:
 
-```{r threshold plots}
+```{r threshold plots, fig.width=4.5, fig.height=4.5, fig.align="center"}
 pcc_plot(opamod, threshold = 90)
 cval_plot(opamod, threshold = 0.1)
 ```
@@ -157,7 +157,7 @@ summary(opamod2)
 
 Similarly, plotting the output shows individual PCCs and c-values by group.
 
-```{r plot_opamod2, fig.width=9, fig.height=5.5, fig.align="center"}
+```{r plot_opamod2, fig.width=10, fig.height=6, fig.align="center"}
 plot(opamod2)
 ```
 

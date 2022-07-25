@@ -179,14 +179,14 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
              yaxt = "n",
              lty=ifelse(plot_dat$cval >= threshold, 3, 1))
   }
-  if (! is.null(threshold))
-    abline(v=threshold, col="red", lty = 2)
+  if (!is.null(threshold))
+    abline(v=threshold, col = "red", lty = 2)
   points(plot_dat$cval,
          seq(nrow(plot_dat)),
          pch=21, cex=1.2,
          bg=plot_dat$group)
   axis(2, at=seq(nrow(plot_dat)),
-       labels = plot_dat$idx, las=1)
+       labels = plot_dat$idx, las = 1)
   if (!is.null(m$groups)) {
     if (legend == TRUE) {
       legend("right", legend = levels(m$groups), title = "Group",
@@ -209,6 +209,7 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 #' pcc_threshold_plot(opamod, pcc_threshold = 85)
 #' @export
 pcc_threshold_plot <- function(m, pcc_threshold = 75) {
+  warning("pcc_threshold_plot() is deprecated. Use pcc_plot(x, threshold = n) instead")
   pcc_plot(m, threshold = pcc_threshold)
 }
 
