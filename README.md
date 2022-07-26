@@ -35,6 +35,13 @@ To cite opa in your work you can use the output of:
 citation(package = "opa")
 ```
 
+## Background
+
+`opa` is an implementation of methods described in publications
+including [Thorngate
+(1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [(Grice et
+al., 2015)](https://doi.org/10.1177/2158244015604192).
+
 ## How ordinal pattern analysis works
 
 Ordinal pattern analysis is similar to Kendall’s Tau. Whereas Kendall’s
