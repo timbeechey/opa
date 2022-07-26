@@ -23,8 +23,8 @@ You can install the development version of opa from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("timbeechey/opa")
+# install.packages("remotes")
+remotes::install_github("timbeechey/opa")
 ```
 
 ## Citation
@@ -40,7 +40,11 @@ citation(package = "opa")
 `opa` is an implementation of methods described in publications
 including [Thorngate
 (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [(Grice et
-al., 2015)](https://doi.org/10.1177/2158244015604192).
+al., 2015)](https://doi.org/10.1177/2158244015604192). Thorngat (1987)
+attributes the original idea to:
+
+Parsons, D. (1975). *The directory of tunes and musical themes*. S.
+Brown.
 
 ## How ordinal pattern analysis works
 
