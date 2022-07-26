@@ -215,6 +215,8 @@ pcc_threshold_plot <- function(m, pcc_threshold = 75) {
 
 #' Plots individual-level PCCs and chance-values.
 #' @param x an object of class "opafit" produced by \code{opa()}
+#' @param pcc_threshold a number used as the x-intercept to plot a PCC threshold abline
+#' @param cval_threshold a number used as the x-intercept to plot a c-value threshold abline
 #' @param ... ignored
 #' @return No return value, called for side effects.
 #' @examples
@@ -224,17 +226,17 @@ pcc_threshold_plot <- function(m, pcc_threshold = 75) {
 #' opamod <- opa(dat, 1:3)
 #' plot(opamod)
 #' @export
-plot.opafit <- function(x, ...) {
+plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
   if (is.null(x$groups)) {
     par(mfrow = c(1, 2))
-    pcc_plot(x)
-    cval_plot(x)
+    pcc_plot(x, threshold = pcc_threshold)
+    cval_plot(x, threshold = cval_threshold)
     par(mfrow = c(1, 1))
   } else {
     layout(matrix(c(1, 2, 3, 3), ncol = 2, byrow = TRUE), heights=c(4, 1))
     par(mai = rep(0.5, 4))
-    pcc_plot(x, legend = FALSE)
-    cval_plot(x, legend = FALSE)
+    pcc_plot(x, threshold = pcc_threshold, legend = FALSE)
+    cval_plot(x, threshold = cval_threshold, legend = FALSE)
     par(mai = c(0, 0, 0, 0))
     plot.new()
     legend(x="center", horiz = TRUE, legend = levels(x$groups), title = "Group",

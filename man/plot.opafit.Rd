@@ -4,10 +4,14 @@
 \alias{plot.opafit}
 \title{Plots individual-level PCCs and chance-values.}
 \usage{
-\method{plot}{opafit}(x, ...)
+\method{plot}{opafit}(x, pcc_threshold = NULL, cval_threshold = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class "opafit" produced by \code{opa()}}
+
+\item{pcc_threshold}{a number used as the x-intercept to plot a PCC threshold abline}
+
+\item{cval_threshold}{a number used as the x-intercept to plot a c-value threshold abline}
 
 \item{...}{ignored}
 }
