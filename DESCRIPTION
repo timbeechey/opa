@@ -20,7 +20,8 @@ LinkingTo:
     cpp11,
     Rcpp
 Imports: 
-    Rcpp
+    Rcpp,
+    corrplot
 Suggests: 
     rmarkdown,
     knitr,

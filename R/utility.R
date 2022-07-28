@@ -245,6 +245,31 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
   }
 }
 
+#' Plots PCCs and c-values computed from pairwise comparison of all conditions.
+#' @param x an object of class "opa_condition_comparison" produced by \code{compare_conditions()}
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' comp <- compare_conditions(opamod)
+#' plot(comp)
+#' @export
+plot.opa_condition_comparison <- function(x, ...) {
+  par(mfrow = c(1,2))
+  corrplot(x$pcc_mat, is.corr = FALSE, col.lim = c(0, 100), type = "lower",
+           method = "circle", col = COL1(sequential="Blues"),
+           na.label = "-", tl.col = "black", addCoef.col = 'black', tl.srt = 0,
+           cl.pos = "n", title = "PCCs")
+  corrplot(x$cval_mat, is.corr = FALSE, col.lim = c(0.5, 1), type = "lower",
+           method = "circle", col = COL1(sequential="Blues"),
+           na.label = "-", tl.col = "black", addCoef.col = 'black', tl.srt = 0,
+           cl.pos = "n", title = "c-values")
+  par(mfrow = c(1,1))
+}
+
 #' Group-level PCC and chance values.
 #'
 #' @details
@@ -347,6 +372,9 @@ plot_hypothesis <- function(h, title = TRUE) {
   axis(1, at=h, labels=h)
   axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
 }
+
+# TODO: function to plot pairwise condition comparisons
+# condition_comparison_plot(m) {}
 
 # Clean up C++ when package is unloaded.
 .onUnload <- function(libpath) {

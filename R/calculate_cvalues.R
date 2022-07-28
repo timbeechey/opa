@@ -62,11 +62,11 @@ cval_exact <- function(pcc_out, progress) {
   group_cval <- total_perms_greater_eq / total_perms
 
   return(list(individual_cvals = individual_cvals,
-              group_cval = group_cval,
-              pcc_replicates = individual_perm_pccs,
-              total_perms = total_perms,
-              perm_pccs_geq_obs_pcc = total_perms_greater_eq,
-              observed_group_pcc = pcc_out$group_pcc))
+           group_cval = group_cval,
+           pcc_replicates = individual_perm_pccs,
+           total_perms = total_perms,
+           perm_pccs_geq_obs_pcc = total_perms_greater_eq,
+           observed_group_pcc = pcc_out$group_pcc))
 }
 
 cval_stochastic <- function(pcc_out, nreps, progress) {
@@ -111,9 +111,9 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
   group_cval <- total_perms_greater_eq / (nreps * dim(pcc_out$data)[1])
 
   return(list(individual_cvals = individual_cvals,
-         group_cval = group_cval,
-         pcc_replicates = individual_perm_pccs,
-         total_perms = nreps * dim(pcc_out$data)[1],
-         perm_pccs_geq_obs_pcc = total_perms_greater_eq,
-         observed_group_pcc = pcc_out$group_pcc))
+            group_cval = group_cval,
+            pcc_replicates = individual_perm_pccs,
+            total_perms = nreps * dim(pcc_out$data)[1],
+            perm_pccs_geq_obs_pcc = total_perms_greater_eq,
+            observed_group_pcc = pcc_out$group_pcc))
 }
