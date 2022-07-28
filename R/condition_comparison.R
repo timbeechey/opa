@@ -28,6 +28,9 @@
 #'   \item{cvals}{An upper triangle matrix containing c-values calculated from
 #'   each pairing of data columns, indicated by the matrix row and column
 #'   names.}
+#'   \item{pcc_mat} a lower triangle matrix of PCC, useful for plotting
+#'   \item{cval_mat} a lower triangle matrix of c-values, useful for plotting
+#'
 #'   }
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
@@ -71,20 +74,30 @@ compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 100
       n <- n + 1 # iterate vector index
     }
   }
-  # create upper triangle matrices for PCCs and cvalues for pairs of conditions
+  # create lower triangle matrices for PCCs and cvalues for pairs of conditions
   pcc_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
   cval_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
   # assign PCCs and c-values to matrix lower triangles
   pcc_mat[lower.tri(pcc_mat)] <- pccs
   cval_mat[lower.tri(cval_mat)] <- cvals
   # put "-" in empty cells in the upper triangle
-  pcc_mat[upper.tri(pcc_mat, diag = TRUE)] <- "-"
-  cval_mat[upper.tri(cval_mat, diag = TRUE)] <- "-"
-  # convert matrices to data.frames for pretty pinting
-  pcc_df <- as.data.frame(pcc_mat)
-  cval_df <- as.data.frame(cval_mat)
+  pcc_mat_txt <- pcc_mat
+  cval_mat_txt <- cval_mat
+  pcc_mat_txt[upper.tri(pcc_mat, diag = TRUE)] <- "-"
+  cval_mat_txt[upper.tri(cval_mat, diag = TRUE)] <- "-"
+  # convert matrices to data.frames for pretty printing
+  pcc_df <- as.data.frame(pcc_mat_txt)
+  cval_df <- as.data.frame(cval_mat_txt)
   # set column names to condition numbers
-  colnames(pcc_df) <- 1:ncol(pcc_df)
+  colnames(pcc_df) <- 1:ncol(pcc_df) # dfs are for printing
   colnames(cval_df) <- 1:ncol(cval_df)
-  list(pccs = pcc_df, cvals = cval_df)
+  pcc_mat <- t(pcc_mat)
+  cval_mat <- t(cval_mat)
+  pcc_mat[lower.tri(pcc_mat)] <- pccs
+  cval_mat[lower.tri(cval_mat)] <- cvals
+  colnames(pcc_mat) <- 1:ncol(pcc_mat) # matrices are for plotting
+  rownames(cval_mat) <- 1:nrow(cval_mat)
+  rownames(pcc_mat) <- 1:nrow(pcc_mat)
+  colnames(cval_mat) <- 1:ncol(cval_mat)
+  list(pccs = pcc_df, cvals = cval_df, pcc_mat = pcc_mat, cval_mat = cval_mat)
 }
