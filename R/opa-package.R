@@ -27,13 +27,3 @@ NULL
 #' @importFrom stats na.omit
 ## usethis namespace: end
 NULL
-
-## usethis namespace: start
-#' @importFrom corrplot corrplot
-## usethis namespace: end
-NULL
-
-## usethis namespace: start
-#' @importFrom corrplot COL1
-## usethis namespace: end
-NULL

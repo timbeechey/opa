@@ -78,29 +78,13 @@ compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 100
   pcc_mat[lower.tri(pcc_mat)] <- pccs
   cval_mat[lower.tri(cval_mat)] <- cvals
   # put "-" in empty cells in the upper triangle
-  pcc_mat_txt <- pcc_mat
-  cval_mat_txt <- cval_mat
-  pcc_mat_txt[upper.tri(pcc_mat, diag = TRUE)] <- "-"
-  cval_mat_txt[upper.tri(cval_mat, diag = TRUE)] <- "-"
+  pcc_mat[upper.tri(pcc_mat, diag = TRUE)] <- "-"
+  cval_mat[upper.tri(cval_mat, diag = TRUE)] <- "-"
   # convert matrices to data.frames for pretty printing
-  pcc_df <- as.data.frame(pcc_mat_txt)
-  cval_df <- as.data.frame(cval_mat_txt)
+  pcc_df <- as.data.frame(pcc_mat)
+  cval_df <- as.data.frame(cval_mat)
   # set column names to condition numbers
   colnames(pcc_df) <- 1:ncol(pcc_df)
   colnames(cval_df) <- 1:ncol(cval_df)
-  pcc_mat <- t(pcc_mat)
-  cval_mat <- t(cval_mat)
-  pcc_mat[lower.tri(pcc_mat)] <- pccs
-  cval_mat[lower.tri(cval_mat)] <- cvals
-  colnames(pcc_mat) <- 1:ncol(pcc_mat) # matrices are for plotting
-  rownames(cval_mat) <- 1:nrow(cval_mat)
-  rownames(pcc_mat) <- 1:nrow(pcc_mat)
-  colnames(cval_mat) <- 1:ncol(cval_mat)
-  structure(
-    list(pccs = pcc_df,
-         cvals = cval_df,
-         pcc_mat = pcc_mat,
-         cval_mat = cval_mat),
-    class = "opa_condition_comparison"
-  )
+  list(pccs = pcc_df, cvals = cval_df)
 }
