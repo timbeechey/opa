@@ -337,8 +337,8 @@ individual_results.opafit <- function(m, digits = 2) {
 #' @export
 plot_hypothesis <- function(h, title = TRUE) {
   par(mar = c(4, 4, 2, 0.5))
-  plot(x = NULL, y = NULL, xlim = c(min(h), max(h)),
-       ylim = c(min(h), max(h)),
+  plot(x = NULL, y = NULL, xlim = c(min(h) - 0.5, max(h) + 0.5),
+       ylim = c(min(h) - 0.5, max(h) + 0.5),
        xlab = "x", ylab = "h(x)",
        yaxt = "n", xaxt="n",
        main = ifelse(title == TRUE, "Hypothesis", ""),
