@@ -147,19 +147,24 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   if (is.null(m$groups)) {
     par(mar = c(4, 4, 2, 1))
-    plot_dat <- data.frame(group = rep(1, length(m$individual_cvals)), idx=1:length(m$individual_cvals), cval = m$individual_cvals)
+    plot_dat <- data.frame(group = rep(1, length(m$individual_cvals)),
+                           idx=1:length(m$individual_cvals),
+                           cval = m$individual_cvals)
   } else {
     if (legend == TRUE) {
       par(mar = c(4, 4, 2, 6)) # make space for legend on the right
     } else {
       par(mar = c(4, 4, 2, 1))
     }
-    plot_dat <- data.frame(group = m$groups[m$individual_idx], idx = m$individual_idx, cval = m$individual_cvals)
+    plot_dat <- data.frame(group = m$groups[m$individual_idx],
+                           idx = m$individual_idx,
+                           cval = m$individual_cvals)
   }
 
   plot(x=NULL, y=NULL,
        yaxt = "n",
-       xlim = c(0, min(c(1, max(m$individual_cvals + 0.1)))), ylim = rev(c(1, nrow(plot_dat))),
+       xlim = c(0, min(c(1, max(m$individual_cvals + 0.1)))),
+       ylim = rev(c(1, nrow(plot_dat))),
        ylab = "Individual", xlab = "c-value",
        las = 1, frame.plot = FALSE,
        main = ifelse(title == TRUE, "Individual c-values", ""))
@@ -341,9 +346,8 @@ plot_hypothesis <- function(h, title = TRUE) {
        ylim = c(min(h) - 0.5, max(h) + 0.5),
        xlab = "x", ylab = "h(x)",
        yaxt = "n", xaxt="n",
-       main = ifelse(title == TRUE, "Hypothesis", ""),
-       frame.plot = FALSE)
-  points(seq(length(h)), h, pch=21, cex=2, bg = palette()[1])
+       main = ifelse(title == TRUE, "Hypothesis", ""))
+  points(seq(length(h)), h, pch=21, cex=2, bg = palette()[2])
   axis(1, at=h, labels=h)
   axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
 }

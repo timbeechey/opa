@@ -1,8 +1,8 @@
 Package: opa
 Type: Package
 Title: An Implementation of Ordinal Pattern Analysis
-Version: 0.5.1
-Authors@R: person("Timothy", "Beechey", email = "tim.beechey@protonmail.com",
+Version: 0.5.2
+Authors@R: person("Timothy", "Beechey", email = "tim.beechey@proton.me",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8858-946X"))
 Description: Quantifies hypothesis to data fit for repeated measures 
     and longitudinal data, as described by Thorngate (1987) 
