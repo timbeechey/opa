@@ -201,23 +201,6 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   }
 }
 
-#' Plots individual PCCs relative to a user-supplied PCC threshold value.
-#' @param m an object of class "opafit"
-#' @param pcc_threshold a numeric scalar
-#' @return No return value, called for side effects.
-#' @examples
-#' dat <- data.frame(t1 = c(9, 4, 8, 10),
-#'                   t2 = c(8, 8, 12, 10),
-#'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
-#' pcc_threshold_plot(opamod)
-#' pcc_threshold_plot(opamod, pcc_threshold = 85)
-#' @export
-pcc_threshold_plot <- function(m, pcc_threshold = 75) {
-  warning("pcc_threshold_plot() is deprecated. Use pcc_plot(x, threshold = n) instead")
-  pcc_plot(m, threshold = pcc_threshold)
-}
-
 #' Plots individual-level PCCs and chance-values.
 #' @param x an object of class "opafit" produced by \code{opa()}
 #' @param pcc_threshold a number used as the x-intercept to plot a PCC threshold abline
@@ -342,7 +325,7 @@ individual_results.opafit <- function(m, digits = 2) {
 #' @export
 plot_hypothesis <- function(h, title = TRUE) {
   par(mar = c(4, 4, 2, 0.5))
-  plot(x = NULL, y = NULL, xlim = c(min(h) - 0.5, max(h) + 0.5),
+  plot(x = NULL, y = NULL, xlim = c(0.5, length(h) + 0.5),
        ylim = c(min(h) - 0.5, max(h) + 0.5),
        xlab = "x", ylab = "h(x)",
        yaxt = "n", xaxt="n",
