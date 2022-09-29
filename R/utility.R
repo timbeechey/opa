@@ -1,5 +1,5 @@
 # opa: An Implementation of Ordinal Pattern Analysis.
-# Copyright (C) 2022 Timothy Beechey (tim.beechey@protonmail.com)
+# Copyright (C) 2022 Timothy Beechey (tim.beechey@proton.me)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 conform <- function(xs, h) {
   h[-which(is.na(xs))]
 }
+
 
 #' Prints a summary of results from a fitted ordinal pattern analysis model.
 #' @param object an object of class "opafit".
@@ -55,10 +56,12 @@ summary.opafit <- function(object, ..., digits = 2L) {
   cat("Chance-values were calculated using the", object$cval_method, "method.\n")
 }
 
+
 #' @export
 print.opafit <- function(x, ...) {
   print(x$call)
 }
+
 
 #' Plot individual PCCs.
 #' @param m an object of class "opafit"
@@ -129,6 +132,7 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
     }
   }
 }
+
 
 #' Plot individual chance values
 #' @param m an object of class "opafit"
@@ -201,6 +205,7 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   }
 }
 
+
 #' Plots individual-level PCCs and chance-values.
 #' @param x an object of class "opafit" produced by \code{opa()}
 #' @param pcc_threshold a number used as the x-intercept to plot a PCC threshold abline
@@ -233,6 +238,7 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
   }
 }
 
+
 #' Group-level PCC and chance values.
 #'
 #' @details
@@ -254,8 +260,10 @@ group_results <- function(m, digits) {
   UseMethod("group_results")
 }
 
+
 #' @export
 group_results.default <- function(m, digits) .NotYetImplemented()
+
 
 #' @export
 group_results.opafit <- function(m, digits = 2) {
@@ -273,6 +281,7 @@ group_results.opafit <- function(m, digits = 2) {
     return(out)
   }
 }
+
 
 #' Individual-level PCC and chance values.
 #'
@@ -297,8 +306,10 @@ individual_results <- function(m, digits) {
   UseMethod("individual_results")
 }
 
+
 #' @export
 individual_results.default <- function(m, digits) .NotYetImplemented()
+
 
 #' @export
 individual_results.opafit <- function(m, digits = 2) {
@@ -314,6 +325,7 @@ individual_results.opafit <- function(m, digits = 2) {
     return(out)
   }
 }
+
 
 #' Plot a hypothesis.
 #' @param h a numeric vector
@@ -335,8 +347,6 @@ plot_hypothesis <- function(h, title = TRUE) {
   axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
 }
 
-# TODO: function to plot pairwise condition comparisons
-# condition_comparison_plot(m) {}
 
 # Clean up C++ when package is unloaded.
 .onUnload <- function(libpath) {

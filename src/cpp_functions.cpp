@@ -1,6 +1,6 @@
 /*
  * opa: An Implementation of Ordinal Pattern Analysis.
- * Copyright (C) 2022 Timothy Beechey (tim.beechey@protonmail.com)
+ * Copyright (C) 2022 Timothy Beechey (tim.beechey@proton.me)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using namespace cpp11;
 
 [[cpp11::register]]
 void fun() {}
+
 
 /*
  * Returns the sign of every element of a vector conditional on a
@@ -55,6 +56,7 @@ IntegerVector c_sign_with_threshold(NumericVector xs, float diff_threshold) {
   }
   return sign_vector;
 }
+
 
 /*
  * Calculate the difference between every pair of elements in a vector.
@@ -87,6 +89,7 @@ NumericVector c_all_diffs(NumericVector xs) {
   return diffs;
 }
 
+
 /*
  * Generate a matrix of randomly shuffled vectors.
  * param n: an int indicating the number of random reorderings.
@@ -101,6 +104,7 @@ NumericMatrix c_random_shuffles(int n, NumericVector v) {
   }
   return rand_orders;
 }
+
 
 /* Generate pairwise ordinal relations from a vector, consisting of integers
  * from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
@@ -119,6 +123,7 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
   else
     return c_sign_with_threshold(diff(xs), diff_threshold);
 }
+
 
 /*
  * Calculate a PCC for each reordered vector and compare it to the corresponding
@@ -154,6 +159,7 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
   List out = List::create(Named("n_perms_greater_eq") = n_perms_greater_eq, _["perm_pcc"] = perm_pcc);
   return out;
 }
+
 
 /*
  * Generate every permutation of a numeric vector using the next_permutation()

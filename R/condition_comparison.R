@@ -1,5 +1,5 @@
 # opa: An Implementation of Ordinal Pattern Analysis.
-# Copyright (C) 2022 Timothy Beechey (tim.beechey@protonmail.com)
+# Copyright (C) 2022 Timothy Beechey (tim.beechey@proton.me)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,8 +41,10 @@ compare_conditions <- function(result, cval_method = "exact", nreps = 1000L, pro
   UseMethod("compare_conditions")
 }
 
+
 #' @export
 compare_conditions.default <- function(result, cval_method = "exact", nreps = 1000L, progress = FALSE) .NotYetImplemented()
+
 
 #' @export
 compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 1000L, progress = FALSE) {
