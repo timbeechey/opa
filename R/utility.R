@@ -330,7 +330,7 @@ plot_hypothesis <- function(h, title = TRUE) {
        xlab = "x", ylab = "h(x)",
        yaxt = "n", xaxt="n",
        main = ifelse(title == TRUE, "Hypothesis", ""))
-  points(seq(length(h)), h, pch=21, cex=2, bg = palette()[2])
+  points(seq(length(h)), h, pch=21, cex=2, bg = palette()[1])
   axis(1, at=h, labels=h)
   axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
 }
