@@ -34,7 +34,7 @@ row_pcc <- function(xs, h, pairing_type, diff_threshold) {
 
   n_pairs <- length(match)
   correct_pairs <- sum(match)
-  pcc <- mean(match) * 100
+  pcc <- (correct_pairs/n_pairs) * 100
 
   list(pcc = pcc,
        n_pairs = n_pairs,

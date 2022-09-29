@@ -79,7 +79,7 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
   # show a progress bar
   if (progress == TRUE) {
     progress_bar <- txtProgressBar(min = 0, max = dim(pcc_out$data)[1],
-                                          initial = 0, width = 60, style = 3)
+                                   initial = 0, width = 60, style = 3)
   }
 
   for (i in 1:dim(pcc_out$data)[1]) {

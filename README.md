@@ -39,8 +39,8 @@ citation(package = "opa")
 
 `opa` is an implementation of methods described in publications
 including [Thorngate
-(1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [(Grice et
-al., 2015)](https://doi.org/10.1177/2158244015604192). Thorngate (1987)
+(1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [Grice et
+al. (2015)](https://doi.org/10.1177/2158244015604192). Thorngate (1987)
 attributes the original idea to:
 
 Parsons, D. (1975). *The directory of tunes and musical themes*. S.
@@ -51,23 +51,24 @@ Brown.
 Ordinal pattern analysis is similar to Kendall’s Tau. Whereas Kendall’s
 tau is a measure of similarity between two data sets in terms of rank
 ordering, ordinal pattern analysis is intended to quantify the match
-between an hypothesis and patterns of individual-level data across
-conditions or mesaurement instances.
+between a hypothesis and patterns of individual-level data across
+conditions or measurement instances.
 
 Ordinal pattern analysis works by comparing the relative ordering of
-pairs of observations and computing whether these pairwise relations are
-matched by an hypothesis. Each pairwise ordered relation is classified
-as an increases, a decrease, or as no change. These classifications are
-encoded as 1, -1 and 0, respectively. An hypothesis of a monotonic
-increase in the response variable across four experimental conditions
-can be specified as:
+pairs of observations and computing whether those pairwise relations are
+matched by a hypothesis. Each pairwise ordered relation is classified as
+an increases, a decrease, or as no change. These classifications are
+encoded as 1, -1 and 0, respectively. For example, a hypothesis of a
+monotonic increase in a response variable across four experimental
+conditions can be specified as:
 
 ``` r
 h <- c(1, 2, 3, 4)
 ```
 
-The hypothesis `h` encodes six pairwise relations, all increases:
-`1 1 1 1 1 1`.
+Note that the absolute values are not important, only their relative
+ordering. The hypothesis `h` encodes six pairwise relations, all
+increases: `1 1 1 1 1 1`.
 
 A row of individual data representing measurements across four
 conditions, such as:
@@ -76,17 +77,17 @@ conditions, such as:
 dat <- c(65.3, 68.8, 67.0, 73.1)
 ```
 
-encodes the ordered pairwise relations `1 1 1 -1 1 1`. The percentage of
-orderings which are correctly classified by the hypothesis (PCC) is the
-main quantity of interest in ordinal pattern analysis. Comparing `h` and
-`dat`, the PCC is `5/6 = 0.833` or 83.3%. An hypothesis which generates
-a greater PCC is preferred over an hypothesis which generates a lower
-PCC for given data.
+encodes six ordered pairwise relations `1 1 1 -1 1 1`. The percentage of
+orderings which are correctly classified by the hypothesis (*PCC*) is
+the main quantity of interest in ordinal pattern analysis. Comparing `h`
+and `dat`, the PCC is `5/6 = 0.833` or 83.3%. A hypothesis which
+generates a greater PCC is preferred over a hypothesis which generates a
+lower PCC for given data.
 
-It is also possible to calculate a chance-value for a PCC which is equal
-to the chance that a PCC at least as great as the PCC of the observed
-data could occur as a result of a random ordering of the data. Chance
-values can be computed using either a permutation test or a
+It is also possible to calculate a *chance-value* for a PCC which is
+equal to the chance that a PCC at least as great as the PCC of the
+observed data could occur as a result of a random re-ordering of the
+data. Chance values can be computed using either a permutation test or a
 randomization test.
 
 ## Using `opa`
@@ -95,14 +96,14 @@ randomization test.
 library(opa)
 ```
 
-A hypothesized relative ordering of the response variable across
+A hypothesized relative ordering of a response variable across
 conditions is specified with a numeric vector:
 
 ``` r
 h <- c(1, 2, 4, 3)
 ```
 
-The hypothesis can be visualized with the `plot_hypothesis()` function:
+The hypothesis can be plotted with the `plot_hypothesis()` function:
 
 ``` r
 plot_hypothesis(h)
@@ -152,6 +153,14 @@ matches each individual pattern of results in `dat` can be fitted using:
 opamod <- opa(dat, h, cval_method = "exact")
 ```
 
+Specifying `cval_method = "exact"` computes chance values using a
+permutation test which considers every possible ordering of the data to
+determine the exact chance of a PCC at least as high as the PCC of the
+observed data. Specifying instead `cval_method = "stochastic"` computes
+chance values using a randomisation. The number of random orderings to
+consider can be specified with the `nreps` argument which defaults to
+1000.
+
 A summary of the model output can be viewed using:
 
 ``` r
@@ -189,7 +198,7 @@ summary(opamod)
 #> Chance-values were calculated using the exact method.
 ```
 
-Individual-level model output can be visualized using:
+Individual-level model output can be plotted using:
 
 ``` r
 plot(opamod)
@@ -197,8 +206,8 @@ plot(opamod)
 
 <img src="man/figures/README-plot_opamod1-1.png" style="display: block; margin: auto;" />
 
-To aid in visual interpretation, iIndividual PCCs and c-values can also
-be plotted relative to specified thresholds:
+To aid in visual interpretation, individual PCCs and c-values can also
+be plotted relative to user-specified thresholds:
 
 ``` r
 pcc_plot(opamod, threshold = 90)

@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 
 # set plot colors
-#palette("Set 2")
+palette("Tableau 10")
 palette(adjustcolor(palette(), alpha.f = 0.5))
 ```
 
@@ -50,21 +50,21 @@ citation(package = "opa")
 
 ## Background
 
-`opa` is an implementation of methods described in publications including [Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [(Grice et al., 2015)](https://doi.org/10.1177/2158244015604192). Thorngate (1987) attributes the original idea to:
+`opa` is an implementation of methods described in publications including [Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [Grice et al. (2015)](https://doi.org/10.1177/2158244015604192). Thorngate (1987) attributes the original idea to:
 
 Parsons, D. (1975). _The directory of tunes and musical themes_. S. Brown.
 
 ## How ordinal pattern analysis works
 
-Ordinal pattern analysis is similar to Kendall's Tau. Whereas Kendall's tau is a measure of similarity between two data sets in terms of rank ordering, ordinal pattern analysis is intended to quantify the match between an hypothesis and patterns of individual-level data across conditions or mesaurement instances.
+Ordinal pattern analysis is similar to Kendall's Tau. Whereas Kendall's tau is a measure of similarity between two data sets in terms of rank ordering, ordinal pattern analysis is intended to quantify the match between a hypothesis and patterns of individual-level data across conditions or measurement instances.
 
-Ordinal pattern analysis works by comparing the relative ordering of pairs of observations and computing whether these pairwise relations are matched by an hypothesis. Each pairwise ordered relation is classified as an increases, a decrease, or as no change. These classifications are encoded as 1, -1 and 0, respectively. An hypothesis of a monotonic increase in the response variable across four experimental conditions can be specified as:
+Ordinal pattern analysis works by comparing the relative ordering of pairs of observations and computing whether those pairwise relations are matched by a hypothesis. Each pairwise ordered relation is classified as an increases, a decrease, or as no change. These classifications are encoded as 1, -1 and 0, respectively. For example, a hypothesis of a monotonic increase in a response variable across four experimental conditions can be specified as:
 
 ```{r hypothesis1}
 h <- c(1, 2, 3, 4)
 ```
 
-The hypothesis `h` encodes six pairwise relations, all increases: `1 1 1 1 1 1`.
+Note that the absolute values are not important, only their relative ordering. The hypothesis `h` encodes six pairwise relations, all increases: `1 1 1 1 1 1`.
 
 A row of individual data representing measurements across four conditions, such as:
 
@@ -72,9 +72,9 @@ A row of individual data representing measurements across four conditions, such 
 dat <- c(65.3, 68.8, 67.0, 73.1)
 ```
 
-encodes the ordered pairwise relations `1 1 1 -1 1 1`. The percentage of orderings which are correctly classified by the hypothesis (PCC) is the main quantity of interest in ordinal pattern analysis. Comparing `h` and `dat`, the PCC is `5/6 = 0.833` or 83.3%. An hypothesis which generates a greater PCC is preferred over an hypothesis which generates a lower PCC for given data.
+encodes six ordered pairwise relations `1 1 1 -1 1 1`. The percentage of orderings which are correctly classified by the hypothesis (_PCC_) is the main quantity of interest in ordinal pattern analysis. Comparing `h` and `dat`, the PCC is `5/6 = 0.833` or 83.3%. A hypothesis which generates a greater PCC is preferred over a hypothesis which generates a lower PCC for given data.
 
-It is also possible to calculate a chance-value for a PCC which is equal to the chance that a PCC at least as great as the PCC of the observed data could occur as a result of a random ordering of the data. Chance values can be computed using either a permutation test or a randomization test.
+It is also possible to calculate a _chance-value_ for a PCC which is equal to the chance that a PCC at least as great as the PCC of the observed data could occur as a result of a random re-ordering of the data. Chance values can be computed using either a permutation test or a randomization test.
 
 ## Using `opa`
 
@@ -82,13 +82,13 @@ It is also possible to calculate a chance-value for a PCC which is equal to the 
 library(opa)
 ```
 
-A hypothesized relative ordering of the response variable across conditions is specified with a numeric vector:
+A hypothesized relative ordering of a response variable across conditions is specified with a numeric vector:
 
 ```{r hypothesis2}
 h <- c(1, 2, 4, 3)
 ```
 
-The hypothesis can be visualized with the `plot_hypothesis()` function:
+The hypothesis can be plotted with the `plot_hypothesis()` function:
 
 ```{r plot_hypothesis, fig.width=4, fig.height=4, fig.align="center"}
 plot_hypothesis(h)
@@ -113,25 +113,26 @@ An ordinal pattern analysis model to consider how the hypothesis `h` matches eac
 opamod <- opa(dat, h, cval_method = "exact")
 ```
 
+Specifying `cval_method = "exact"` computes chance values using a permutation test which considers every possible ordering of the data to determine the exact chance of a PCC at least as high as the PCC of the observed data. Specifying instead `cval_method = "stochastic"` computes chance values using a randomisation. The number of random orderings to consider can be specified with the `nreps` argument which defaults to 1000.
+
 A summary of the model output can be viewed using:
 
 ```{r summary1}
 summary(opamod)
 ```
 
-Individual-level model output can be visualized using:
+Individual-level model output can be plotted using:
 
 ```{r plot_opamod1, fig.width=9, fig.height=4.5, fig.align="center"}
 plot(opamod)
 ```
 
-To aid in visual interpretation, iIndividual PCCs and c-values can also be plotted relative to specified thresholds:
+To aid in visual interpretation, individual PCCs and c-values can also be plotted relative to user-specified thresholds:
 
 ```{r threshold_plots, fig.width=5, fig.height=5, fig.align="center", fig.show="hold", out.width="50%"}
 pcc_plot(opamod, threshold = 90)
 cval_plot(opamod, threshold = 0.1)
 ```
-
 
 ### Pairwise comparison of measurement conditions
 
