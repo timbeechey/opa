@@ -168,8 +168,8 @@ summary(opamod)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
 #> 
 #> Between subjects results:
-#>          PCC cval
-#> pooled 93.33    0
+#>          PCC         cval
+#> pooled 93.33 9.170175e-24
 #> 
 #> Within subjects results:
 #>       PCC cval
@@ -255,38 +255,38 @@ opamod2 <- opa(dat[, 1:4], h, group = dat$group, cval_method = "exact")
 The summary output displays results organised by group.
 
 ``` r
-summary(opamod2, digits = 5)
+summary(opamod2, digits = 3)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 #> 
 #> Between subjects results:
-#>         PCC  cval
-#> A 100.00000 0e+00
-#> B  86.66667 3e-05
-#> C  93.33333 0e+00
-#> D  93.33333 0e+00
+#>       PCC         cval
+#> A 100.000 1.255867e-07
+#> B  86.667 3.215021e-05
+#> C  93.333 2.009388e-06
+#> D  93.333 1.130281e-06
 #> 
 #> Within subjects results:
-#>   Individual       PCC    cval
-#> A          1 100.00000 0.04167
-#> A          5 100.00000 0.04167
-#> A          9 100.00000 0.04167
-#> A         13 100.00000 0.04167
-#> A         17 100.00000 0.04167
-#> B          2 100.00000 0.04167
-#> B          6  83.33333 0.16667
-#> B         10  83.33333 0.16667
-#> B         14  83.33333 0.16667
-#> B         18  83.33333 0.16667
-#> C          3  83.33333 0.16667
-#> C          7 100.00000 0.04167
-#> C         11 100.00000 0.04167
-#> C         15  83.33333 0.16667
-#> C         19 100.00000 0.04167
-#> D          4 100.00000 0.04167
-#> D          8 100.00000 0.04167
-#> D         12  66.66667 0.37500
-#> D         16 100.00000 0.04167
-#> D         20 100.00000 0.04167
+#>   Individual     PCC  cval
+#> A          1 100.000 0.042
+#> A          5 100.000 0.042
+#> A          9 100.000 0.042
+#> A         13 100.000 0.042
+#> A         17 100.000 0.042
+#> B          2 100.000 0.042
+#> B          6  83.333 0.167
+#> B         10  83.333 0.167
+#> B         14  83.333 0.167
+#> B         18  83.333 0.167
+#> C          3  83.333 0.167
+#> C          7 100.000 0.042
+#> C         11 100.000 0.042
+#> C         15  83.333 0.167
+#> C         19 100.000 0.042
+#> D          4 100.000 0.042
+#> D          8 100.000 0.042
+#> D         12  66.667 0.375
+#> D         16 100.000 0.042
+#> D         20 100.000 0.042
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
 #> Chance-values were calculated using the exact method.

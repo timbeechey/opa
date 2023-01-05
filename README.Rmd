@@ -159,7 +159,7 @@ opamod2 <- opa(dat[, 1:4], h, group = dat$group, cval_method = "exact")
 The summary output displays results organised by group.
 
 ```{r summary_opamod2}
-summary(opamod2, digits = 5)
+summary(opamod2, digits = 3)
 ```
 
 Similarly, plotting the output shows individual PCCs and c-values by group.

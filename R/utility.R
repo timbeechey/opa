@@ -268,14 +268,14 @@ group_results.default <- function(m, digits) .NotYetImplemented()
 #' @export
 group_results.opafit <- function(m, digits = 2) {
   if (is.null(m$groups)) {
-    out <- matrix(c(round(m$group_pcc, digits), round(m$group_cval, digits)),
+    out <- matrix(c(round(m$group_pcc, digits), m$group_cval),
                   nrow = 1)
     colnames(out) <- c("PCC", "cval")
     rownames(out) <- "pooled"
     return(out)
   }
   else {
-    out <- cbind(round(m$group_pcc, digits), round(m$group_cval, digits))
+    out <- cbind(round(m$group_pcc, digits), m$group_cval)
     colnames(out) <- c("PCC", "cval")
     rownames(out) <- levels(m$groups)
     return(out)
