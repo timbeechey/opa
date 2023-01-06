@@ -124,7 +124,6 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
     return c_sign_with_threshold(diff(xs), diff_threshold);
 }
 
-
 /*
  * Calculate a PCC for each reordered vector and compare it to the corresponding
  * observed PCC from m. Increments n_perms_greater_eq for each reordering with a

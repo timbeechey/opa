@@ -11,8 +11,7 @@ opa(
   pairing_type = "pairwise",
   diff_threshold = 0,
   cval_method = "stochastic",
-  nreps = 1000L,
-  progress = FALSE
+  nreps = 1000L
 )
 }
 \arguments{
@@ -29,8 +28,6 @@ opa(
 \item{cval_method}{a string, either "exact" or "stochastic}
 
 \item{nreps}{an integer, ignored if \code{cval_method = "exact"}}
-
-\item{progress}{a boolean indicating whether to display a progress bar}
 }
 \value{
 \code{opa} returns an object of class "opafit".

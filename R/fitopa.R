@@ -71,7 +71,6 @@
 #' @param diff_threshold a positive integer or floating point number
 #' @param cval_method a string, either "exact" or "stochastic
 #' @param nreps an integer, ignored if \code{cval_method = "exact"}
-#' @param progress a boolean indicating whether to display a progress bar
 #' @return \code{opa} returns an object of class "opafit".
 #'
 #' An object of class "opafit" is a list containing the folllowing components:
@@ -115,8 +114,7 @@
 #' opa(dat[,2:4], 1:3, group = dat$group)
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
-                diff_threshold = 0, cval_method = "stochastic", nreps = 1000L,
-                progress = FALSE) {
+                diff_threshold = 0, cval_method = "stochastic", nreps = 1000L) {
   # verify the arguments
   stopifnot("Hypothesis and data rows are not the same length"= dim(dat)[2] == length(hypothesis))
   stopifnot("pairing_type must be 'pairwise' or 'adjacent'"= pairing_type %in% c("pairwise", "adjacent"))
@@ -134,9 +132,9 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
 
     pccs <- pcc(mat, hypothesis, pairing_type, diff_threshold)
     if (cval_method == "exact") {
-      cvalues <- cval_exact(pccs, progress)
+      cvalues <- cval_exact(pccs, nreps)
     } else if (cval_method == "stochastic") {
-      cvalues <- cval_stochastic(pccs, nreps, progress)
+      cvalues <- cval_stochastic(pccs, nreps)
     }
 
     return(
@@ -182,12 +180,10 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       subgroup_mat <- as.matrix(subgroup_dat)
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
 
-      if (progress == TRUE)
-        cat("Fitting group", i, "of", nlevels(group), "\n")
       if (cval_method == "exact") {
-        subgroup_cvalues <- cval_exact(subgroup_pccs, progress)
+        subgroup_cvalues <- cval_exact(subgroup_pccs, nreps)
       } else if (cval_method == "stochastic") {
-        subgroup_cvalues <- cval_stochastic(subgroup_pccs, nreps, progress)
+        subgroup_cvalues <- cval_stochastic(subgroup_pccs, nreps)
       }
       group_pccs[i] <- subgroup_pccs$group_pcc
       correct_pairs <- correct_pairs + subgroup_pccs$correct_pairs

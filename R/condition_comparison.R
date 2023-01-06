@@ -19,7 +19,7 @@
 #' @param result an object of class "opafit" produced by a call to opa().
 #' @param cval_method a string, either "exact" or "stochastic
 #' @param nreps an integer, ignored if \code{cval_method = "exact"}
-#' @param progress a boolean indicating whether to display a progress bar
+#' @param digits an integer indicating how many decimal places to round values.
 #' @return \code{compare_conditions} returns a list with the following elements
 #'
 #' \describe{
@@ -37,17 +37,17 @@
 #' opamod <- opa(dat, 1:4)
 #' compare_conditions(opamod)
 #' @export
-compare_conditions <- function(result, cval_method = "exact", nreps = 1000L, progress = FALSE) {
+compare_conditions <- function(result, cval_method = "stochastic", nreps = 1000L, digits=3L) {
   UseMethod("compare_conditions")
 }
 
 
 #' @export
-compare_conditions.default <- function(result, cval_method = "exact", nreps = 1000L, progress = FALSE) .NotYetImplemented()
+compare_conditions.default <- function(result, cval_method = "stochastic", nreps = 1000L, digits = 3L) .NotYetImplemented()
 
 
 #' @export
-compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 1000L, progress = FALSE) {
+compare_conditions.opafit <- function(result, cval_method = "stochastic", nreps = 1000L, digits = 3L) {
   dat <- result$data
   n_condition_pairs <- ((ncol(dat) - 1) * ncol(dat)) / 2
   pccs <- numeric(n_condition_pairs)
@@ -61,13 +61,9 @@ compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 100
       h_subset <- result$hypothesis[c(i,j)]
       # get a pair of columns from the data
       dat_subset <- na.omit(dat[,c(i,j)])
-      if (progress == TRUE) {
-        cat(n, "/", n_condition_pairs, "\n", sep = "")
-      }
       pairwise_result <- opa(dat_subset, h_subset,
                              diff_threshold = result$diff_threshold,
-                             cval_method = cval_method, nreps = nreps,
-                             progress = progress)
+                             cval_method = cval_method, nreps = nreps)
       pccs[n] <- pairwise_result$group_pcc
       cvals[n] <- pairwise_result$group_cval
       n <- n + 1 # iterate vector index
@@ -77,8 +73,8 @@ compare_conditions.opafit <- function(result, cval_method = "exact", nreps = 100
   pcc_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
   cval_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
   # assign PCCs and c-values to matrix lower triangles
-  pcc_mat[lower.tri(pcc_mat)] <- pccs
-  cval_mat[lower.tri(cval_mat)] <- cvals
+  pcc_mat[lower.tri(pcc_mat)] <- round(pccs, digits)
+  cval_mat[lower.tri(cval_mat)] <- round(cvals, digits)
   # put "-" in empty cells in the upper triangle
   pcc_mat[upper.tri(pcc_mat, diag = TRUE)] <- "-"
   cval_mat[upper.tri(cval_mat, diag = TRUE)] <- "-"

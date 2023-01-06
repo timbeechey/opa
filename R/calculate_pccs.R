@@ -41,9 +41,7 @@ row_pcc <- function(xs, h, pairing_type, diff_threshold) {
        correct_pairs = correct_pairs)
 }
 
-
 pcc <- function(dat, h, pairing_type, diff_threshold) {
-
   individual_pccs <- numeric(dim(dat)[1])
   total_pairs <- 0
   correct_pairs <- 0

@@ -150,7 +150,7 @@ An ordinal pattern analysis model to consider how the hypothesis `h`
 matches each individual pattern of results in `dat` can be fitted using:
 
 ``` r
-opamod <- opa(dat, h, cval_method = "exact")
+opamod <- opa(dat, h)
 ```
 
 Specifying `cval_method = "exact"` computes chance values using a
@@ -168,34 +168,34 @@ summary(opamod)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
 #> 
 #> Between subjects results:
-#>          PCC       cval
-#> pooled 93.33 0.09583333
+#>          PCC cval
+#> pooled 93.33    0
 #> 
 #> Within subjects results:
 #>       PCC cval
 #> 1  100.00 0.04
-#> 2  100.00 0.04
+#> 2  100.00 0.03
 #> 3   83.33 0.17
-#> 4  100.00 0.04
-#> 5  100.00 0.04
+#> 4  100.00 0.05
+#> 5  100.00 0.05
 #> 6   83.33 0.17
 #> 7  100.00 0.04
 #> 8  100.00 0.04
 #> 9  100.00 0.04
-#> 10  83.33 0.17
-#> 11 100.00 0.04
-#> 12  66.67 0.38
+#> 10  83.33 0.19
+#> 11 100.00 0.06
+#> 12  66.67 0.37
 #> 13 100.00 0.04
-#> 14  83.33 0.17
+#> 14  83.33 0.18
 #> 15  83.33 0.17
 #> 16 100.00 0.04
 #> 17 100.00 0.04
 #> 18  83.33 0.17
 #> 19 100.00 0.04
-#> 20 100.00 0.04
+#> 20 100.00 0.05
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-#> Chance-values were calculated using the exact method.
+#> Chance-values were calculated using the stochastic method.
 ```
 
 Individual-level model output can be plotted using:
@@ -232,11 +232,11 @@ condition_comparisons$pccs
 #> 3 100 100  - -
 #> 4  95  80 95 -
 condition_comparisons$cvals
-#>       1   2     3 4
-#> 1     -   -     - -
-#> 2  0.55   -     - -
-#> 3   0.5 0.5     - -
-#> 4 0.525 0.6 0.525 -
+#>   1     2 3 4
+#> 1 -     - - -
+#> 2 0     - - -
+#> 3 0     0 - -
+#> 4 0 0.002 0 -
 ```
 
 ### Multiple groups
@@ -249,7 +249,7 @@ within the data, in addition to individual results.
 dat$group <- rep(c("A", "B", "C", "D"), 5)
 dat$group <- factor(dat$group, levels = c("A", "B", "C", "D"))
 
-opamod2 <- opa(dat[, 1:4], h, group = dat$group, cval_method = "exact")
+opamod2 <- opa(dat[, 1:4], h, group = dat$group)
 ```
 
 The summary output displays results organised by group.
@@ -259,37 +259,37 @@ summary(opamod2, digits = 3)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 #> 
 #> Between subjects results:
-#>       PCC       cval
-#> A 100.000 0.04166667
-#> B  86.667 0.14166667
-#> C  93.333 0.09166667
-#> D  93.333 0.10833333
+#>       PCC  cval
+#> A 100.000 0.000
+#> B  86.667 0.001
+#> C  93.333 0.000
+#> D  93.333 0.000
 #> 
 #> Within subjects results:
 #>   Individual     PCC  cval
 #> A          1 100.000 0.042
-#> A          5 100.000 0.042
-#> A          9 100.000 0.042
-#> A         13 100.000 0.042
-#> A         17 100.000 0.042
-#> B          2 100.000 0.042
-#> B          6  83.333 0.167
-#> B         10  83.333 0.167
-#> B         14  83.333 0.167
-#> B         18  83.333 0.167
-#> C          3  83.333 0.167
-#> C          7 100.000 0.042
-#> C         11 100.000 0.042
-#> C         15  83.333 0.167
-#> C         19 100.000 0.042
-#> D          4 100.000 0.042
-#> D          8 100.000 0.042
-#> D         12  66.667 0.375
-#> D         16 100.000 0.042
-#> D         20 100.000 0.042
+#> A          5 100.000 0.044
+#> A          9 100.000 0.041
+#> A         13 100.000 0.041
+#> A         17 100.000 0.044
+#> B          2 100.000 0.049
+#> B          6  83.333 0.177
+#> B         10  83.333 0.160
+#> B         14  83.333 0.166
+#> B         18  83.333 0.154
+#> C          3  83.333 0.184
+#> C          7 100.000 0.047
+#> C         11 100.000 0.035
+#> C         15  83.333 0.149
+#> C         19 100.000 0.037
+#> D          4 100.000 0.040
+#> D          8 100.000 0.043
+#> D         12  66.667 0.374
+#> D         16 100.000 0.034
+#> D         20 100.000 0.039
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-#> Chance-values were calculated using the exact method.
+#> Chance-values were calculated using the stochastic method.
 ```
 
 Similarly, plotting the output shows individual PCCs and c-values by

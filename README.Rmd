@@ -110,7 +110,7 @@ round(dat, 2)
 An ordinal pattern analysis model to consider how the hypothesis `h` matches each individual pattern of results in `dat` can be fitted using:
 
 ```{r opamod1}
-opamod <- opa(dat, h, cval_method = "exact")
+opamod <- opa(dat, h)
 ```
 
 Specifying `cval_method = "exact"` computes chance values using a permutation test which considers every possible ordering of the data to determine the exact chance of a PCC at least as high as the PCC of the observed data. Specifying instead `cval_method = "stochastic"` computes chance values based on PCCs computed from a set of random orderings of the data. The number of random orderings to consider can be specified with the `nreps` argument which defaults to `1000L`.
@@ -153,7 +153,7 @@ If the data consist of multiple groups a categorical grouping variable can be pa
 dat$group <- rep(c("A", "B", "C", "D"), 5)
 dat$group <- factor(dat$group, levels = c("A", "B", "C", "D"))
 
-opamod2 <- opa(dat[, 1:4], h, group = dat$group, cval_method = "exact")
+opamod2 <- opa(dat[, 1:4], h, group = dat$group)
 ```
 
 The summary output displays results organised by group.

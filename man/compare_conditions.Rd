@@ -6,9 +6,9 @@
 \usage{
 compare_conditions(
   result,
-  cval_method = "exact",
+  cval_method = "stochastic",
   nreps = 1000L,
-  progress = FALSE
+  digits = 3L
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ compare_conditions(
 
 \item{nreps}{an integer, ignored if \code{cval_method = "exact"}}
 
-\item{progress}{a boolean indicating whether to display a progress bar}
+\item{digits}{an integer indicating how many decimal places to round values.}
 }
 \value{
 \code{compare_conditions} returns a list with the following elements
