@@ -168,8 +168,8 @@ summary(opamod)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
 #> 
 #> Between subjects results:
-#>          PCC         cval
-#> pooled 93.33 9.170175e-24
+#>          PCC       cval
+#> pooled 93.33 0.09583333
 #> 
 #> Within subjects results:
 #>       PCC cval
@@ -232,11 +232,11 @@ condition_comparisons$pccs
 #> 3 100 100  - -
 #> 4  95  80 95 -
 condition_comparisons$cvals
-#>                     1                   2                   3 4
-#> 1                   -                   -                   - -
-#> 2  3.814697265625e-06                   -                   - -
-#> 3 9.5367431640625e-07 9.5367431640625e-07                   - -
-#> 4 1.9073486328125e-06   1.52587890625e-05 1.9073486328125e-06 -
+#>       1   2     3 4
+#> 1     -   -     - -
+#> 2  0.55   -     - -
+#> 3   0.5 0.5     - -
+#> 4 0.525 0.6 0.525 -
 ```
 
 ### Multiple groups
@@ -259,11 +259,11 @@ summary(opamod2, digits = 3)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 #> 
 #> Between subjects results:
-#>       PCC         cval
-#> A 100.000 1.255867e-07
-#> B  86.667 3.215021e-05
-#> C  93.333 2.009388e-06
-#> D  93.333 1.130281e-06
+#>       PCC       cval
+#> A 100.000 0.04166667
+#> B  86.667 0.14166667
+#> C  93.333 0.09166667
+#> D  93.333 0.10833333
 #> 
 #> Within subjects results:
 #>   Individual     PCC  cval

@@ -60,7 +60,7 @@ cval_exact <- function(pcc_out, progress) {
   if (progress == TRUE)
     close(progress_bar)
 
-  group_cval <- prod(individual_cvals)
+  group_cval <- total_perms_greater_eq / total_perms
 
   return(list(individual_cvals = individual_cvals,
            group_cval = group_cval,
@@ -110,7 +110,7 @@ cval_stochastic <- function(pcc_out, nreps, progress) {
   if (progress == TRUE)
     close(progress_bar)
 
-  group_cval <- prod(individual_cvals)
+  group_cval <- total_perms_greater_eq / (nreps * dim(pcc_out$data)[1])
 
   return(list(individual_cvals = individual_cvals,
             group_cval = group_cval,
