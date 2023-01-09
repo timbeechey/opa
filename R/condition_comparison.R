@@ -78,6 +78,8 @@ compare_conditions.opafit <- function(result, cval_method = "stochastic", nreps 
   # put "-" in empty cells in the upper triangle
   pcc_mat[upper.tri(pcc_mat, diag = TRUE)] <- "-"
   cval_mat[upper.tri(cval_mat, diag = TRUE)] <- "-"
+  # display 0s as < 1/nreps. e.g. if nreps=1000, display 0 as <0.001
+  cval_mat[cval_mat == "0"] <- paste0("<", toString(1/nreps))
   # convert matrices to data.frames for pretty printing
   pcc_df <- as.data.frame(pcc_mat)
   cval_df <- as.data.frame(cval_mat)
