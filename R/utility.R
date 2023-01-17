@@ -115,7 +115,7 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
              yaxt = "n",
              lty=ifelse(plot_dat$pcc >= threshold, 1, 3))
   }
-  if (! is.null(threshold))
+  if (!is.null(threshold))
     abline(v=threshold, col="red", lty = 2)
   points(plot_dat$pcc,
          seq(nrow(plot_dat)),

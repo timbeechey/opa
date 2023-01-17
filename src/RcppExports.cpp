@@ -11,13 +11,13 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // c_sign_with_threshold
-IntegerVector c_sign_with_threshold(NumericVector xs, float diff_threshold);
+IntegerVector c_sign_with_threshold(NumericVector xs, double diff_threshold);
 RcppExport SEXP _opa_c_sign_with_threshold(SEXP xsSEXP, SEXP diff_thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xs(xsSEXP);
-    Rcpp::traits::input_parameter< float >::type diff_threshold(diff_thresholdSEXP);
+    Rcpp::traits::input_parameter< double >::type diff_threshold(diff_thresholdSEXP);
     rcpp_result_gen = Rcpp::wrap(c_sign_with_threshold(xs, diff_threshold));
     return rcpp_result_gen;
 END_RCPP
@@ -30,18 +30,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xs(xsSEXP);
     rcpp_result_gen = Rcpp::wrap(c_all_diffs(xs));
-    return rcpp_result_gen;
-END_RCPP
-}
-// c_random_shuffles
-NumericMatrix c_random_shuffles(int n, NumericVector v);
-RcppExport SEXP _opa_c_random_shuffles(SEXP nSEXP, SEXP vSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_random_shuffles(n, v));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -69,17 +57,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type indiv_idx(indiv_idxSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type H_ord(H_ordSEXP);
     rcpp_result_gen = Rcpp::wrap(c_compare_perm_pccs(perms, m, indiv_idx, H_ord));
-    return rcpp_result_gen;
-END_RCPP
-}
-// c_generate_permutations
-NumericMatrix c_generate_permutations(NumericVector v);
-RcppExport SEXP _opa_c_generate_permutations(SEXP vSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_generate_permutations(v));
     return rcpp_result_gen;
 END_RCPP
 }

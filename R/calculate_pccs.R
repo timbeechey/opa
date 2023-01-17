@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 row_pcc <- function(xs, h, pairing_type, diff_threshold) {
 
   # if there are NAs in the data row, skip corresponding

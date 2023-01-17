@@ -41,7 +41,7 @@ void fun() {}
  * return: an int from the set {1, 0, -1}.
  */
 // [[Rcpp::export]]
-IntegerVector c_sign_with_threshold(NumericVector xs, float diff_threshold) {
+IntegerVector c_sign_with_threshold(NumericVector xs, double diff_threshold) {
   IntegerVector sign_vector(xs.length());
   for (int i = 0; i < xs.length(); i++) {
     if (is_na(xs[i])) {
@@ -87,22 +87,6 @@ NumericVector c_all_diffs(NumericVector xs) {
     }
   }
   return diffs;
-}
-
-
-/*
- * Generate a matrix of randomly shuffled vectors.
- * param n: an int indicating the number of random reorderings.
- * param v: a NumericVector to be shuffled.
- * return: a NumericMatrix with nrows = n and ncols = v.length().
- */
-// [[Rcpp::export]]
-NumericMatrix c_random_shuffles(int n, NumericVector v) {
-  NumericMatrix rand_orders(v.length(), n);
-  for (int i = 0; i < n; i++) {
-    rand_orders(_, i) = sample(v, v.length());
-  }
-  return rand_orders;
 }
 
 
@@ -160,30 +144,43 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
 }
 
 
-/*
- * Generate every permutation of a numeric vector using the next_permutation()
- * function from the C++ standard library.
- * Returns a NumericMatrix with 1 row for each element of the input vector, and
- * number of columns equal to the factorial of the length of the input vector.
- * The number of permutations is always the factorial of the length of the input
- * vector, even when there are duplicate permutations due to repeated elements
- * of the input vector.
- * param: v, a NumericVector
- * return: a NumericMatrix
- */
-// [[Rcpp::export]]
-NumericMatrix c_generate_permutations(NumericVector v) {
-  long long N{v.length()};
-  // calculate factorial of N to pre-size matrix
-  long nperms{1};
-  for (long i = 1; i <= N; ++i)
-    nperms *= i;
-  // preallocate matrix
-  NumericMatrix perms(N, nperms);
-  perms(_,0) = v; // a is the first permutation
-  for (long m = 1; m < nperms; m++) {
-    std::next_permutation(v.begin(), v.end());
-    perms(_,m) = v;
-  }
-  return perms;
-}
+// // [[Rcpp::export]]
+// List c_cvalues(List pcc_out, int nreps) {
+//   Function c_row_pcc("row_pcc");
+//   NumericMatrix dat = pcc_out["data"];
+//   NumericVector hypothesis = pcc_out["hypothesis"];
+//   String pairing_type = pcc_out["pairing_type"];
+//   double diff_threshold = pcc_out["diff_threshold"];
+//   NumericVector individual_pccs = pcc_out["individual_pccs"];
+//   double obs_group_pcc = pcc_out["group_pcc"];
+//
+//   // vector to store each random group-level PCC
+//   NumericVector rand_group_pccs(nreps);
+//   // vector with 1 element for each individual to tally rand indiv pccs >= obs indiv pcc
+//   NumericVector indiv_rand_pcc_geq_obs_pcc(dat.nrow());
+//   NumericVector individual_cvals(dat.nrow());
+//
+//   for (int i = 0; i < nreps; i++) {
+//     NumericVector rand_indiv_pccs(dat.nrow());
+//     for (int j = 0; j < dat.nrow(); j++) {
+//       NumericVector current_row = dat(j,_);
+//       List rand_row_pcc = c_row_pcc(sample(current_row, current_row.length()), hypothesis, pairing_type, diff_threshold);
+//       double rand_indiv_pcc = rand_row_pcc["pcc"];
+//       rand_indiv_pccs[j] = rand_indiv_pcc;
+//       if (rand_indiv_pccs[j] >= individual_pccs[j]) {
+//         indiv_rand_pcc_geq_obs_pcc[j] = indiv_rand_pcc_geq_obs_pcc[j] + 1;
+//       }
+//     }
+//     rand_group_pccs[i] = mean(rand_indiv_pccs);
+//   }
+//
+//   for (int k = 0; k < individual_cvals.length(); k++) {
+//     individual_cvals[k] = double(indiv_rand_pcc_geq_obs_pcc[k]) / double(nreps);
+//   }
+//
+//   double group_cval = sum(rand_group_pccs >= obs_group_pcc) / double(nreps);
+//
+//   List out = List::create(Named("group_cval") = group_cval, _["individual_cvals"] = individual_cvals);
+//   return out;
+// }
+

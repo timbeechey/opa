@@ -14,100 +14,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-group_cval_stochastic <- function(pcc_out, nreps) {
-  rand_group_pcc <- numeric(nreps)
+calc_cvalues <- function(pcc_out, nreps) {
+  # vector to store each random group-level PCC
+  rand_group_pccs <- numeric(nreps)
+  # vector with 1 element for each individual to tally rand indiv pccs >= obs indiv pcc
+  indiv_rand_pcc_geq_obs_pcc <- numeric(dim(pcc_out$data)[1])
+
   for (i in 1:nreps) {
-    # randomise each individual independently
-    rand_mat <- matrix(0, ncol = dim(pcc_out$data)[2], nrow = dim(pcc_out$data)[1])
-    for (j in 1:nrow(pcc_out$data)) {
-      rand_mat[j,] <- sample(pcc_out$data[j,])
+    # within each rep, save all indiv rand pccs to use to calc rand group pcc
+    rand_indiv_pccs <- numeric(dim(pcc_out$data)[1])
+    for (j in 1:dim(pcc_out$data)[1]) { # iterate the data rows
+      rand_row_pcc <- row_pcc(sample(pcc_out$data[j,]), pcc_out$hypothesis, pcc_out$pairing_type, pcc_out$diff_threshold)
+      rand_indiv_pccs[j] <- rand_row_pcc$pcc
+      if (rand_indiv_pccs[j] >= pcc_out$individual_pcc[j]) {
+        indiv_rand_pcc_geq_obs_pcc[j] <- indiv_rand_pcc_geq_obs_pcc[j] + 1
+      }
     }
-
-    rand_pcc <- pcc(rand_mat, pcc_out$hypothesis, pcc_out$pairing_type, pcc_out$diff_threshold)
-    rand_group_pcc[i] <- rand_pcc$group_pcc
+    rand_group_pccs[i] <- mean(rand_indiv_pccs)
   }
-  group_cval <- sum(rand_group_pcc >= pcc_out$group_pcc) / nreps
-}
+  individual_cvals <- indiv_rand_pcc_geq_obs_pcc / nreps
+  group_cval <- sum(rand_group_pccs >= pcc_out$group_pcc) / nreps
 
-# Calculate exact chance-values for percent correct classification values
-# using a permutation test. This function generates every possible permutation
-# of each data row
-cval_exact <- function(pcc_out, nreps) {
-  individual_cvals <- numeric(dim(pcc_out$data)[1])
-  individual_perm_pccs <- matrix(numeric(0),
-                                 ncol=dim(pcc_out$data)[1],
-                                 nrow=factorial(dim(pcc_out$data)[2]))
-  total_perms <- 0
-  total_perms_greater_eq <- 0
-
-  for (i in 1:dim(pcc_out$data)[1]) {
-    if (any(is.na(unlist(pcc_out$data[i,])))) {
-      hypothesis_no_nas <- conform(pcc_out$data[i,], pcc_out$hypothesis)
-    } else {
-      hypothesis_no_nas <- pcc_out$hypothesis
-    }
-
-    permutations <- c_generate_permutations(na.omit(pcc_out$data[i,]))
-    n_perms <- dim(permutations)[2]
-    total_perms <- total_perms + n_perms
-
-    h_ordering <- c_ordering(hypothesis_no_nas,pcc_out$pairing_type,0)
-
-    comp <- c_compare_perm_pccs(permutations, pcc_out, i, h_ordering)
-    n_perms_greater_eq <- comp$n_perms_greater_eq
-    individual_perm_pccs[1:length(comp$perm_pcc),i] <- comp$perm_pcc
-
-    # Calculate the c-value of the data row
-    individual_cvals[i] <- n_perms_greater_eq / n_perms
-    # Increment the count of permutations with PCCs >= the observed PCC
-    total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
-  }
-
-  group_cval <- group_cval_stochastic(pcc_out, nreps)
-
-  return(list(individual_cvals = individual_cvals,
-           group_cval = group_cval,
-           pcc_replicates = individual_perm_pccs,
-           total_perms = total_perms,
-           perm_pccs_geq_obs_pcc = total_perms_greater_eq,
-           observed_group_pcc = pcc_out$group_pcc))
-}
-
-cval_stochastic <- function(pcc_out, nreps) {
-  individual_cvals <- numeric(dim(pcc_out$data)[1])
-  individual_perm_pccs <- matrix(numeric(0),
-                                 ncol=dim(pcc_out$data)[1],
-                                 nrow=nreps)
-  total_perms_greater_eq <- 0
-
-  for (i in 1:dim(pcc_out$data)[1]) {
-    if (any(is.na(unlist(pcc_out$data[i,])))) {
-      hypothesis_no_nas <- conform(pcc_out$data[i,], pcc_out$hypothesis)
-    } else {
-      hypothesis_no_nas <- pcc_out$hypothesis
-    }
-
-    permutations <- c_random_shuffles(nreps, na.omit(pcc_out$data[i,]))
-
-    h_ordering <- c_ordering(hypothesis_no_nas, pcc_out$pairing_type, 0)
-
-    comp <- c_compare_perm_pccs(permutations, pcc_out, i, h_ordering)
-    n_perms_greater_eq <- comp$n_perms_greater_eq
-    individual_perm_pccs[,i] <- comp$perm_pcc
-
-    # Calculate the c-value of the data row
-    individual_cvals[i] <- n_perms_greater_eq / nreps
-    # Increment the count of permutations with PCCs >= the observed PCC
-    total_perms_greater_eq <- total_perms_greater_eq + n_perms_greater_eq
-
-  }
-
-  group_cval <- group_cval_stochastic(pcc_out, nreps)
-
-  return(list(individual_cvals = individual_cvals,
-            group_cval = group_cval,
-            pcc_replicates = individual_perm_pccs,
-            total_perms = nreps * dim(pcc_out$data)[1],
-            perm_pccs_geq_obs_pcc = total_perms_greater_eq,
-            observed_group_pcc = pcc_out$group_pcc))
+  return(list(group_cval = group_cval, individual_cvals = individual_cvals))
 }

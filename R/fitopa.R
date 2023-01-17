@@ -43,17 +43,8 @@
 #' a default zero threshold is used. The \code{diff_threshold} is never applied
 #' to the hypothesis.
 #'
-#' \code{cval_method} is either "stochastic" or "exact". The "stochastic" option
-#' generates random reorderings of each data row. The "exact" method generates
-#' every possible permutation of each data row. Care must be taken using the
-#' "exact" method since the number of permutations is the factorial of the
-#' number of columns in the data. For large numbers of data columns it is best
-#' to use the default "stochastic" method to sample orderings.
-#'
-#' \code{nreps} specifies the number of random reorderigs to generate when
-#' using the "stochastic" method for computing chance values. The default
-#' value of \code{nreps} is 1000. If the \code{cval_method = "exact"} option
-#' is specified, \code{nreps} is ignored.
+#' \code{nreps} specifies the number of random reorderigs to use in the
+#' calculation of chance-values.
 #'
 #' @references
 #' Grice, J. W., Craig, D. P. A., & Abramson, C. I. (2015). A Simple and
@@ -69,7 +60,6 @@
 #' @param group an optional factor vector
 #' @param pairing_type a string
 #' @param diff_threshold a positive integer or floating point number
-#' @param cval_method a string, either "exact" or "stochastic
 #' @param nreps an integer, ignored if \code{cval_method = "exact"}
 #' @return \code{opa} returns an object of class "opafit".
 #'
@@ -108,17 +98,15 @@
 #' opamod <- opa(dat[,2:4], 1:3)
 #' opa(dat[,2:4], 1:3)
 #' opa(dat[,2:4], 1:3, nreps = 500)
-#' opa(dat[,2:4], 1:3, cval_method = "exact")
 #' opa(dat[,2:4], 1:3, pairing_type = "adjacent")
 #' opa(dat[,2:4], 1:3, diff_threshold = 1)
 #' opa(dat[,2:4], 1:3, group = dat$group)
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
-                diff_threshold = 0, cval_method = "stochastic", nreps = 1000L) {
+                diff_threshold = 0, nreps = 1000L) {
   # verify the arguments
   stopifnot("Hypothesis and data rows are not the same length"= dim(dat)[2] == length(hypothesis))
   stopifnot("pairing_type must be 'pairwise' or 'adjacent'"= pairing_type %in% c("pairwise", "adjacent"))
-  stopifnot("cval_method must be 'exact' or 'stochastic'"= cval_method %in% c("exact", "stochastic"))
   stopifnot("diff_threshold must be a number"= class(diff_threshold) %in% c("integer", "numeric"))
   stopifnot("diff_threshold must be a non-negative number"= diff_threshold >= 0)
   stopifnot("nreps must be a whole number"= nreps == as.integer(nreps))
@@ -131,29 +119,20 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
     mat <- as.matrix(dat)
 
     pccs <- pcc(mat, hypothesis, pairing_type, diff_threshold)
-    if (cval_method == "exact") {
-      cvalues <- cval_exact(pccs, nreps)
-    } else if (cval_method == "stochastic") {
-      cvalues <- cval_stochastic(pccs, nreps)
-    }
+    cvalues <- calc_cvalues(pccs, nreps)
 
     return(
       structure(
         list(group_pcc = pccs$group_pcc,
              individual_pccs = pccs$individual_pccs,
-             condition_pccs = "This method is deprecated. Please use compare_conditions().",
              correct_pairs = pccs$correct_pairs,
              total_pairs = pccs$total_pairs,
              group_cval = cvalues$group_cval,
              individual_cvals = cvalues$individual_cvals,
-             n_permutations = cvalues$total_perms,
-             pccs_geq_observed = cvalues$perm_pccs_geq_obs_pcc,
-             pcc_replicates = cvalues$pcc_replicates,
              call = match.call(),
              hypothesis = hypothesis,
              pairing_type = pairing_type,
              diff_threshold = diff_threshold,
-             cval_method = cval_method,
              data = dat,
              groups = group),
         class = "opafit"))
@@ -179,19 +158,12 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       subgroup_dat <- dat[idx,]
       subgroup_mat <- as.matrix(subgroup_dat)
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
+      subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps)
 
-      if (cval_method == "exact") {
-        subgroup_cvalues <- cval_exact(subgroup_pccs, nreps)
-      } else if (cval_method == "stochastic") {
-        subgroup_cvalues <- cval_stochastic(subgroup_pccs, nreps)
-      }
       group_pccs[i] <- subgroup_pccs$group_pcc
       correct_pairs <- correct_pairs + subgroup_pccs$correct_pairs
       total_pairs <- total_pairs + subgroup_pccs$total_pairs
       group_cvals[i] <- subgroup_cvalues$group_cval
-      pcc_replicates[[i]] <- subgroup_cvalues$pcc_replicates
-      n_permutations <- n_permutations + subgroup_cvalues$total_perms
-      pccs_geq_observed <- pccs_geq_observed + subgroup_cvalues$perm_pccs_geq_obs_pcc
       individual_idx <- append(individual_idx, idx)
       group_labels_vec <- append(group_labels_vec, rep(groups[i], length(idx)))
       individual_pccs <- append(individual_pccs, subgroup_pccs$individual_pccs)
@@ -211,14 +183,10 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
              individual_cvals = individual_cvals,
              individual_idx = individual_idx,
              group_labels = group_labels_vec,
-             n_permutations = n_permutations,
-             pccs_geq_observed = pccs_geq_observed,
-             pcc_replicates = pcc_replicates,
              call = match.call(),
              hypothesis = hypothesis,
              pairing_type = pairing_type,
              diff_threshold = diff_threshold,
-             cval_method = cval_method,
              data = dat,
              groups = group),
         class = "opafit"))

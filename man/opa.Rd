@@ -10,7 +10,6 @@ opa(
   group = NULL,
   pairing_type = "pairwise",
   diff_threshold = 0,
-  cval_method = "stochastic",
   nreps = 1000L
 )
 }
@@ -24,8 +23,6 @@ opa(
 \item{pairing_type}{a string}
 
 \item{diff_threshold}{a positive integer or floating point number}
-
-\item{cval_method}{a string, either "exact" or "stochastic}
 
 \item{nreps}{an integer, ignored if \code{cval_method = "exact"}}
 }
@@ -86,17 +83,8 @@ is "pairwise".
 a default zero threshold is used. The \code{diff_threshold} is never applied
 to the hypothesis.
 
-\code{cval_method} is either "stochastic" or "exact". The "stochastic" option
-generates random reorderings of each data row. The "exact" method generates
-every possible permutation of each data row. Care must be taken using the
-"exact" method since the number of permutations is the factorial of the
-number of columns in the data. For large numbers of data columns it is best
-to use the default "stochastic" method to sample orderings.
-
-\code{nreps} specifies the number of random reorderigs to generate when
-using the "stochastic" method for computing chance values. The default
-value of \code{nreps} is 1000. If the \code{cval_method = "exact"} option
-is specified, \code{nreps} is ignored.
+\code{nreps} specifies the number of random reorderigs to use in the
+calculation of chance-values.
 }
 \examples{
 dat <- data.frame(group = c("a", "b", "a", "b"),
@@ -107,7 +95,6 @@ dat$group <- factor(dat$group, levels = c("a", "b"))
 opamod <- opa(dat[,2:4], 1:3)
 opa(dat[,2:4], 1:3)
 opa(dat[,2:4], 1:3, nreps = 500)
-opa(dat[,2:4], 1:3, cval_method = "exact")
 opa(dat[,2:4], 1:3, pairing_type = "adjacent")
 opa(dat[,2:4], 1:3, diff_threshold = 1)
 opa(dat[,2:4], 1:3, group = dat$group)

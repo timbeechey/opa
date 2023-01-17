@@ -4,17 +4,10 @@
 \alias{compare_conditions}
 \title{Calculates PCCs and c-values based on pairwise comparison of conditions.}
 \usage{
-compare_conditions(
-  result,
-  cval_method = "stochastic",
-  nreps = 1000L,
-  digits = 3L
-)
+compare_conditions(result, nreps = 1000L, digits = 3L)
 }
 \arguments{
 \item{result}{an object of class "opafit" produced by a call to opa().}
-
-\item{cval_method}{a string, either "exact" or "stochastic}
 
 \item{nreps}{an integer, ignored if \code{cval_method = "exact"}}
 

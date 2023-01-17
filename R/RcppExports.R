@@ -9,19 +9,11 @@ c_all_diffs <- function(xs) {
     .Call(`_opa_c_all_diffs`, xs)
 }
 
-c_random_shuffles <- function(n, v) {
-    .Call(`_opa_c_random_shuffles`, n, v)
-}
-
 c_ordering <- function(xs, pairing_type, diff_threshold) {
     .Call(`_opa_c_ordering`, xs, pairing_type, diff_threshold)
 }
 
 c_compare_perm_pccs <- function(perms, m, indiv_idx, H_ord) {
     .Call(`_opa_c_compare_perm_pccs`, perms, m, indiv_idx, H_ord)
-}
-
-c_generate_permutations <- function(v) {
-    .Call(`_opa_c_generate_permutations`, v)
 }
 
