@@ -15,16 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Removes elements of a hypothesis vector that correspond to the position of
-# NAs in a numeric vector of data (a data row).
-# param: xs a numeric vector
-# param: h a numeric vector
-# return: a numeric vector
-conform <- function(xs, h) {
-  h[-which(is.na(xs))]
-}
-
-
 #' Prints a summary of results from a fitted ordinal pattern analysis model.
 #' @param object an object of class "opafit".
 #' @param digits an integer used for rounding values in the output.

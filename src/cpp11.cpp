@@ -19,14 +19,20 @@ extern "C" SEXP _opa_fun() {
 extern "C" {
 /* .Call calls */
 extern SEXP _opa_c_all_diffs(SEXP);
+extern SEXP _opa_c_calc_cvalues(SEXP, SEXP);
 extern SEXP _opa_c_compare_perm_pccs(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _opa_c_conform(SEXP, SEXP);
 extern SEXP _opa_c_ordering(SEXP, SEXP, SEXP);
+extern SEXP _opa_c_row_pcc(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _opa_c_sign_with_threshold(SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_opa_c_all_diffs",           (DL_FUNC) &_opa_c_all_diffs,           1},
+    {"_opa_c_calc_cvalues",        (DL_FUNC) &_opa_c_calc_cvalues,        2},
     {"_opa_c_compare_perm_pccs",   (DL_FUNC) &_opa_c_compare_perm_pccs,   4},
+    {"_opa_c_conform",             (DL_FUNC) &_opa_c_conform,             2},
     {"_opa_c_ordering",            (DL_FUNC) &_opa_c_ordering,            3},
+    {"_opa_c_row_pcc",             (DL_FUNC) &_opa_c_row_pcc,             4},
     {"_opa_c_sign_with_threshold", (DL_FUNC) &_opa_c_sign_with_threshold, 2},
     {"_opa_fun",                   (DL_FUNC) &_opa_fun,                   0},
     {NULL, NULL, 0}

@@ -26,6 +26,22 @@ using namespace cpp11;
 [[cpp11::register]]
 void fun() {}
 
+// [[Rcpp::export]]
+NumericVector c_conform(NumericVector xs, NumericVector h) {
+  int count{};
+  for (double x : xs) {
+    isnan(x) ? count : count++;
+  }
+  NumericVector h_trimmed(count);
+  int idx = 0;
+  for (int i = 0; i < xs.length(); i++) {
+    if (!isnan(xs[i])) {
+      h_trimmed[idx] = h[idx];
+      idx++;
+    }
+  }
+  return h_trimmed;
+}
 
 /*
  * Returns the sign of every element of a vector conditional on a
@@ -108,6 +124,60 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
     return c_sign_with_threshold(diff(xs), diff_threshold);
 }
 
+
+// [[Rcpp::export]]
+List c_row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff_threshold) {
+  NumericVector hypothesis_no_nas = c_conform(xs, h);
+  IntegerVector hypothesis_ordering = c_ordering(hypothesis_no_nas, pairing_type, 0);
+  IntegerVector row_ordering = c_ordering(na_omit(xs), pairing_type, diff_threshold);
+  LogicalVector match(row_ordering.length());
+  for (int i = 0; i < row_ordering.length(); i++) {
+    match[i] = row_ordering[i] == hypothesis_ordering[i];
+  }
+  int n_pairs = match.length();
+  int correct_pairs = sum(match);
+  double pcc = (correct_pairs/(double)n_pairs) * 100;
+  List out = List::create(Named("n_pairs") = n_pairs, _["correct_pairs"] = correct_pairs, _["pcc"] = pcc);
+  return out;
+}
+
+
+// [[Rcpp::export]]
+List c_calc_cvalues(List pcc_out, int nreps) {
+  NumericMatrix dat = pcc_out["data"];
+  NumericVector hypothesis = pcc_out["hypothesis"];
+  String pairing_type = pcc_out["pairing_type"];
+  double diff_threshold = pcc_out["diff_threshold"];
+  NumericVector individual_pccs = pcc_out["individual_pccs"];
+  double obs_group_pcc = pcc_out["group_pcc"];
+
+  NumericVector rand_group_pccs(nreps);
+  IntegerVector indiv_rand_pcc_geq_obs_pcc(dat.nrow());
+  NumericVector individual_cvals(dat.nrow());
+
+  for (int i = 0; i < nreps; i++) {
+    NumericVector rand_indiv_pccs(dat.nrow());
+    for (int j = 0; j < dat.nrow(); j++) {
+      NumericVector current_row = dat(j,_);
+      List rand_row_pcc = c_row_pcc(sample(current_row, current_row.length()), hypothesis, pairing_type, diff_threshold);
+      double rand_indiv_pcc = rand_row_pcc["pcc"];
+      rand_indiv_pccs[j] = rand_indiv_pcc;
+      if (rand_indiv_pccs[j] >= individual_pccs[j]) {
+        indiv_rand_pcc_geq_obs_pcc[j] = indiv_rand_pcc_geq_obs_pcc[j] + 1;
+      }
+    }
+    rand_group_pccs[i] = mean(rand_indiv_pccs);
+  }
+  for (int k = 0; k < individual_cvals.length(); k++) {
+    individual_cvals[k] = double(indiv_rand_pcc_geq_obs_pcc[k]) / double(nreps);
+  }
+
+  double group_cval = sum(rand_group_pccs >= obs_group_pcc) / double(nreps);
+
+  List out = List::create(Named("group_cval") = group_cval, _["individual_cvals"] = individual_cvals);
+  return out;
+}
+
 /*
  * Calculate a PCC for each reordered vector and compare it to the corresponding
  * observed PCC from m. Increments n_perms_greater_eq for each reordering with a
@@ -142,45 +212,3 @@ List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVect
   List out = List::create(Named("n_perms_greater_eq") = n_perms_greater_eq, _["perm_pcc"] = perm_pcc);
   return out;
 }
-
-
-// // [[Rcpp::export]]
-// List c_cvalues(List pcc_out, int nreps) {
-//   Function c_row_pcc("row_pcc");
-//   NumericMatrix dat = pcc_out["data"];
-//   NumericVector hypothesis = pcc_out["hypothesis"];
-//   String pairing_type = pcc_out["pairing_type"];
-//   double diff_threshold = pcc_out["diff_threshold"];
-//   NumericVector individual_pccs = pcc_out["individual_pccs"];
-//   double obs_group_pcc = pcc_out["group_pcc"];
-//
-//   // vector to store each random group-level PCC
-//   NumericVector rand_group_pccs(nreps);
-//   // vector with 1 element for each individual to tally rand indiv pccs >= obs indiv pcc
-//   NumericVector indiv_rand_pcc_geq_obs_pcc(dat.nrow());
-//   NumericVector individual_cvals(dat.nrow());
-//
-//   for (int i = 0; i < nreps; i++) {
-//     NumericVector rand_indiv_pccs(dat.nrow());
-//     for (int j = 0; j < dat.nrow(); j++) {
-//       NumericVector current_row = dat(j,_);
-//       List rand_row_pcc = c_row_pcc(sample(current_row, current_row.length()), hypothesis, pairing_type, diff_threshold);
-//       double rand_indiv_pcc = rand_row_pcc["pcc"];
-//       rand_indiv_pccs[j] = rand_indiv_pcc;
-//       if (rand_indiv_pccs[j] >= individual_pccs[j]) {
-//         indiv_rand_pcc_geq_obs_pcc[j] = indiv_rand_pcc_geq_obs_pcc[j] + 1;
-//       }
-//     }
-//     rand_group_pccs[i] = mean(rand_indiv_pccs);
-//   }
-//
-//   for (int k = 0; k < individual_cvals.length(); k++) {
-//     individual_cvals[k] = double(indiv_rand_pcc_geq_obs_pcc[k]) / double(nreps);
-//   }
-//
-//   double group_cval = sum(rand_group_pccs >= obs_group_pcc) / double(nreps);
-//
-//   List out = List::create(Named("group_cval") = group_cval, _["individual_cvals"] = individual_cvals);
-//   return out;
-// }
-
