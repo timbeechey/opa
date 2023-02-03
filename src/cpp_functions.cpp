@@ -30,12 +30,12 @@ void fun() {}
 NumericVector c_conform(NumericVector xs, NumericVector h) {
   int count{};
   for (double x : xs) {
-    isnan(x) ? count : count++;
+    std::isnan(x) ? count : count++;
   }
   NumericVector h_trimmed(count);
   int idx = 0;
   for (int i = 0; i < xs.length(); i++) {
-    if (!isnan(xs[i])) {
+    if (!std::isnan(xs[i])) {
       h_trimmed[idx] = h[idx];
       idx++;
     }
