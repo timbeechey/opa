@@ -34,8 +34,8 @@ NumericVector c_conform(NumericVector xs, NumericVector h) {
   }
   NumericVector h_trimmed(count);
   int idx = 0;
-  for (int i = 0; i < xs.length(); i++) {
-    if (!std::isnan(xs[i])) {
+  for (double x : xs) {
+    if (!std::isnan(x)) {
       h_trimmed[idx] = h[idx];
       idx++;
     }
