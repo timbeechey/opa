@@ -25,7 +25,3 @@ c_calc_cvalues <- function(pcc_out, nreps) {
     .Call(`_opa_c_calc_cvalues`, pcc_out, nreps)
 }
 
-c_compare_perm_pccs <- function(perms, m, indiv_idx, H_ord) {
-    .Call(`_opa_c_compare_perm_pccs`, perms, m, indiv_idx, H_ord)
-}
-

@@ -177,38 +177,3 @@ List c_calc_cvalues(List pcc_out, int nreps) {
   List out = List::create(Named("group_cval") = group_cval, _["individual_cvals"] = individual_cvals);
   return out;
 }
-
-/*
- * Calculate a PCC for each reordered vector and compare it to the corresponding
- * observed PCC from m. Increments n_perms_greater_eq for each reordering with a
- * PCC >= observed PCC. Returns a list containing the count n_perms_greater_eq
- * and a vector of PCC values.
- * param: perms, a NumericMatrix of permutations or random orderings of a vector
- * param: m, a List containing computed PCCs from observed data
- * param: indiv_idx, an int representing the current individual
- * param: H_ord, an IntegerVector of the ordinal relations in the hypothesis
- * return: a List containing a count n_perms_greater_eq and a vector of PCCs
- */
-// [[Rcpp::export]]
-List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVector H_ord) {
-  int n_perms_greater_eq{0};
-  double diff_threshold{m["diff_threshold"]};
-  String pairing_type = m["pairing_type"];
-  NumericVector obs_pcc = m["individual_pccs"];
-  NumericVector perm_pcc(perms.ncol());
-  LogicalVector comps(H_ord.length());
-
-  for (int i = 0; i < perms.ncol(); i++) {
-    NumericVector perm_ordering(H_ord.length());
-    perm_ordering = c_ordering(perms(_,i), pairing_type, diff_threshold);
-    for (int j = 0; j < perm_ordering.length(); j++) {
-      comps[j] = perm_ordering[j] == H_ord[j];
-    }
-    perm_pcc[i] = mean(comps) * 100;
-    if (perm_pcc[i] >= obs_pcc[indiv_idx - 1]) {
-      n_perms_greater_eq += 1;
-    }
-  }
-  List out = List::create(Named("n_perms_greater_eq") = n_perms_greater_eq, _["perm_pcc"] = perm_pcc);
-  return out;
-}

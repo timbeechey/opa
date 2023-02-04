@@ -84,17 +84,3 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// c_compare_perm_pccs
-List c_compare_perm_pccs(NumericMatrix perms, List m, int indiv_idx, IntegerVector H_ord);
-RcppExport SEXP _opa_c_compare_perm_pccs(SEXP permsSEXP, SEXP mSEXP, SEXP indiv_idxSEXP, SEXP H_ordSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type perms(permsSEXP);
-    Rcpp::traits::input_parameter< List >::type m(mSEXP);
-    Rcpp::traits::input_parameter< int >::type indiv_idx(indiv_idxSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type H_ord(H_ordSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_compare_perm_pccs(perms, m, indiv_idx, H_ord));
-    return rcpp_result_gen;
-END_RCPP
-}
