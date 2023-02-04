@@ -126,12 +126,7 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
 
 // [[Rcpp::export]]
 List c_row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff_threshold) {
-  NumericVector hypothesis_no_nas;
-  if (any(is_nan(xs)).is_true()) {
-    hypothesis_no_nas = c_conform(xs, h);
-  } else {
-    hypothesis_no_nas = h;
-  }
+  NumericVector hypothesis_no_nas = c_conform(xs, h);
   IntegerVector hypothesis_ordering = c_ordering(hypothesis_no_nas, pairing_type, 0);
   IntegerVector row_ordering = c_ordering(na_omit(xs), pairing_type, diff_threshold);
   LogicalVector match(row_ordering.length());
