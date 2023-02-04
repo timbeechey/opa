@@ -19,6 +19,8 @@
 
 #include <Rcpp.h>
 #include <cpp11.hpp>
+#include <algorithm>
+#include <random>
 
 using namespace Rcpp;
 using namespace cpp11;
@@ -44,18 +46,17 @@ NumericVector c_conform(NumericVector xs, NumericVector h) {
 }
 
 /*
- * Returns the sign of every element of a vector conditional on a
- * user-supplied difference threshold diff_threshold.
- * Returns 1 for any positive input value larger than diff_threshold.
- * Returns -1 for any negative input value smaller than -diff_threshold.
- * Returns 0 for any input value that is both smaller than diff_threshold
- * and larger than -diff_threshold. This function is equivalent to R's
- * built-in sign() function when diff_threshold = 0.
- *
- * param: xs, a NumericVector.
- * param: diff_threshold, a double.
- * return: an int from the set {1, 0, -1}.
- */
+Returns the sign of every element of a vector conditional on a
+user-supplied difference threshold diff_threshold.
+Returns 1 for any positive input value larger than diff_threshold.
+Returns -1 for any negative input value smaller than -diff_threshold.
+Returns 0 for any input value that is both smaller than diff_threshold
+and larger than -diff_threshold. This function is equivalent to R's
+built-in sign() function when diff_threshold = 0.
+@param xs, a NumericVector.
+@param diff_threshold, a double.
+@return an int from the set {1, 0, -1}.
+*/
 // [[Rcpp::export]]
 IntegerVector c_sign_with_threshold(NumericVector xs, double diff_threshold) {
   IntegerVector sign_vector(xs.length());
@@ -75,22 +76,19 @@ IntegerVector c_sign_with_threshold(NumericVector xs, double diff_threshold) {
 
 
 /*
- * Calculate the difference between every pair of elements in a vector.
- * This function is called when the pairing_type = "pairwise" option is used.
- * When the pairing_type = "adjacent" option is used, R's built-in diff()
- * function is used instead. For an input vector of length N, the output vector
- * has length equal to the Nth-1 triangular number, calculated as (N-1 * N) / 2.
- * param: xs, a NumericVector.
- * return: a NumericVector.
- */
+Calculate the difference between every pair of elements in a vector.
+This function is called when the pairing_type = "pairwise" option is used.
+When the pairing_type = "adjacent" option is used, R's built-in diff()
+function is used instead. For an input vector of length N, the output vector
+has length equal to the Nth-1 triangular number, calculated as (N-1 * N) / 2.
+@param xs, a NumericVector.
+@return a NumericVector.
+*/
 // [[Rcpp::export]]
 NumericVector c_all_diffs(NumericVector xs) {
   // Initialize variables
   int count{0};
-  // Calculate the length of the vector as the Nth-1 triangular number.
-  // This is needed to pre-size an empty vector.
-  // Note that brace initialisation of n_pairs catches narrowing from R's
-  // long long int if n_pairs is initialised with type int or size_t.
+  // Calculate the length of the vector as the Nth-1 triangular number
   long long n_pairs{((xs.length() - 1) * xs.length()) / 2};
   // Create empty vector of the correct size to hold all pairwise differences.
   NumericVector diffs(n_pairs);
@@ -106,15 +104,16 @@ NumericVector c_all_diffs(NumericVector xs) {
 }
 
 
-/* Generate pairwise ordinal relations from a vector, consisting of integers
- * from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
- * calling c_ordering() on a vector of length N produces a vector of length N-1.
- * When the pairing_type = "pairwise" option is used, calling c_ordering() on an
- * N-length vector returns a vector of length ((N-1) * N)/2
- * param: xs, a NumericVector.
- * param: pairing_type, a String, either "adjacent" or "pairwise".
- * param: diff_threshold, a positive double.
- * return: an IntegerVector.
+/* 
+Generate pairwise ordinal relations from a vector, consisting of integers
+from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
+calling c_ordering() on a vector of length N produces a vector of length N-1.
+When the pairing_type = "pairwise" option is used, calling c_ordering() on an
+N-length vector returns a vector of length ((N-1) * N)/2
+@param xs, a NumericVector.
+@param pairing_type, a String, either "adjacent" or "pairwise".
+@param diff_threshold, a positive double.
+@return an IntegerVector.
 */
 // [[Rcpp::export]]
 IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_threshold) {
@@ -127,7 +126,12 @@ IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_thres
 
 // [[Rcpp::export]]
 List c_row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff_threshold) {
-  NumericVector hypothesis_no_nas = c_conform(xs, h);
+  NumericVector hypothesis_no_nas;
+  if (any(is_nan(xs)).is_true()) {
+    hypothesis_no_nas = c_conform(xs, h);
+  } else {
+    hypothesis_no_nas = h;
+  }
   IntegerVector hypothesis_ordering = c_ordering(hypothesis_no_nas, pairing_type, 0);
   IntegerVector row_ordering = c_ordering(na_omit(xs), pairing_type, diff_threshold);
   LogicalVector match(row_ordering.length());
@@ -154,12 +158,15 @@ List c_calc_cvalues(List pcc_out, int nreps) {
   NumericVector rand_group_pccs(nreps);
   IntegerVector indiv_rand_pcc_geq_obs_pcc(dat.nrow());
   NumericVector individual_cvals(dat.nrow());
+  std::random_device rd;
+  std::mt19937 g(rd());
 
   for (int i = 0; i < nreps; i++) {
     NumericVector rand_indiv_pccs(dat.nrow());
     for (int j = 0; j < dat.nrow(); j++) {
-      NumericVector current_row = dat(j,_);
-      List rand_row_pcc = c_row_pcc(sample(current_row, current_row.length()), hypothesis, pairing_type, diff_threshold);
+      NumericMatrix::Row current_row = dat(j,_);
+      std::shuffle(current_row.begin(), current_row.end(), g);
+      List rand_row_pcc = c_row_pcc(current_row, hypothesis, pairing_type, diff_threshold);
       double rand_indiv_pcc = rand_row_pcc["pcc"];
       rand_indiv_pccs[j] = rand_indiv_pcc;
       if (rand_indiv_pccs[j] >= individual_pccs[j]) {
