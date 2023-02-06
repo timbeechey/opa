@@ -36,7 +36,7 @@ NumericVector conform(NumericVector xs, NumericVector h) {
     std::isnan(x) ? count : count++;
   }
   NumericVector h_trimmed(count);
-  int idx = 0;
+  int idx{};
   for (double x : xs) {
     if (!std::isnan(x)) {
       h_trimmed[idx] = h[idx];
@@ -62,7 +62,7 @@ built-in sign() function when diff_threshold = 0.
 // [[Rcpp::export]]
 IntegerVector sign_with_threshold(NumericVector xs, double diff_threshold) {
   IntegerVector sign_vector(xs.length());
-  for (int i = 0; i < xs.length(); i++) {
+  for (int i{}; i < xs.length(); i++) {
     if (is_na(xs[i])) {
         sign_vector[i] = NA_INTEGER;
     } else if (xs[i] > diff_threshold) {
@@ -89,14 +89,14 @@ has length equal to the Nth-1 triangular number, calculated as (N-1 * N) / 2.
 // [[Rcpp::export]]
 NumericVector all_diffs(NumericVector xs) {
   // Initialize variables
-  int count{0};
+  int count{};
   // Calculate the length of the vector as the Nth-1 triangular number
   long long n_pairs{((xs.length() - 1) * xs.length()) / 2};
   // Create empty vector of the correct size to hold all pairwise differences.
   NumericVector diffs(n_pairs);
   // Fill the diffs vector with the difference between each pair of
   // vector elements
-  for (int i = 0; i < xs.length(); i++) {
+  for (int i{}; i < xs.length(); i++) {
     for (int j = i + 1; j < xs.length(); j++) {
       diffs[count] = xs[j] - xs[i];
       count++;
@@ -132,7 +132,7 @@ List row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff
   IntegerVector hypothesis_ordering = ordering(hypothesis_no_nas, pairing_type, 0);
   IntegerVector row_ordering = ordering(na_omit(xs), pairing_type, diff_threshold);
   LogicalVector match(row_ordering.length());
-  for (int i = 0; i < row_ordering.length(); i++) {
+  for (int i{}; i < row_ordering.length(); i++) {
     match[i] = row_ordering[i] == hypothesis_ordering[i];
   }
   int n_pairs = match.length();
@@ -188,9 +188,9 @@ List calc_cvalues(List pcc_out, int nreps) {
   std::random_device rd;
   std::mt19937 g(rd());
 
-  for (int i = 0; i < nreps; i++) {
+  for (int i{}; i < nreps; i++) {
     NumericVector rand_indiv_pccs(dat.nrow());
-    for (int j = 0; j < dat.nrow(); j++) {
+    for (int j{}; j < dat.nrow(); j++) {
       NumericMatrix::Row current_row = dat(j,_);
       std::shuffle(current_row.begin(), current_row.end(), g);
       List rand_row_pcc = row_pcc(current_row, hypothesis, pairing_type, diff_threshold);
@@ -202,7 +202,7 @@ List calc_cvalues(List pcc_out, int nreps) {
     }
     rand_group_pccs[i] = mean(rand_indiv_pccs);
   }
-  for (int k = 0; k < individual_cvals.length(); k++) {
+  for (int k{}; k < individual_cvals.length(); k++) {
     individual_cvals[k] = double(indiv_rand_pcc_geq_obs_pcc[k]) / double(nreps);
   }
 
