@@ -10,57 +10,57 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// c_conform
-NumericVector c_conform(NumericVector xs, NumericVector h);
-RcppExport SEXP _opa_c_conform(SEXP xsSEXP, SEXP hSEXP) {
+// conform
+NumericVector conform(NumericVector xs, NumericVector h);
+RcppExport SEXP _opa_conform(SEXP xsSEXP, SEXP hSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xs(xsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type h(hSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_conform(xs, h));
+    rcpp_result_gen = Rcpp::wrap(conform(xs, h));
     return rcpp_result_gen;
 END_RCPP
 }
-// c_sign_with_threshold
-IntegerVector c_sign_with_threshold(NumericVector xs, double diff_threshold);
-RcppExport SEXP _opa_c_sign_with_threshold(SEXP xsSEXP, SEXP diff_thresholdSEXP) {
+// sign_with_threshold
+IntegerVector sign_with_threshold(NumericVector xs, double diff_threshold);
+RcppExport SEXP _opa_sign_with_threshold(SEXP xsSEXP, SEXP diff_thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xs(xsSEXP);
     Rcpp::traits::input_parameter< double >::type diff_threshold(diff_thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_sign_with_threshold(xs, diff_threshold));
+    rcpp_result_gen = Rcpp::wrap(sign_with_threshold(xs, diff_threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// c_all_diffs
-NumericVector c_all_diffs(NumericVector xs);
-RcppExport SEXP _opa_c_all_diffs(SEXP xsSEXP) {
+// all_diffs
+NumericVector all_diffs(NumericVector xs);
+RcppExport SEXP _opa_all_diffs(SEXP xsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xs(xsSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_all_diffs(xs));
+    rcpp_result_gen = Rcpp::wrap(all_diffs(xs));
     return rcpp_result_gen;
 END_RCPP
 }
-// c_ordering
-IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_threshold);
-RcppExport SEXP _opa_c_ordering(SEXP xsSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
+// ordering
+IntegerVector ordering(NumericVector xs, String pairing_type, float diff_threshold);
+RcppExport SEXP _opa_ordering(SEXP xsSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xs(xsSEXP);
     Rcpp::traits::input_parameter< String >::type pairing_type(pairing_typeSEXP);
     Rcpp::traits::input_parameter< float >::type diff_threshold(diff_thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_ordering(xs, pairing_type, diff_threshold));
+    rcpp_result_gen = Rcpp::wrap(ordering(xs, pairing_type, diff_threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// c_row_pcc
-List c_row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff_threshold);
-RcppExport SEXP _opa_c_row_pcc(SEXP xsSEXP, SEXP hSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
+// row_pcc
+List row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff_threshold);
+RcppExport SEXP _opa_row_pcc(SEXP xsSEXP, SEXP hSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -68,19 +68,33 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type h(hSEXP);
     Rcpp::traits::input_parameter< String >::type pairing_type(pairing_typeSEXP);
     Rcpp::traits::input_parameter< double >::type diff_threshold(diff_thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_row_pcc(xs, h, pairing_type, diff_threshold));
+    rcpp_result_gen = Rcpp::wrap(row_pcc(xs, h, pairing_type, diff_threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// c_calc_cvalues
-List c_calc_cvalues(List pcc_out, int nreps);
-RcppExport SEXP _opa_c_calc_cvalues(SEXP pcc_outSEXP, SEXP nrepsSEXP) {
+// pcc
+List pcc(NumericMatrix dat, NumericVector h, String pairing_type, double diff_threshold);
+RcppExport SEXP _opa_pcc(SEXP datSEXP, SEXP hSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type dat(datSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type h(hSEXP);
+    Rcpp::traits::input_parameter< String >::type pairing_type(pairing_typeSEXP);
+    Rcpp::traits::input_parameter< double >::type diff_threshold(diff_thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(pcc(dat, h, pairing_type, diff_threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_cvalues
+List calc_cvalues(List pcc_out, int nreps);
+RcppExport SEXP _opa_calc_cvalues(SEXP pcc_outSEXP, SEXP nrepsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type pcc_out(pcc_outSEXP);
     Rcpp::traits::input_parameter< int >::type nreps(nrepsSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_calc_cvalues(pcc_out, nreps));
+    rcpp_result_gen = Rcpp::wrap(calc_cvalues(pcc_out, nreps));
     return rcpp_result_gen;
 END_RCPP
 }

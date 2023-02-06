@@ -119,7 +119,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
     mat <- as.matrix(dat)
 
     pccs <- pcc(mat, hypothesis, pairing_type, diff_threshold)
-    cvalues <- c_calc_cvalues(pccs, nreps)
+    cvalues <- calc_cvalues(pccs, nreps)
 
     return(
       structure(
@@ -158,7 +158,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       subgroup_dat <- dat[idx,]
       subgroup_mat <- as.matrix(subgroup_dat)
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
-      subgroup_cvalues <- c_calc_cvalues(subgroup_pccs, nreps)
+      subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps)
 
       group_pccs[i] <- subgroup_pccs$group_pcc
       correct_pairs <- correct_pairs + subgroup_pccs$correct_pairs

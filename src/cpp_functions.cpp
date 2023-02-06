@@ -28,8 +28,9 @@ using namespace cpp11;
 [[cpp11::register]]
 void fun() {}
 
+
 // [[Rcpp::export]]
-NumericVector c_conform(NumericVector xs, NumericVector h) {
+NumericVector conform(NumericVector xs, NumericVector h) {
   int count{};
   for (double x : xs) {
     std::isnan(x) ? count : count++;
@@ -45,6 +46,7 @@ NumericVector c_conform(NumericVector xs, NumericVector h) {
   return h_trimmed;
 }
 
+
 /*
 Returns the sign of every element of a vector conditional on a
 user-supplied difference threshold diff_threshold.
@@ -58,7 +60,7 @@ built-in sign() function when diff_threshold = 0.
 @return an int from the set {1, 0, -1}.
 */
 // [[Rcpp::export]]
-IntegerVector c_sign_with_threshold(NumericVector xs, double diff_threshold) {
+IntegerVector sign_with_threshold(NumericVector xs, double diff_threshold) {
   IntegerVector sign_vector(xs.length());
   for (int i = 0; i < xs.length(); i++) {
     if (is_na(xs[i])) {
@@ -85,7 +87,7 @@ has length equal to the Nth-1 triangular number, calculated as (N-1 * N) / 2.
 @return a NumericVector.
 */
 // [[Rcpp::export]]
-NumericVector c_all_diffs(NumericVector xs) {
+NumericVector all_diffs(NumericVector xs) {
   // Initialize variables
   int count{0};
   // Calculate the length of the vector as the Nth-1 triangular number
@@ -107,8 +109,8 @@ NumericVector c_all_diffs(NumericVector xs) {
 /* 
 Generate pairwise ordinal relations from a vector, consisting of integers
 from the set {1, 0, -1}. When the pairing_type = "adjacent" option is used,
-calling c_ordering() on a vector of length N produces a vector of length N-1.
-When the pairing_type = "pairwise" option is used, calling c_ordering() on an
+calling ordering() on a vector of length N produces a vector of length N-1.
+When the pairing_type = "pairwise" option is used, calling ordering() on an
 N-length vector returns a vector of length ((N-1) * N)/2
 @param xs, a NumericVector.
 @param pairing_type, a String, either "adjacent" or "pairwise".
@@ -116,19 +118,19 @@ N-length vector returns a vector of length ((N-1) * N)/2
 @return an IntegerVector.
 */
 // [[Rcpp::export]]
-IntegerVector c_ordering(NumericVector xs, String pairing_type, float diff_threshold) {
+IntegerVector ordering(NumericVector xs, String pairing_type, float diff_threshold) {
   if (pairing_type == "pairwise")
-    return(c_sign_with_threshold(c_all_diffs(xs), diff_threshold));
+    return(sign_with_threshold(all_diffs(xs), diff_threshold));
   else
-    return c_sign_with_threshold(diff(xs), diff_threshold);
+    return sign_with_threshold(diff(xs), diff_threshold);
 }
 
 
 // [[Rcpp::export]]
-List c_row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff_threshold) {
-  NumericVector hypothesis_no_nas = c_conform(xs, h);
-  IntegerVector hypothesis_ordering = c_ordering(hypothesis_no_nas, pairing_type, 0);
-  IntegerVector row_ordering = c_ordering(na_omit(xs), pairing_type, diff_threshold);
+List row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff_threshold) {
+  NumericVector hypothesis_no_nas = conform(xs, h);
+  IntegerVector hypothesis_ordering = ordering(hypothesis_no_nas, pairing_type, 0);
+  IntegerVector row_ordering = ordering(na_omit(xs), pairing_type, diff_threshold);
   LogicalVector match(row_ordering.length());
   for (int i = 0; i < row_ordering.length(); i++) {
     match[i] = row_ordering[i] == hypothesis_ordering[i];
@@ -136,13 +138,43 @@ List c_row_pcc(NumericVector xs, NumericVector h, String pairing_type, double di
   int n_pairs = match.length();
   int correct_pairs = sum(match);
   double pcc = (correct_pairs/(double)n_pairs) * 100;
-  List out = List::create(Named("n_pairs") = n_pairs, _["correct_pairs"] = correct_pairs, _["pcc"] = pcc);
+  List out = List::create(_["n_pairs"] = n_pairs,
+                          _["correct_pairs"] = correct_pairs,
+                          _["pcc"] = pcc);
   return out;
 }
 
 
 // [[Rcpp::export]]
-List c_calc_cvalues(List pcc_out, int nreps) {
+List pcc(NumericMatrix dat, NumericVector h, String pairing_type, double diff_threshold) {
+  NumericVector individual_pccs(dat.nrow());
+  int total_pairs{};
+  int correct_pairs{};
+
+  for (int r{}; r < dat.nrow(); r++) {
+    List result = row_pcc(dat(r,_), h, pairing_type, diff_threshold);
+    int result_n_pairs = result["n_pairs"];
+    int result_correct_pairs = result["correct_pairs"];
+
+    individual_pccs[r] = result["pcc"];
+    total_pairs += result_n_pairs;
+    correct_pairs += result_correct_pairs;
+  }
+  double group_pcc = (correct_pairs / (double)total_pairs) * 100;
+  List out = List::create(_["group_pcc"] = group_pcc,
+                          _["individual_pccs"] = individual_pccs,
+                          _["total_pairs"] = total_pairs,
+                          _["correct_pairs"] = correct_pairs,
+                          _["data"] = dat,
+                          _["hypothesis"] = h,
+                          _["pairing_type"] = pairing_type,
+                          _["diff_threshold"] = diff_threshold);
+  return out;
+}
+
+
+// [[Rcpp::export]]
+List calc_cvalues(List pcc_out, int nreps) {
   NumericMatrix dat = pcc_out["data"];
   NumericVector hypothesis = pcc_out["hypothesis"];
   String pairing_type = pcc_out["pairing_type"];
@@ -161,7 +193,7 @@ List c_calc_cvalues(List pcc_out, int nreps) {
     for (int j = 0; j < dat.nrow(); j++) {
       NumericMatrix::Row current_row = dat(j,_);
       std::shuffle(current_row.begin(), current_row.end(), g);
-      List rand_row_pcc = c_row_pcc(current_row, hypothesis, pairing_type, diff_threshold);
+      List rand_row_pcc = row_pcc(current_row, hypothesis, pairing_type, diff_threshold);
       double rand_indiv_pcc = rand_row_pcc["pcc"];
       rand_indiv_pccs[j] = rand_indiv_pcc;
       if (rand_indiv_pccs[j] >= individual_pccs[j]) {
@@ -176,6 +208,7 @@ List c_calc_cvalues(List pcc_out, int nreps) {
 
   double group_cval = sum(rand_group_pccs >= obs_group_pcc) / double(nreps);
 
-  List out = List::create(Named("group_cval") = group_cval, _["individual_cvals"] = individual_cvals);
+  List out = List::create(_["group_cval"] = group_cval, 
+                          _["individual_cvals"] = individual_cvals);
   return out;
 }
