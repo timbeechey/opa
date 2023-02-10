@@ -105,6 +105,11 @@
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, nreps = 1000L) {
   # verify the arguments
+  if (!is.null(group)) {
+    stopifnot("There must be at least 2 groups"= length(group) >= 2)
+    stopifnot("The groups vector must contain 1 item per data row"= length(group) == dim(dat)[1])
+  }
+  stopifnot("Data must be passed to opa() in a data.frame"= is.data.frame(dat))
   stopifnot("Hypothesis and data rows are not the same length"= dim(dat)[2] == length(hypothesis))
   stopifnot("pairing_type must be 'pairwise' or 'adjacent'"= pairing_type %in% c("pairwise", "adjacent"))
   stopifnot("diff_threshold must be a number"= class(diff_threshold) %in% c("integer", "numeric"))

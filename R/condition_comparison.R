@@ -47,6 +47,9 @@ compare_conditions.default <- function(result, nreps = 1000L, digits = 3L) .NotY
 
 #' @export
 compare_conditions.opafit <- function(result, nreps = 1000L, digits = 3L) {
+  
+  stopifnot("The object passed to compare_conditions() must be of class opafit"= class(result) == "opafit")
+
   dat <- result$data
   n_condition_pairs <- ((ncol(dat) - 1) * ncol(dat)) / 2
   pccs <- numeric(n_condition_pairs)

@@ -138,10 +138,9 @@ List row_pcc(NumericVector xs, NumericVector h, String pairing_type, double diff
   int n_pairs = match.length();
   int correct_pairs = sum(match);
   double pcc = (correct_pairs/(double)n_pairs) * 100;
-  List out = List::create(_["n_pairs"] = n_pairs,
-                          _["correct_pairs"] = correct_pairs,
-                          _["pcc"] = pcc);
-  return out;
+  return List::create(_["n_pairs"] = n_pairs,
+                      _["correct_pairs"] = correct_pairs,
+                      _["pcc"] = pcc);
 }
 
 
@@ -161,15 +160,14 @@ List pcc(NumericMatrix dat, NumericVector h, String pairing_type, double diff_th
     correct_pairs += result_correct_pairs;
   }
   double group_pcc = (correct_pairs / (double)total_pairs) * 100;
-  List out = List::create(_["group_pcc"] = group_pcc,
-                          _["individual_pccs"] = individual_pccs,
-                          _["total_pairs"] = total_pairs,
-                          _["correct_pairs"] = correct_pairs,
-                          _["data"] = dat,
-                          _["hypothesis"] = h,
-                          _["pairing_type"] = pairing_type,
-                          _["diff_threshold"] = diff_threshold);
-  return out;
+  return List::create(_["group_pcc"] = group_pcc,
+                      _["individual_pccs"] = individual_pccs,
+                      _["total_pairs"] = total_pairs,
+                      _["correct_pairs"] = correct_pairs,
+                      _["data"] = dat,
+                      _["hypothesis"] = h,
+                      _["pairing_type"] = pairing_type,
+                      _["diff_threshold"] = diff_threshold);
 }
 
 
@@ -185,10 +183,10 @@ List calc_cvalues(List pcc_out, int nreps) {
   NumericVector rand_group_pccs(nreps);
   IntegerVector indiv_rand_pcc_geq_obs_pcc(dat.nrow());
   NumericVector individual_cvals(dat.nrow());
-  std::random_device rd;
-  std::mt19937 g(rd());
+  std::mt19937 g;
 
   for (int i{}; i < nreps; i++) {
+    Rcpp::checkUserInterrupt();
     NumericVector rand_indiv_pccs(dat.nrow());
     for (int j{}; j < dat.nrow(); j++) {
       NumericMatrix::Row current_row = dat(j,_);
@@ -208,7 +206,6 @@ List calc_cvalues(List pcc_out, int nreps) {
 
   double group_cval = sum(rand_group_pccs >= obs_group_pcc) / double(nreps);
 
-  List out = List::create(_["group_cval"] = group_cval, 
-                          _["individual_cvals"] = individual_cvals);
-  return out;
+  return List::create(_["group_cval"] = group_cval, 
+                      _["individual_cvals"] = individual_cvals);
 }
