@@ -207,5 +207,6 @@ List calc_cvalues(List pcc_out, int nreps) {
   double group_cval = sum(rand_group_pccs >= obs_group_pcc) / double(nreps);
 
   return List::create(_["group_cval"] = group_cval, 
-                      _["individual_cvals"] = individual_cvals);
+                      _["individual_cvals"] = individual_cvals,
+                      _["rand_pccs"] = rand_group_pccs);
 }

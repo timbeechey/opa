@@ -134,6 +134,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
              total_pairs = pccs$total_pairs,
              group_cval = cvalues$group_cval,
              individual_cvals = cvalues$individual_cvals,
+             rand_pccs = cvalues$rand_pccs,
              call = match.call(),
              hypothesis = hypothesis,
              pairing_type = pairing_type,
@@ -158,12 +159,16 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
     pcc_replicates <- vector(nlevels(group), mode="list")
     cond_pccs <- vector(nlevels(group), mode="list")
 
+    group_rand_pccs <- data.frame(n = 1:nreps)
+
     for (i in 1:nlevels(group)) {
       idx <- which(group == groups[i])
       subgroup_dat <- dat[idx,]
       subgroup_mat <- as.matrix(subgroup_dat)
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
       subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps)
+
+      group_rand_pccs[groups[i]] <- subgroup_cvalues$rand_pccs
 
       group_pccs[i] <- subgroup_pccs$group_pcc
       correct_pairs <- correct_pairs + subgroup_pccs$correct_pairs
@@ -186,6 +191,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
              total_pairs = total_pairs,
              group_cval = group_cvals,
              individual_cvals = individual_cvals,
+             group_rand_pccs = group_rand_pccs,
              individual_idx = individual_idx,
              group_labels = group_labels_vec,
              call = match.call(),

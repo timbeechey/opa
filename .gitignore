@@ -6,4 +6,4 @@ inst/doc
 /doc/
 /Meta/
 TODO.md
-^.DS\_Store
+.DS\_Store
