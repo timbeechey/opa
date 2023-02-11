@@ -1,26 +1,28 @@
 set.seed(22)
 
-test_dat <- data.frame(t1 = c(1, 3, 1, 1),
+test_dat <- data.frame(group = c("a", "b", "a", "b"),
+                       t1 = c(1, 3, 1, 1),
                        t2 = c(2, 2, 1, 2),
                        t3 = c(4, 1, 1, 1))
+test_dat$group = factor(test_dat$group, levels = c("a", "b"))
 
 test_dat_all_wrong <- data.frame(t1 = c(3, 2, 1),
                                  t2 = c(3, 2, 1),
                                  t3 = c(3, 2, 1))
 
-opamod1 <- opa(test_dat,
+opamod1 <- opa(test_dat[,2:4],
                1:3,
                pairing_type = "pairwise")
 
-opamod1a <- opa(test_dat,
+opamod1a <- opa(test_dat[,2:4],
                c(3, 1, 2),
                pairing_type = "pairwise")
 
-opamod2 <- opa(test_dat,
+opamod2 <- opa(test_dat[,2:4],
                1:3,
                pairing_type = "adjacent")
 
-opamod3 <- opa(test_dat,
+opamod3 <- opa(test_dat[,2:4],
                1:3,
                pairing_type = "pairwise",
                diff_threshold = 1)
@@ -28,12 +30,20 @@ opamod3 <- opa(test_dat,
 opamod4 <- opa(test_dat_all_wrong,
                1:3)
 
+opamod5 <- opa(test_dat[,2:4],
+               1:3,
+               group = test_dat$group,
+               pairing_type = "pairwise")
+
 pw1 <- compare_conditions(opamod1)
 
 # compare group PCCs from 2 different hypotheses
 ch1 <- compare_hypotheses(opamod1, opamod1a)
 # compare model to itself to produce PCC=0, cval=1
 ch2 <- compare_hypotheses(opamod1, opamod1)
+
+# compare subgroup pccs
+group_comp <- compare_groups(opamod5, "a", "b")
 
 # test pairwise opa works
 expect_equal(opamod1$total_pairs, 12)
@@ -76,7 +86,11 @@ expect_equal(as.double(pw1$cval[3,1]), 0.775)
 expect_equal(as.double(pw1$cval[3,2]), 0.887)
 
 # check hypothesis comparisons work
-expect_equal(round(ch1$pcc, 2), 8.33)
+expect_equal(round(ch1$pcc_diff, 2), 8.33)
 expect_equal(round(ch1$cval, 2), 0.93)
-expect_equal(round(ch2$pcc, 2), 0)
+expect_equal(round(ch2$pcc_diff, 2), 0)
 expect_equal(round(ch2$cval, 2), 1)
+
+# check subgroup comparisons work
+expect_equal(round(group_comp$pcc_diff, 2), 33.33)
+expect_equal(round(group_comp$cval, 2), 0.38)

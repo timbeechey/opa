@@ -68,6 +68,7 @@ print.opafit <- function(x, ...) {
 #' pcc_plot(opamod, threshold = 85)
 #' @export
 pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
+  old_par <- par()
   if (is.null(m$groups)) {
     par(mar = c(4, 4, 2, 1)) # no legend for single group
     plot_dat <- data.frame(group = rep(1, length(m$individual_pccs)),
@@ -121,6 +122,7 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
              xpd = TRUE, inset = c(-0.3, 0))
     }
   }
+  par(mar = old_par$mar)
 }
 
 
@@ -139,6 +141,7 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 #' cval_plot(opamod, threshold = 0.1)
 #' @export
 cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
+  old_par <- par()
   if (is.null(m$groups)) {
     par(mar = c(4, 4, 2, 1))
     plot_dat <- data.frame(group = rep(1, length(m$individual_cvals)),
@@ -193,6 +196,7 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
              xpd = TRUE, inset = c(-0.3, 0))
     }
   }
+  par(mar = old_par$mar)
 }
 
 
@@ -210,6 +214,7 @@ cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 #' plot(opamod)
 #' @export
 plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
+  old_par <- par()
   if (is.null(x$groups)) {
     par(mfrow = c(1, 2))
     pcc_plot(x, threshold = pcc_threshold)
@@ -226,6 +231,7 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
            pch=21, pt.bg = x$groups, cex=1)
     par(mfrow = c(1, 1))
   }
+  par(mar = old_par$mar)
 }
 
 

@@ -36,9 +36,6 @@ An object of class "opafit" is a list containing the folllowing components:
   \item{individual_pccs}{a vector containing the percentage of pairwise
   orderings that were correctly classified by the hypothesis for each data
   row.}
-  \item{condition_pccs}{a matrix containing PCCs for each pair of
-  conditions, or a list containing such a matrix for each group level if a
-  grouping variable is passed to \code{opa}}
   \item{correct_pairs}{an integer representing the number of pairwise
   orderings pooled across all data rows that were correctly classified by the
   hypothesis.}
@@ -47,13 +44,21 @@ An object of class "opafit" is a list containing the folllowing components:
   \item{group_cval}{the group-level chance value.}
   \item{individual_cvals}{a vector containing chance values for each data
   row}
-  \item{n_permutations}{an integer, the number of permutations of the data
+  \item{rand_pccs}{A vector of PCCS calculated from each random ordering
+  with length equal to nreps, a list of vectors if a \code{group} vector
+  was passed to \code{opa()}.}
+  \item{call}{The matched call}
+  \item{hypothesis}{The hypothesis vector passed to \code{opa()}}
+  \item{pairing_type}{A string indicating the method of pairing passed
+  to \code{opa()}.}
+  \item{diff_threshold}{The numeric difference threshold used to calculate
+  PCCs. If no value was passed in the \code{diff_threshold}, the default of
+  0 is used.}
+  \item{data}{The data.frame passed to \code{opa()}.}
+  \item{groups}{The vector of groups passed to \code{opa}. If no group vector
+  was passed the default of NULL is used.}
+  \item{nreps}{an integer, the number of random reorderins of the data
   used to compute chance values.}
-  \item{pccs_geq_observed}{an integer, the number of permutations which
-  generated PCC values at least as great as the PCC of the observed data.}
-  \item{pcc_replicates}{a matrix containing PCC values, one column per data
-  row, computed from all permutations used to compute chance values. }
-  \item{call}{the matched call}
   }
 }
 \description{
