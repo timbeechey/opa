@@ -25,10 +25,6 @@
 using namespace Rcpp;
 using namespace cpp11;
 
-[[cpp11::register]]
-void fun() {}
-
-
 // [[Rcpp::export]]
 NumericVector conform(NumericVector xs, NumericVector h) {
   int count{};
