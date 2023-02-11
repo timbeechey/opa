@@ -186,12 +186,6 @@ Along with the c-value of the difference:
 group_comp$cval
 ```
 
-The distribution of PCC differences used to calculate the group difference c-value can also then be plotted:
-
-```{r}
-hist(group_comp$pcc_diff_dist, xlab = "PCC Difference")
-```
-
 ## Acknowledgements
 
 Development of `opa` was supported by a [Medical Research Foundation](https://www.medicalresearchfoundation.org.uk/) Fellowship (MRF-049-0004-F-BEEC-C0899).
