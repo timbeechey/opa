@@ -166,6 +166,32 @@ Similarly, plotting the output shows individual PCCs and c-values by group.
 plot(opamod2)
 ```
 
+### Comparing fit by group
+
+The chance-value of the difference in group-level PCCs between any two groups can be calculated using the `compare_groups()` function.
+
+```{r compare_groups}
+group_comp <- compare_groups(opamod2, "A", "B")
+```
+
+The difference in group-level PCCs can then be checked:
+
+```{r}
+group_comp$pcc_diff
+```
+
+Along with the c-value of the difference:
+
+```{r}
+group_comp$cval
+```
+
+The distribution of PCC differences used to calculate the group difference c-value can also then be plotted:
+
+```{r}
+hist(group_comp$pcc_diff_dist, xlab = "PCC Difference")
+```
+
 ## Acknowledgements
 
 Development of `opa` was supported by a [Medical Research Foundation](https://www.medicalresearchfoundation.org.uk/) Fellowship (MRF-049-0004-F-BEEC-C0899).
