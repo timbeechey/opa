@@ -153,14 +153,6 @@ matches each individual pattern of results in `dat` can be fitted using:
 opamod <- opa(dat, h)
 ```
 
-Specifying `cval_method = "exact"` computes chance values using a
-permutation test which considers every possible ordering of the data to
-determine the exact chance of a PCC at least as high as the PCC of the
-observed data. Specifying instead `cval_method = "stochastic"` computes
-chance values based on PCCs computed from a set of random orderings of
-the data. The number of random orderings to consider can be specified
-with the `nreps` argument which defaults to `1000L`.
-
 A summary of the model output can be viewed using:
 
 ``` r
@@ -173,29 +165,29 @@ summary(opamod)
 #> 
 #> Within subjects results:
 #>       PCC cval
-#> 1  100.00 0.04
-#> 2  100.00 0.03
-#> 3   83.33 0.17
-#> 4  100.00 0.05
-#> 5  100.00 0.05
-#> 6   83.33 0.17
-#> 7  100.00 0.04
+#> 1  100.00 0.05
+#> 2  100.00 0.04
+#> 3   83.33 0.18
+#> 4  100.00 0.04
+#> 5  100.00 0.04
+#> 6   83.33 0.16
+#> 7  100.00 0.03
 #> 8  100.00 0.04
 #> 9  100.00 0.04
-#> 10  83.33 0.19
-#> 11 100.00 0.06
-#> 12  66.67 0.37
-#> 13 100.00 0.04
-#> 14  83.33 0.18
-#> 15  83.33 0.17
-#> 16 100.00 0.04
-#> 17 100.00 0.04
+#> 10  83.33 0.17
+#> 11 100.00 0.04
+#> 12  66.67 0.38
+#> 13 100.00 0.03
+#> 14  83.33 0.17
+#> 15  83.33 0.20
+#> 16 100.00 0.05
+#> 17 100.00 0.05
 #> 18  83.33 0.17
-#> 19 100.00 0.04
+#> 19 100.00 0.03
 #> 20 100.00 0.05
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-#> Chance-values were calculated using the stochastic method.
+#> Chance-values were calculated using the method.
 ```
 
 Individual-level model output can be plotted using:
@@ -206,8 +198,8 @@ plot(opamod)
 
 <img src="man/figures/README-plot_opamod1-1.png" style="display: block; margin: auto;" />
 
-To aid in visual interpretation, individual PCCs and c-values can also
-be plotted relative to user-specified thresholds:
+To aid interpretation, individual PCCs and c-values can also be plotted
+relative to user-specified thresholds:
 
 ``` r
 pcc_plot(opamod, threshold = 90)
@@ -234,9 +226,9 @@ condition_comparisons$pccs
 condition_comparisons$cvals
 #>        1      2      3 4
 #> 1      -      -      - -
-#> 2 <0.001      -      - -
+#> 2  0.001      -      - -
 #> 3 <0.001 <0.001      - -
-#> 4 <0.001  0.002 <0.001 -
+#> 4 <0.001  0.005 <0.001 -
 ```
 
 ### Multiple groups
@@ -261,35 +253,35 @@ summary(opamod2, digits = 3)
 #> Between subjects results:
 #>       PCC  cval
 #> A 100.000 0.000
-#> B  86.667 0.001
+#> B  86.667 0.000
 #> C  93.333 0.000
-#> D  93.333 0.000
+#> D  93.333 0.001
 #> 
 #> Within subjects results:
 #>   Individual     PCC  cval
-#> A          1 100.000 0.042
-#> A          5 100.000 0.044
-#> A          9 100.000 0.041
-#> A         13 100.000 0.041
-#> A         17 100.000 0.044
-#> B          2 100.000 0.049
-#> B          6  83.333 0.177
-#> B         10  83.333 0.160
-#> B         14  83.333 0.166
-#> B         18  83.333 0.154
-#> C          3  83.333 0.184
-#> C          7 100.000 0.047
-#> C         11 100.000 0.035
-#> C         15  83.333 0.149
-#> C         19 100.000 0.037
-#> D          4 100.000 0.040
-#> D          8 100.000 0.043
-#> D         12  66.667 0.374
-#> D         16 100.000 0.034
-#> D         20 100.000 0.039
+#> A          1 100.000 0.047
+#> A          5 100.000 0.046
+#> A          9 100.000 0.048
+#> A         13 100.000 0.040
+#> A         17 100.000 0.038
+#> B          2 100.000 0.047
+#> B          6  83.333 0.167
+#> B         10  83.333 0.163
+#> B         14  83.333 0.154
+#> B         18  83.333 0.163
+#> C          3  83.333 0.165
+#> C          7 100.000 0.046
+#> C         11 100.000 0.048
+#> C         15  83.333 0.154
+#> C         19 100.000 0.038
+#> D          4 100.000 0.047
+#> D          8 100.000 0.046
+#> D         12  66.667 0.366
+#> D         16 100.000 0.040
+#> D         20 100.000 0.038
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-#> Chance-values were calculated using the stochastic method.
+#> Chance-values were calculated using the method.
 ```
 
 Similarly, plotting the output shows individual PCCs and c-values by

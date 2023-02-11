@@ -113,8 +113,6 @@ An ordinal pattern analysis model to consider how the hypothesis `h` matches eac
 opamod <- opa(dat, h)
 ```
 
-Specifying `cval_method = "exact"` computes chance values using a permutation test which considers every possible ordering of the data to determine the exact chance of a PCC at least as high as the PCC of the observed data. Specifying instead `cval_method = "stochastic"` computes chance values based on PCCs computed from a set of random orderings of the data. The number of random orderings to consider can be specified with the `nreps` argument which defaults to `1000L`.
-
 A summary of the model output can be viewed using:
 
 ```{r summary1}
@@ -127,7 +125,7 @@ Individual-level model output can be plotted using:
 plot(opamod)
 ```
 
-To aid in visual interpretation, individual PCCs and c-values can also be plotted relative to user-specified thresholds:
+To aid interpretation, individual PCCs and c-values can also be plotted relative to user-specified thresholds:
 
 ```{r threshold_plots, fig.width=5, fig.height=5, fig.align="center", fig.show="hold", out.width="50%"}
 pcc_plot(opamod, threshold = 90)
