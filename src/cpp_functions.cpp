@@ -18,12 +18,10 @@
 
 
 #include <Rcpp.h>
-#include <cpp11.hpp>
 #include <algorithm>
 #include <random>
 
 using namespace Rcpp;
-using namespace cpp11;
 
 // [[Rcpp::export]]
 NumericVector conform(NumericVector xs, NumericVector h) {
@@ -59,7 +57,7 @@ built-in sign() function when diff_threshold = 0.
 IntegerVector sign_with_threshold(NumericVector xs, double diff_threshold) {
   IntegerVector sign_vector(xs.length());
   for (int i{}; i < xs.length(); i++) {
-    if (is_na(xs[i])) {
+    if (NumericVector::is_na(xs[i])) {
         sign_vector[i] = NA_INTEGER;
     } else if (xs[i] > diff_threshold) {
         sign_vector[i] = 1;

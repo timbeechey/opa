@@ -81,7 +81,7 @@ Any \emph{independent} variable must be passed separately as a vector with the
 \code{pairing_type} must be either "pairwise" or "adjacent". The "pairwise"
 option considered the relative ordering of every pair of observations in
 the data and every pair of elements of the hypothesis. The "adjacent" option
-considered the ordering of adjacent pairs only. If unspecified, the default
+considers the ordering of adjacent pairs only. If unspecified, the default
 is "pairwise".
 
 \code{diff_threshold} may be a positive integer or double. If unspecified
