@@ -92,9 +92,42 @@ expect_equal(as.double(pw1$pcc[3,2]), 25)
 # check hypothesis comparisons work
 # expect_equal(round(ch1$pcc_diff, 2), 8.33)
 # expect_equal(round(ch1$cval, 2), 0.93)
-# expect_equal(round(ch2$pcc_diff, 2), 0)
-# expect_equal(round(ch2$cval, 2), 1)
+expect_equal(round(ch2$pcc_diff, 2), 0)
+expect_equal(round(ch2$cval, 2), 1)
 
 # check subgroup comparisons work
 # expect_equal(round(group_comp$pcc_diff, 2), 33.33)
 # expect_equal(round(group_comp$cval, 2), 0.38)
+
+# check that missing values are handled correctly
+expect_equal(opa:::conform(c(NA, 2, 3, 4), c(1, 2, 3, 4)), c(2, 3, 4))
+expect_equal(opa:::conform(c(1, NA, 3, 4), c(1, 2, 3, 4)), c(1, 3, 4))
+expect_equal(opa:::conform(c(1, 2, NA, 4), c(1, 2, 3, 4)), c(1, 2, 4))
+expect_equal(opa:::conform(c(1, 2, 3, NA), c(1, 2, 3, 4)), c(1, 2, 3))
+expect_equal(opa:::conform(c(1, 2, 3, 4), c(1, 2, 3, 4)), c(1, 2, 3, 4))
+expect_equal(opa:::conform(c(NA, NA, 3, 4), c(1, 2, 3, 4)), c(3, 4))
+expect_equal(opa:::conform(c(NA, 2, NA, NA), c(1, 2, 3, 4)), c(2))
+
+# check that ordering() works
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "pairwise", 0), c(1, 1, 1, 1, 1, 1))
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "pairwise", 1), c(0, 1, 1, 0, 1, 0))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "pairwise", 0), c(-1, -1, -1, 1, -1, -1))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "pairwise", 1), c(-1, 0, -1, 1, 0, -1))
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "adjacent", 0), c(1, 1, 1))
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "adjacent", 1), c(0, 0, 0))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "adjacent", 0), c(-1, 1, -1))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "adjacent", 1), c(-1, 1, -1))
+
+expect_equal(opa:::sign_with_threshold(3, 0), 1)
+expect_equal(opa:::sign_with_threshold(-2, 0), -1)
+expect_equal(opa:::sign_with_threshold(3, 1), 1)
+expect_equal(opa:::sign_with_threshold(-2, 1), -1)
+expect_equal(opa:::sign_with_threshold(0.3, 1), 0)
+expect_equal(opa:::sign_with_threshold(-0.2, 1), 0)
+
+expect_equal(opa:::all_diffs(c(1, 2, 3, 4)), c(1, 2, 3, 1, 2, 1))
+
+expect_equal(opa:::row_pcc(c(2, 4, 6, 8), c(1, 2, 3, 4), "pairwise", 0), list(n_pairs = 6, correct_pairs = 6, pcc = 100.0))
+expect_equal(opa:::row_pcc(c(2, 1, 6, 8), c(1, 2, 3, 4), "pairwise", 0), list(n_pairs = 6, correct_pairs = 5, pcc = (5/6)*100))
+expect_equal(opa:::row_pcc(c(2, 4, 6, 8), c(1, 2, 3, 4), "adjacent", 0), list(n_pairs = 3, correct_pairs = 3, pcc = 100.0))
+expect_equal(opa:::row_pcc(c(2, 1, 6, 8), c(1, 2, 3, 4), "adjacent", 0), list(n_pairs = 3, correct_pairs = 2, pcc = (2/3)*100))
