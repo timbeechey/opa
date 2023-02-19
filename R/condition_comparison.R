@@ -17,16 +17,17 @@
 
 #' Calculates PCCs and c-values based on pairwise comparison of conditions.
 #' @param result an object of class "opafit" produced by a call to opa().
-#' @param nreps an integer, ignored if \code{cval_method = "exact"}
-#' @param digits an integer indicating how many decimal places to round values.
+#' @param nreps an integer
 #' @return \code{compare_conditions} returns a list with the following elements
 #'
 #' \describe{
-#'   \item{pccs}{An upper triangle matrix containing PCCs calculated from each
-#'   pairing of data columns, indicated by the matrix row and column names.}
-#'   \item{cvals}{An upper triangle matrix containing c-values calculated from
-#'   each pairing of data columns, indicated by the matrix row and column
-#'   names.}
+#'   \item{pcc_mat}{An lower triangle matrix containing PCCs calculated from each
+#'   pairing of data columns.}
+#'   \item{cval_mat}{An lower triangle matrix containing c-values calculated from
+#'   each pairing of data columns.}
+#'   \item{pccs}{A vector containing PCCs calculated from each pairing of data.}
+#'   \item{cvals}{A vector containing c-values calculated from each pairing of data.}
+#'   \item{nreps}{The number of permutations used to calculate the c-values.}
 #'   }
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
@@ -36,17 +37,17 @@
 #' opamod <- opa(dat, 1:4)
 #' compare_conditions(opamod)
 #' @export
-compare_conditions <- function(result, nreps = 1000L, digits=3L) {
+compare_conditions <- function(result, nreps = 1000L) {
   UseMethod("compare_conditions")
 }
 
 
 #' @export
-compare_conditions.default <- function(result, nreps = 1000L, digits = 3L) .NotYetImplemented()
+compare_conditions.default <- function(result, nreps = 1000L) .NotYetImplemented()
 
 
 #' @export
-compare_conditions.opafit <- function(result, nreps = 1000L, digits = 3L) {
+compare_conditions.opafit <- function(result, nreps = 1000L) {
   
   stopifnot("The object passed to compare_conditions() must be of class opafit"= class(result) == "opafit")
 
@@ -72,22 +73,18 @@ compare_conditions.opafit <- function(result, nreps = 1000L, digits = 3L) {
       n <- n + 1 # iterate vector index
     }
   }
+
   # create upper triangle matrices for PCCs and cvalues for pairs of conditions
   pcc_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
   cval_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
   # assign PCCs and c-values to matrix lower triangles
-  pcc_mat[lower.tri(pcc_mat)] <- round(pccs, digits)
-  cval_mat[lower.tri(cval_mat)] <- round(cvals, digits)
-  # put "-" in empty cells in the upper triangle
-  pcc_mat[upper.tri(pcc_mat, diag = TRUE)] <- "-"
-  cval_mat[upper.tri(cval_mat, diag = TRUE)] <- "-"
-  # display 0s as < 1/nreps. e.g. if nreps=1000, display 0 as <0.001
-  cval_mat[cval_mat == "0"] <- paste0("<", toString(1/nreps))
-  # convert matrices to data.frames for pretty printing
-  pcc_df <- as.data.frame(pcc_mat)
-  cval_df <- as.data.frame(cval_mat)
-  # set column names to condition numbers
-  colnames(pcc_df) <- 1:ncol(pcc_df)
-  colnames(cval_df) <- 1:ncol(cval_df)
-  list(pccs = pcc_df, cvals = cval_df)
+  pcc_mat[lower.tri(pcc_mat)] <- pccs
+  cval_mat[lower.tri(cval_mat)] <- cvals
+  structure(
+    list(pccs_mat = pcc_mat,
+         cvals_mat = cval_mat,
+         pccs = pccs,
+         cvals = cvals,
+         nreps = nreps), 
+    class = "pairwiseopafit")
 }

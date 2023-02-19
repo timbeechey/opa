@@ -56,8 +56,8 @@ An object of class "opafit" is a list containing the folllowing components:
   0 is used.}
   \item{data}{The data.frame passed to \code{opa()}.}
   \item{groups}{The vector of groups passed to \code{opa}. If no group vector
-  was passed the default of NULL is used.}
-  \item{nreps}{an integer, the number of random reorderins of the data
+  was passed to \code{opa()} the default of NULL is used.}
+  \item{nreps}{an integer, the number of random re-orderings of the data
   used to compute chance values.}
   }
 }

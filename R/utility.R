@@ -43,10 +43,55 @@ summary.opafit <- function(object, ..., digits = 2L) {
   cat("\nPCCs were calculated for ", object$pairing_type,
       " ordinal relationships using a difference threshold of ", object$diff_threshold,
       ".\n", sep="")
-  cat("Chance-values were calculated using the", object$cval_method, "method.\n")
+  cat("Chance-values were calculated from", object$nreps, "random orderings.\n")
+}
+
+#' Displays the results of a pairwise ordinal pattern analysis.
+#' @param x an object of class "pairwiseopafit".
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' pw <- compare_conditions(opamod)
+#' print(pw)
+#' print(pw, digits = 2)
+#' @export 
+print.pairwiseopafit <- function(x, ...) {
+  disp_pcc_mat <- matrix(numeric(0), nrow = dim(x$pccs_mat)[1], ncol = dim(x$pccs_mat)[2])
+  disp_cval_mat <- matrix(numeric(0), nrow = dim(x$cvals_mat)[1], ncol = dim(x$cvals_mat)[2])
+  disp_pcc_mat[lower.tri(disp_pcc_mat)] <- round(x$pccs, 3)
+  disp_cval_mat[lower.tri(disp_cval_mat)] <- round(x$cvals, 3)
+  # put "-" in empty cells in the upper triangle
+  disp_pcc_mat[upper.tri(disp_pcc_mat, diag = TRUE)] <- "-"
+  disp_cval_mat[upper.tri(disp_cval_mat, diag = TRUE)] <- "-"
+  # display 0s as < 1/nreps. e.g. if nreps=1000, display 0 as <0.001
+  disp_cval_mat[disp_cval_mat == "0"] <- paste0("<", toString(1/x$nreps))
+  # convert matrices to data.frames for pretty printing
+  pcc_df <- as.data.frame(disp_pcc_mat)
+  cval_df <- as.data.frame(disp_cval_mat)
+  # set column names to condition numbers
+  colnames(pcc_df) <- 1:ncol(pcc_df)
+  colnames(cval_df) <- 1:ncol(cval_df)
+  cat("Pairwise PCCs:\n")
+  print(pcc_df)
+  cat("\nPairwise chance values:\n")
+  print(cval_df)
 }
 
 
+#' Displays the call used to fit an ordinal pattern analysis model.
+#' @param x an object of class "opafit".
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' print(opamod)
 #' @export
 print.opafit <- function(x, ...) {
   print(x$call)

@@ -4,24 +4,24 @@
 \alias{compare_conditions}
 \title{Calculates PCCs and c-values based on pairwise comparison of conditions.}
 \usage{
-compare_conditions(result, nreps = 1000L, digits = 3L)
+compare_conditions(result, nreps = 1000L)
 }
 \arguments{
 \item{result}{an object of class "opafit" produced by a call to opa().}
 
-\item{nreps}{an integer, ignored if \code{cval_method = "exact"}}
-
-\item{digits}{an integer indicating how many decimal places to round values.}
+\item{nreps}{an integer}
 }
 \value{
 \code{compare_conditions} returns a list with the following elements
 
 \describe{
-  \item{pccs}{An upper triangle matrix containing PCCs calculated from each
-  pairing of data columns, indicated by the matrix row and column names.}
-  \item{cvals}{An upper triangle matrix containing c-values calculated from
-  each pairing of data columns, indicated by the matrix row and column
-  names.}
+  \item{pcc_mat}{An lower triangle matrix containing PCCs calculated from each
+  pairing of data columns.}
+  \item{cval_mat}{An lower triangle matrix containing c-values calculated from
+  each pairing of data columns.}
+  \item{pccs}{A vector containing PCCs calculated from each pairing of data.}
+  \item{cvals}{A vector containing c-values calculated from each pairing of data.}
+  \item{nreps}{The number of permutations used to calculate the c-values.}
   }
 }
 \description{
