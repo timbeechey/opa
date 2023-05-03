@@ -125,8 +125,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
   stopifnot("diff_threshold must be a single number"= length(diff_threshold) == 1)
 
   if (is.null(group)) { # single groups
-    # convert the data.frame input to a matrix for speed
-    mat <- as.matrix(dat)
+    mat <- as.matrix(dat) # data must be a matrix
 
     pccs <- pcc(mat, hypothesis, pairing_type, diff_threshold)
     cvalues <- calc_cvalues(pccs, nreps)

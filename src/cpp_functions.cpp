@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppArmadillo.h>
-#include <RcppArmadilloExtensions/sample.h>
 using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 
@@ -120,9 +119,9 @@ Rcpp::List row_pcc(arma::rowvec xs, arma::vec h, std::string pairing_type, doubl
     auto n_pairs {match.n_elem};
     auto correct_pairs {arma::accu(match)};
     auto pcc {(correct_pairs/n_pairs) * 100};
-    return Rcpp::List::create(_["n_pairs"] = n_pairs,
-                              _["correct_pairs"] = correct_pairs,
-                              _["pcc"] = pcc);
+    return Rcpp::List::create(Rcpp::_["n_pairs"] = n_pairs,
+                              Rcpp::_["correct_pairs"] = correct_pairs,
+                              Rcpp::_["pcc"] = pcc);
 }
 
 
@@ -139,7 +138,7 @@ Rcpp::List pcc(arma::mat dat, arma::vec h, std::string pairing_type, double diff
     size_t total_pairs {};
     size_t correct_pairs {};
     
-    for (int r{}; r < dat.n_rows; r++) {
+    for (size_t r{}; r < dat.n_rows; r++) {
         Rcpp::List result = row_pcc(dat.row(r), h, pairing_type, diff_threshold);
         size_t result_n_pairs {result["n_pairs"]};
         size_t result_correct_pairs {result["correct_pairs"]};
@@ -151,14 +150,14 @@ Rcpp::List pcc(arma::mat dat, arma::vec h, std::string pairing_type, double diff
     
     auto group_pcc {(correct_pairs / (double)total_pairs) * 100};
     
-    return Rcpp::List::create(_["group_pcc"] = group_pcc,
-                              _["individual_pccs"] = individual_pccs,
-                              _["total_pairs"] = total_pairs,
-                              _["correct_pairs"] = correct_pairs,
-                              _["data"] = dat,
-                              _["hypothesis"] = h,
-                              _["pairing_type"] = pairing_type,
-                              _["diff_threshold"] = diff_threshold);
+    return Rcpp::List::create(Rcpp::_["group_pcc"] = group_pcc,
+                              Rcpp::_["individual_pccs"] = individual_pccs,
+                              Rcpp::_["total_pairs"] = total_pairs,
+                              Rcpp::_["correct_pairs"] = correct_pairs,
+                              Rcpp::_["data"] = dat,
+                              Rcpp::_["hypothesis"] = h,
+                              Rcpp::_["pairing_type"] = pairing_type,
+                              Rcpp::_["diff_threshold"] = diff_threshold);
 }
 
 
@@ -171,7 +170,7 @@ Rcpp::List pcc(arma::mat dat, arma::vec h, std::string pairing_type, double diff
 Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps) {
     arma::mat dat = pcc_out["data"];
     arma::vec hypothesis = pcc_out["hypothesis"];
-    std::string pairing_type {pcc_out["pairing_type"]};
+    Rcpp::String pairing_type {pcc_out["pairing_type"]};
     auto diff_threshold {pcc_out["diff_threshold"]};
     arma::vec individual_pccs = pcc_out["individual_pccs"];
     auto obs_group_pcc {pcc_out["group_pcc"]};
@@ -184,24 +183,22 @@ Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps) {
         Rcpp::checkUserInterrupt();
         arma::vec rand_indiv_pccs(dat.n_rows);
         for (size_t j {}; j < dat.n_rows; j++) {
-            arma::rowvec current_row = dat.row(j);
-            arma::rowvec rand_row = arma::shuffle(current_row);
-            List rand_row_pcc = row_pcc(rand_row, hypothesis, pairing_type, diff_threshold);
+            Rcpp::List rand_row_pcc = row_pcc(arma::shuffle(dat.row(j)), hypothesis, pairing_type, diff_threshold);
             auto rand_indiv_pcc {rand_row_pcc["pcc"]};
-            rand_indiv_pccs[j] = rand_indiv_pcc;
-            if (rand_indiv_pccs[j] >= individual_pccs[j]) {
-                indiv_rand_pcc_geq_obs_pcc[j] = indiv_rand_pcc_geq_obs_pcc[j] + 1;
+            rand_indiv_pccs(j) = rand_indiv_pcc;
+            if (rand_indiv_pccs(j) >= individual_pccs[j]) {
+                indiv_rand_pcc_geq_obs_pcc[j] += 1;
             }
         }
-        rand_group_pccs[i] = mean(rand_indiv_pccs);
+        rand_group_pccs[i] = arma::mean(rand_indiv_pccs);
     }
     for (size_t k {}; k < individual_cvals.n_elem; k++) {
-        individual_cvals[k] = double(indiv_rand_pcc_geq_obs_pcc[k]) / double(nreps);
+        individual_cvals[k] = indiv_rand_pcc_geq_obs_pcc[k] / double(nreps);
     }
     
-    auto group_cval = sum(rand_group_pccs >= obs_group_pcc) / double(nreps);
+    auto group_cval = arma::accu(rand_group_pccs >= obs_group_pcc) / double(nreps);
     
-    return List::create(_["group_cval"] = group_cval, 
-                        _["individual_cvals"] = individual_cvals,
-                        _["rand_pccs"] = rand_group_pccs);
+    return Rcpp::List::create(Rcpp::_["group_cval"] = group_cval, 
+                              Rcpp::_["individual_cvals"] = individual_cvals,
+                              Rcpp::_["rand_pccs"] = rand_group_pccs);
 }

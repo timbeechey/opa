@@ -88,12 +88,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_cvalues
-Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps);
+List calc_cvalues(List pcc_out, int nreps);
 RcppExport SEXP _opa_calc_cvalues(SEXP pcc_outSEXP, SEXP nrepsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type pcc_out(pcc_outSEXP);
+    Rcpp::traits::input_parameter< List >::type pcc_out(pcc_outSEXP);
     Rcpp::traits::input_parameter< int >::type nreps(nrepsSEXP);
     rcpp_result_gen = Rcpp::wrap(calc_cvalues(pcc_out, nreps));
     return rcpp_result_gen;
