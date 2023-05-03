@@ -165,29 +165,29 @@ summary(opamod)
 #> 
 #> Within subjects results:
 #>       PCC cval
-#> 1  100.00 0.05
-#> 2  100.00 0.04
-#> 3   83.33 0.18
-#> 4  100.00 0.04
-#> 5  100.00 0.04
-#> 6   83.33 0.16
-#> 7  100.00 0.03
-#> 8  100.00 0.04
-#> 9  100.00 0.04
-#> 10  83.33 0.17
-#> 11 100.00 0.04
-#> 12  66.67 0.38
-#> 13 100.00 0.03
-#> 14  83.33 0.17
-#> 15  83.33 0.20
-#> 16 100.00 0.05
-#> 17 100.00 0.05
-#> 18  83.33 0.17
-#> 19 100.00 0.03
-#> 20 100.00 0.05
+#> 1  100.00 0.14
+#> 2  100.00 0.10
+#> 3   83.33 0.12
+#> 4  100.00 0.14
+#> 5  100.00 0.11
+#> 6   83.33 0.14
+#> 7  100.00 0.12
+#> 8  100.00 0.12
+#> 9  100.00 0.13
+#> 10  83.33 0.13
+#> 11 100.00 0.13
+#> 12  66.67 0.50
+#> 13 100.00 0.12
+#> 14  83.33 0.13
+#> 15  83.33 0.12
+#> 16 100.00 0.11
+#> 17 100.00 0.12
+#> 18  83.33 0.12
+#> 19 100.00 0.11
+#> 20 100.00 0.11
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-#> Chance-values were calculated using the method.
+#> Chance-values were calculated from 1000 random orderings.
 ```
 
 Individual-level model output can be plotted using:
@@ -218,17 +218,9 @@ produced by a call to `opa()`:
 condition_comparisons <- compare_conditions(opamod)
 
 condition_comparisons$pccs
-#>     1   2  3 4
-#> 1   -   -  - -
-#> 2  90   -  - -
-#> 3 100 100  - -
-#> 4  95  80 95 -
+#> [1]  90 100  95 100  80  95
 condition_comparisons$cvals
-#>        1      2      3 4
-#> 1      -      -      - -
-#> 2  0.001      -      - -
-#> 3 <0.001 <0.001      - -
-#> 4 <0.001  0.005 <0.001 -
+#> [1] 0.000 0.000 0.000 0.000 0.002 0.000
 ```
 
 ### Multiple groups
@@ -251,37 +243,37 @@ summary(opamod2, digits = 3)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 #> 
 #> Between subjects results:
-#>       PCC  cval
-#> A 100.000 0.000
-#> B  86.667 0.000
-#> C  93.333 0.000
-#> D  93.333 0.001
+#>       PCC cval
+#> A 100.000    0
+#> B  86.667    0
+#> C  93.333    0
+#> D  93.333    0
 #> 
 #> Within subjects results:
 #>   Individual     PCC  cval
-#> A          1 100.000 0.047
-#> A          5 100.000 0.046
-#> A          9 100.000 0.048
-#> A         13 100.000 0.040
-#> A         17 100.000 0.038
-#> B          2 100.000 0.047
-#> B          6  83.333 0.167
-#> B         10  83.333 0.163
-#> B         14  83.333 0.154
-#> B         18  83.333 0.163
-#> C          3  83.333 0.165
-#> C          7 100.000 0.046
-#> C         11 100.000 0.048
-#> C         15  83.333 0.154
-#> C         19 100.000 0.038
-#> D          4 100.000 0.047
-#> D          8 100.000 0.046
-#> D         12  66.667 0.366
-#> D         16 100.000 0.040
-#> D         20 100.000 0.038
+#> A          1 100.000 0.128
+#> A          5 100.000 0.128
+#> A          9 100.000 0.123
+#> A         13 100.000 0.123
+#> A         17 100.000 0.124
+#> B          2 100.000 0.144
+#> B          6  83.333 0.142
+#> B         10  83.333 0.118
+#> B         14  83.333 0.140
+#> B         18  83.333 0.123
+#> C          3  83.333 0.120
+#> C          7 100.000 0.134
+#> C         11 100.000 0.113
+#> C         15  83.333 0.139
+#> C         19 100.000 0.126
+#> D          4 100.000 0.132
+#> D          8 100.000 0.138
+#> D         12  66.667 0.516
+#> D         16 100.000 0.141
+#> D         20 100.000 0.121
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
-#> Chance-values were calculated using the method.
+#> Chance-values were calculated from 1000 random orderings.
 ```
 
 Similarly, plotting the output shows individual PCCs and c-values by
@@ -313,7 +305,7 @@ Along with the c-value of the difference:
 
 ``` r
 group_comp$cval
-#> [1] 0.127
+#> [1] 0.575
 ```
 
 ## Acknowledgements

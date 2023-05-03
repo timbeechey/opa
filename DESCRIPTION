@@ -1,7 +1,7 @@
 Package: opa
 Type: Package
 Title: An Implementation of Ordinal Pattern Analysis
-Version: 0.7.4.012
+Version: 0.8.0
 Authors@R: person("Timothy", "Beechey", email = "tim.beechey@proton.me",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8858-946X"))
 Description: Quantifies hypothesis to data fit for repeated measures 
@@ -15,7 +15,7 @@ URL: https://github.com/timbeechey/opa
 BugReports: https://github.com/timbeechey/opa/issues
 Encoding: UTF-8
 LazyData: true
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo
 Imports: Rcpp
 Suggests: tinytest
 SystemRequirements: C++17

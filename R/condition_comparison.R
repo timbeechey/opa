@@ -21,9 +21,9 @@
 #' @return \code{compare_conditions} returns a list with the following elements
 #'
 #' \describe{
-#'   \item{pcc_mat}{An lower triangle matrix containing PCCs calculated from each
+#'   \item{pcc_mat}{A lower triangle matrix containing PCCs calculated from each
 #'   pairing of data columns.}
-#'   \item{cval_mat}{An lower triangle matrix containing c-values calculated from
+#'   \item{cval_mat}{A lower triangle matrix containing c-values calculated from
 #'   each pairing of data columns.}
 #'   \item{pccs}{A vector containing PCCs calculated from each pairing of data.}
 #'   \item{cvals}{A vector containing c-values calculated from each pairing of data.}

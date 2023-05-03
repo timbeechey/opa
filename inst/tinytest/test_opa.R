@@ -53,27 +53,27 @@ group_comp <- compare_groups(opamod5, "a", "b")
 expect_equal(opamod1$total_pairs, 12)
 expect_equal(opamod1$correct_pairs, 4)
 expect_equal(round(opamod1$group_pcc, 2), 33.33)
-expect_equal(round(opamod1$individual_pccs, 2), c(100.00, 0.00, 0.00, 33.33))
+expect_equal(round(opamod1$individual_pccs, 2), matrix(c(100.00, 0.00, 0.00, 33.33)))
 
 #========== check adjacent opa works ==========
 expect_equal(opamod2$total_pairs, 8)
 expect_equal(opamod2$correct_pairs, 3)
 expect_equal(round(opamod2$group_pcc, 2), 37.50)
-expect_equal(round(opamod2$individual_pccs, 2), c(100.00, 0.00, 0.00, 50.00))
+expect_equal(round(opamod2$individual_pccs, 2), matrix(c(100.00, 0.00, 0.00, 50.00)))
 
 #========== check pairwise opa with diff_threshold works ==========
 expect_equal(opamod3$total_pairs, 12)
 expect_equal(opamod3$correct_pairs, 2)
 expect_equal(round(opamod3$group_pcc, 2), 16.67)
-expect_equal(round(opamod3$individual_pccs, 2), c(66.67, 0.00, 0.00, 0.00))
+expect_equal(round(opamod3$individual_pccs, 2), matrix(c(66.67, 0.00, 0.00, 0.00)))
 
 #========== check there aren't problems with 0% fits ==========
 expect_equal(opamod4$total_pairs, 9)
 expect_equal(opamod4$correct_pairs, 0)
 expect_equal(round(opamod4$group_pcc, 2), 0.00)
 expect_equal(round(opamod4$group_cval, 2), 1.00)
-expect_equal(round(opamod4$individual_pccs, 2), c(0.00, 0.00, 0.00))
-expect_equal(round(opamod4$individual_cvals, 2), c(1.00, 1.00, 1.00))
+expect_equal(round(opamod4$individual_pccs, 2), matrix(c(0.00, 0.00, 0.00)))
+expect_equal(round(opamod4$individual_cvals, 2), matrix(c(1.00, 1.00, 1.00)))
 
 #========== check pairwise comparisons work ==========
 expect_equal(round(pw1$pccs_mat[2,1], 3), 50)
@@ -85,32 +85,32 @@ expect_equal(round(ch2$pcc_diff, 2), 0)
 expect_equal(round(ch2$cval, 2), 1)
 
 #========== check that missing values are handled correctly ==========
-expect_equal(opa:::conform(c(NA, 2, 3, 4), c(1, 2, 3, 4)), c(2, 3, 4))
-expect_equal(opa:::conform(c(1, NA, 3, 4), c(1, 2, 3, 4)), c(1, 3, 4))
-expect_equal(opa:::conform(c(1, 2, NA, 4), c(1, 2, 3, 4)), c(1, 2, 4))
-expect_equal(opa:::conform(c(1, 2, 3, NA), c(1, 2, 3, 4)), c(1, 2, 3))
-expect_equal(opa:::conform(c(1, 2, 3, 4), c(1, 2, 3, 4)), c(1, 2, 3, 4))
-expect_equal(opa:::conform(c(NA, NA, 3, 4), c(1, 2, 3, 4)), c(3, 4))
-expect_equal(opa:::conform(c(NA, 2, NA, NA), c(1, 2, 3, 4)), c(2))
+expect_equal(opa:::conform(c(NA, 2, 3, 4), c(1, 2, 3, 4)), matrix(c(2, 3, 4)))
+expect_equal(opa:::conform(c(1, NA, 3, 4), c(1, 2, 3, 4)), matrix(c(1, 3, 4)))
+expect_equal(opa:::conform(c(1, 2, NA, 4), c(1, 2, 3, 4)), matrix(c(1, 2, 4)))
+expect_equal(opa:::conform(c(1, 2, 3, NA), c(1, 2, 3, 4)), matrix(c(1, 2, 3)))
+expect_equal(opa:::conform(c(1, 2, 3, 4), c(1, 2, 3, 4)), matrix(c(1, 2, 3, 4)))
+expect_equal(opa:::conform(c(NA, NA, 3, 4), c(1, 2, 3, 4)), matrix(c(3, 4)))
+expect_equal(opa:::conform(c(NA, 2, NA, NA), c(1, 2, 3, 4)), matrix(c(2)))
 
 #========== check that ordering() works ==========
-expect_equal(opa:::ordering(c(1, 2, 3, 4), "pairwise", 0), c(1, 1, 1, 1, 1, 1))
-expect_equal(opa:::ordering(c(1, 2, 3, 4), "pairwise", 1), c(0, 1, 1, 0, 1, 0))
-expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "pairwise", 0), c(-1, -1, -1, 1, -1, -1))
-expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "pairwise", 1), c(-1, 0, -1, 1, 0, -1))
-expect_equal(opa:::ordering(c(1, 2, 3, 4), "adjacent", 0), c(1, 1, 1))
-expect_equal(opa:::ordering(c(1, 2, 3, 4), "adjacent", 1), c(0, 0, 0))
-expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "adjacent", 0), c(-1, 1, -1))
-expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "adjacent", 1), c(-1, 1, -1))
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "pairwise", 0), matrix(c(1, 1, 1, 1, 1, 1)))
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "pairwise", 1), matrix(c(0, 1, 1, 0, 1, 0)))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "pairwise", 0), matrix(c(-1, -1, -1, 1, -1, -1)))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "pairwise", 1), matrix(c(-1, 0, -1, 1, 0, -1)))
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "adjacent", 0), matrix(c(1, 1, 1)))
+expect_equal(opa:::ordering(c(1, 2, 3, 4), "adjacent", 1), matrix(c(0, 0, 0)))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "adjacent", 0), matrix(c(-1, 1, -1)))
+expect_equal(opa:::ordering(c(4.3, 2.1, 3.5, 1.7), "adjacent", 1), matrix(c(-1, 1, -1)))
 
-expect_equal(opa:::sign_with_threshold(3, 0), 1)
-expect_equal(opa:::sign_with_threshold(-2, 0), -1)
-expect_equal(opa:::sign_with_threshold(3, 1), 1)
-expect_equal(opa:::sign_with_threshold(-2, 1), -1)
-expect_equal(opa:::sign_with_threshold(0.3, 1), 0)
-expect_equal(opa:::sign_with_threshold(-0.2, 1), 0)
+expect_equal(opa:::sign_with_threshold(3, 0), matrix(1))
+expect_equal(opa:::sign_with_threshold(-2, 0), matrix(-1))
+expect_equal(opa:::sign_with_threshold(3, 1), matrix(1))
+expect_equal(opa:::sign_with_threshold(-2, 1), matrix(-1))
+expect_equal(opa:::sign_with_threshold(0.3, 1), matrix(0))
+expect_equal(opa:::sign_with_threshold(-0.2, 1), matrix(0))
 
-expect_equal(opa:::all_diffs(c(1, 2, 3, 4)), c(1, 2, 3, 1, 2, 1))
+expect_equal(opa:::all_diffs(c(1, 2, 3, 4)), matrix(c(1, 2, 3, 1, 2, 1)))
 
 expect_equal(opa:::row_pcc(c(2, 4, 6, 8), c(1, 2, 3, 4), "pairwise", 0), list(n_pairs = 6, correct_pairs = 6, pcc = 100.0))
 expect_equal(opa:::row_pcc(c(2, 1, 6, 8), c(1, 2, 3, 4), "pairwise", 0), list(n_pairs = 6, correct_pairs = 5, pcc = (5/6)*100))
@@ -121,7 +121,7 @@ expect_equal(opa:::row_pcc(c(2, 1, 6, 8), c(1, 2, 3, 4), "adjacent", 0), list(n_
 
 # #========== test pairwise opa works ==========
 # expect_equal(round(opamod1$group_cval, 2), 0.63)
-# expect_equal(round(opamod1$individual_cvals, 2), c(0.17, 1.00, 1.00, 0.67))
+# expect_equal(round(opamod1$individual_cvals, 2), matrix(c(0.17, 1.00, 1.00, 0.67)))
 
 # #========== check adjacent opa works ==========
 # expect_equal(round(opamod2$group_cval, 2), 0.6)
