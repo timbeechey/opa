@@ -18,7 +18,7 @@
 #' Calculate the c-value of the difference in PCCs produced by two hypotheses
 #' @param m1 an object of class "opafit" produced by a call to opa().
 #' @param m2 an object of class "opafit" produced by a call to opa().
-#' @return an object of class "opacomparison".
+#' @return an object of class "opaHypothesisComparison".
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
@@ -46,12 +46,40 @@ compare_hypotheses.opafit <- function(m1, m2) {
     cval <- length(rand_pccs_diff[abs(rand_pccs_diff) >= pcc_diff]) / m1$nreps
     return(
         structure(
-            list(pcc_diff = pcc_diff, 
-                cval = cval,
-                pcc_diff_dist = unlist(rand_pccs_diff)),
-            class = "opacomparison"
+            list(h1 = m1$hypothesis,
+                 h2 = m2$hypothesis,
+                 h1_pcc = m1$group_pcc,
+                 h2_pcc = m2$group_pcc,
+                 pcc_diff = pcc_diff,
+                 cval = cval,
+                 pcc_diff_dist = unlist(rand_pccs_diff)),
+            class = "opaHypothesisComparison"
         )
     )
+}
+
+#' Prints a summary of results from hypothesis comparison.
+#' @param object an object of class "opaHypothesisComparison".
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11),
+#'                   t4 = c(10, 5, 11, 12))
+#' opamod1 <- opa(dat, c(1, 2, 3, 4))
+#' opamod2 <- opa(dat, c(1, 4, 2, 3))
+#' z <- compare_hypotheses(opamod1, opamod2)
+#' summary(z)
+#' @export
+summary.opaHypothesisComparison <- function(object, ...) {
+    cat("********* Hypothesis Comparison **********\n")
+    cat("H1:", object$h1, "\n")
+    cat("H2:", object$h2, "\n")
+    cat("H1 PCC:", object$h1_pcc, "\n")
+    cat("H2 PCC:", object$h2_pcc, "\n")
+    cat("PCC difference:", object$pcc_diff, "\n")
+    cat("cval:", object$cval, "\n")
 }
 
 
@@ -59,7 +87,7 @@ compare_hypotheses.opafit <- function(m1, m2) {
 #' @param m an object of class "opafit" produced by a call to opa().
 #' @param group1 a character string which matches a group level passed to opa().
 #' @param group2 a character string which matches a group level passed to opa().
-#' @return an object of class "opacomparison".
+#' @return an object of class "opaGroupComparison".
 #' @examples
 #' dat <- data.frame(group = c("a", "b", "a", "b"),
 #'                   t1 = c(9, 4, 8, 10),
@@ -86,10 +114,39 @@ compare_groups.opafit <- function(m, group1, group2) {
     cval <- length(rand_pccs_diff[abs(rand_pccs_diff) >= pcc_diff]) / m$nreps
     return(
         structure(
-            list(pcc_diff = pcc_diff, 
-                cval = cval,
-                pcc_diff_dist = unlist(rand_pccs_diff)),
-            class = "opacomparison"
+            list(group1 = group1,
+                 group2 = group2,
+                 group1_pcc = m$group_pcc[group1],
+                 group2_pcc = m$group_pcc[group2],
+                 pcc_diff = pcc_diff, 
+                 cval = cval,
+                 pcc_diff_dist = unlist(rand_pccs_diff)),
+            class = "opaGroupComparison"
         )
     )
+}
+
+
+#' Prints a summary of results from hypothesis comparison.
+#' @param object an object of class "opaHypothesisComparison".
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' dat <- data.frame(group = c("a", "b", "a", "b"),
+#'                   t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' dat$group <- factor(dat$group, levels = c("a", "b"))
+#' opamod <- opa(dat[,2:4], 1:3, group = dat$group)
+#' z <- compare_groups(opamod, "a", "b")
+#' summary(z)
+#' @export
+summary.opaGroupComparison <- function(object, ...) {
+    cat("********* Group Comparison **********\n")
+    cat("Group 1:", object$group1, "\n")
+    cat("Group 2:", object$group2, "\n")
+    cat("Group 1 PCC:", object$group1_pcc, "\n")
+    cat("Group 2 PCC:", object$group2_pcc, "\n")
+    cat("PCC difference:", object$pcc_diff, "\n")
+    cat("cval:", object$cval, "\n")
 }

@@ -43,16 +43,16 @@ hypothesis <- function(xs, type = "pairwise") {
       n_decreases = n_decreases,
       n_equalities = n_equalities
     ),
-    class = "opa_hypothesis"
+    class = "opahypothesis"
   )
 }
 
 #' Print details of a hypothesis
-#' @param x an object of type "opa_hypothesis"
+#' @param x an object of type "opaHypothesis"
 #' @param ... ignored
 #' @return No return value, called for side-effects.
 #' @export 
-print.opa_hypothesis <- function(x, ...) {
+print.opahypothesis <- function(x, ...) {
   cat("********** Ordinal Hypothesis **********\n")
   cat("Hypothesis type:", x$type, "\n")
   cat("Raw hypothesis:\n", x$raw, "\n")
@@ -351,7 +351,7 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
 
 
 #' Plot a hypothesis.
-#' @param x an object of class "opa_hypothesis"
+#' @param x an object of class "opaHypothesis"
 #' @param title a boolean indicating whether to include a plot title
 #' @param ... ignored
 #' @return No return value, called for side effects.
@@ -359,7 +359,7 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
 #' h <- hypothesis(c(1,2,3,3,3))
 #' plot(h)
 #' @export
-plot.opa_hypothesis <- function(x, title = TRUE, ...) {
+plot.opahypothesis <- function(x, title = TRUE, ...) {
   par(mar = c(4, 4, 2, 0.5))
   plot(x = NULL, y = NULL, xlim = c(0.5, length(x$raw) + 0.5),
        ylim = c(min(x$raw) - 0.5, max(x$raw) + 0.5),

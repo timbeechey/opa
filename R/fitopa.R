@@ -110,7 +110,7 @@
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, nreps = 1000L) {
 
-  if (class(hypothesis) == "opa_hypothesis") {
+  if (class(hypothesis) == "opahypothesis") {
     hypothesis <- hypothesis$raw
   }
 

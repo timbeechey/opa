@@ -14,7 +14,7 @@ compare_groups(m, group1, group2)
 \item{group2}{a character string which matches a group level passed to opa().}
 }
 \value{
-an object of class "opacomparison".
+an object of class "opaGroupComparison".
 }
 \description{
 Calculate the c-value of the difference in PCCs produced by two groups

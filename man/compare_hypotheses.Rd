@@ -12,7 +12,7 @@ compare_hypotheses(m1, m2)
 \item{m2}{an object of class "opafit" produced by a call to opa().}
 }
 \value{
-an object of class "opacomparison".
+an object of class "opaHypothesisComparison".
 }
 \description{
 Calculate the c-value of the difference in PCCs produced by two hypotheses
