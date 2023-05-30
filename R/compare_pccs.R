@@ -108,7 +108,7 @@ compare_groups.default <- function(m, group1, group2) .NotYetImplemented()
 
 #' @export
 compare_groups.opafit <- function(m, group1, group2) {
-    stopifnot("The opafit object passed to compare_groups() must 2 or more groups"= length(m$groups) >= 2)
+    stopifnot("The opafit object must have been fitted with at least 2 groups"= length(m$groups) >= 2)
     pcc_diff <- unname(abs(m$group_pcc[group1] - m$group_pcc[group2]))
     rand_pccs_diff <- unname(unlist(m$group_rand_pccs[group1]) - unlist(m$group_rand_pccs[group2]))
     cval <- length(rand_pccs_diff[abs(rand_pccs_diff) >= pcc_diff]) / m$nreps

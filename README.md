@@ -100,13 +100,13 @@ A hypothesized relative ordering of a response variable across
 conditions is specified with a numeric vector:
 
 ``` r
-h <- c(1, 2, 4, 3)
+h <- hypothesis(c(1, 2, 4, 3), type = "pairwise")
 ```
 
 The hypothesis can be plotted with the `plot_hypothesis()` function:
 
 ``` r
-plot_hypothesis(h)
+plot(h)
 ```
 
 <img src="man/figures/README-plot_hypothesis-1.png" style="display: block; margin: auto;" />
@@ -146,8 +146,8 @@ round(dat, 2)
 #> 20 11.05 14.24 20.43 16.72
 ```
 
-An ordinal pattern analysis model to consider how the hypothesis `h`
-matches each individual pattern of results in `dat` can be fitted using:
+An ordinal pattern analysis model of how the hypothesis `h` matches each
+individual pattern of results in `dat` can be fitted using:
 
 ``` r
 opamod <- opa(dat, h)
@@ -202,11 +202,10 @@ To aid interpretation, individual PCCs and c-values can also be plotted
 relative to user-specified thresholds:
 
 ``` r
-pcc_plot(opamod, threshold = 90)
-cval_plot(opamod, threshold = 0.1)
+plot(opamod, pcc_threshold = 90, cval_threshold = 0.1)
 ```
 
-<img src="man/figures/README-threshold_plots-1.png" width="50%" style="display: block; margin: auto;" /><img src="man/figures/README-threshold_plots-2.png" width="50%" style="display: block; margin: auto;" />
+<img src="man/figures/README-threshold_plots-1.png" style="display: block; margin: auto;" />
 
 ### Pairwise comparison of measurement conditions
 
@@ -217,9 +216,9 @@ produced by a call to `opa()`:
 ``` r
 condition_comparisons <- compare_conditions(opamod)
 
-condition_comparisons$pccs
+group_pccs(condition_comparisons)
 #> [1]  90 100  95 100  80  95
-condition_comparisons$cvals
+group_cvals(condition_comparisons)
 #> [1] 0.000 0.000 0.000 0.000 0.002 0.000
 ```
 
@@ -294,18 +293,18 @@ groups can be calculated using the `compare_groups()` function.
 group_comp <- compare_groups(opamod2, "A", "B")
 ```
 
-The difference in group-level PCCs can then be checked:
+The difference in group-level PCCs along with the c-value of the
+difference can then be checked:
 
 ``` r
-group_comp$pcc_diff
-#> [1] 13.33333
-```
-
-Along with the c-value of the difference:
-
-``` r
-group_comp$cval
-#> [1] 0.43
+summary(group_comp)
+#> ********* Group Comparison **********
+#> Group 1: A 
+#> Group 2: B 
+#> Group 1 PCC: 100 
+#> Group 2 PCC: 86.66667 
+#> PCC difference: 13.33333 
+#> cval: 0.43
 ```
 
 ## Acknowledgements

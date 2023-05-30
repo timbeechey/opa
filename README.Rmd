@@ -85,13 +85,13 @@ library(opa)
 A hypothesized relative ordering of a response variable across conditions is specified with a numeric vector:
 
 ```{r hypothesis2}
-h <- c(1, 2, 4, 3)
+h <- hypothesis(c(1, 2, 4, 3), type = "pairwise")
 ```
 
 The hypothesis can be plotted with the `plot_hypothesis()` function:
 
 ```{r plot_hypothesis, fig.width=4, fig.height=4, fig.align="center"}
-plot_hypothesis(h)
+plot(h)
 ```
 
 Data should be in _wide_ format with one column per measurement condition and one row per individual:
@@ -107,7 +107,7 @@ dat <- data.frame(t1 = rnorm(20, mean = 12, sd = 2),
 round(dat, 2)
 ```
 
-An ordinal pattern analysis model to consider how the hypothesis `h` matches each individual pattern of results in `dat` can be fitted using:
+An ordinal pattern analysis model of how the hypothesis `h` matches each individual pattern of results in `dat` can be fitted using:
 
 ```{r opamod1}
 opamod <- opa(dat, h)
@@ -127,9 +127,8 @@ plot(opamod)
 
 To aid interpretation, individual PCCs and c-values can also be plotted relative to user-specified thresholds:
 
-```{r threshold_plots, fig.width=5, fig.height=5, fig.align="center", fig.show="hold", out.width="50%"}
-pcc_plot(opamod, threshold = 90)
-cval_plot(opamod, threshold = 0.1)
+```{r threshold_plots, fig.width=9, fig.height=4.5, fig.align="center"}
+plot(opamod, pcc_threshold = 90, cval_threshold = 0.1)
 ```
 
 ### Pairwise comparison of measurement conditions
@@ -139,8 +138,8 @@ Pairwise comparisons of measurement conditions can be calculated by applying the
 ```{r}
 condition_comparisons <- compare_conditions(opamod)
 
-condition_comparisons$pccs
-condition_comparisons$cvals
+group_pccs(condition_comparisons)
+group_cvals(condition_comparisons)
 ```
 
 ### Multiple groups 
@@ -174,16 +173,10 @@ The chance-value of the difference in group-level PCCs between any two groups ca
 group_comp <- compare_groups(opamod2, "A", "B")
 ```
 
-The difference in group-level PCCs can then be checked:
+The difference in group-level PCCs along with the c-value of the difference can then be checked:
 
 ```{r}
-group_comp$pcc_diff
-```
-
-Along with the c-value of the difference:
-
-```{r}
-group_comp$cval
+summary(group_comp)
 ```
 
 ## Acknowledgements

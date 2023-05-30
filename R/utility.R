@@ -20,11 +20,16 @@
 #' @return a list containing the following elements
 #' @export
 hypothesis <- function(xs, type = "pairwise") {
+
+  stopifnot("A vector or numeric values in required"=is.numeric(xs))
+  stopifnot("A vector containing at least two elements is required"=length(xs) > 1)
+  stopifnot("type must be either 'pairwise' or 'adjacent'"=type %in% c("pairwise", "adjacent"))
+
   xs_length <- length(xs)
 
   if (type == "pairwise") {
     n_pairs <- ((xs_length - 1) * xs_length) / 2
-  } else {
+  } else if (type == "adjacent") {
     n_pairs <- xs_length - 1
   }
 
@@ -419,9 +424,9 @@ group_results.opafit <- function(m, digits = 2) {
 #' Individual-level PCC and chance values.
 #'
 #' @details
-#' If the model was fitted with no grouping variable, a matrix of PCCs and
-#' c-values are returned corresponding to the order of rows in the data. If the
-#' \code{opa} model was fitted with a grouping variable specified, a table of
+#' If the \code{opa} model was fitted with no grouping variable, a matrix of PCCs
+#' and c-values are returned corresponding to the order of rows in the data. If
+#' the \code{opa} model was fitted with a grouping variable specified, a table of
 #' PCCs and c-values is returned ordered by factor level of the grouping
 #' variable.
 #' @param m an object of class "opafit" produced by \code{opa()}
@@ -482,6 +487,7 @@ group_pccs.default <- function(m) .NotYetImplemented()
 group_pccs.opafit <- function(m) {
   m$group_pcc
 }
+
 
 #' @export
 group_pccs.pairwiseopafit <- function(m) {

@@ -74,6 +74,7 @@ compare_conditions.opafit <- function(result, nreps = 1000L) {
     }
   }
 
+
   # create upper triangle matrices for PCCs and cvalues for pairs of conditions
   pcc_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
   cval_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
