@@ -14,6 +14,56 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' create a hypothesis object
+#' @param xs a numeric vector
+#' @param type a string
+#' @return a list containing the following elements
+#' @export
+hypothesis <- function(xs, type = "pairwise") {
+  xs_length <- length(xs)
+
+  if (type == "pairwise") {
+    n_pairs <- ((xs_length - 1) * xs_length) / 2
+  } else {
+    n_pairs <- xs_length - 1
+  }
+
+  ordinal_relations <- ordering(xs, type, 0)
+  n_increases <- length(ordinal_relations[ordinal_relations == 1])
+  n_decreases <- length(ordinal_relations[ordinal_relations == -1])
+  n_equalities <- length(ordinal_relations[ordinal_relations == 0])
+
+  structure(
+    list(
+      raw = xs,
+      type = type,
+      n_pairs = n_pairs,
+      ordinal_relations = ordinal_relations,
+      n_increases = n_increases,
+      n_decreases = n_decreases,
+      n_equalities = n_equalities
+    ),
+    class = "opa_hypothesis"
+  )
+}
+
+#' Print details of a hypothesis
+#' @param x an object of type "opa_hypothesis"
+#' @param ... ignored
+#' @return No return value, called for side-effects.
+#' @export 
+print.opa_hypothesis <- function(x, ...) {
+  cat("********** Ordinal Hypothesis **********\n")
+  cat("Hypothesis type:", x$type, "\n")
+  cat("Raw hypothesis:\n", x$raw, "\n")
+  cat("Ordinal relations:\n", x$ordinal_relations, "\n")
+  cat("N conditions:", length(x$raw), "\n")
+  cat("N hypothesised ordinal relations:", x$n_pairs, "\n")
+  cat("N hypothesised increases:", x$n_increases, "\n")
+  cat("N hypothesised decreases:", x$n_decreases, "\n")
+  cat("N hypothesised equalities:", x$n_equalities, "\n")
+}
+
 
 #' Prints a summary of results from a fitted ordinal pattern analysis model.
 #' @param object an object of class "opafit".
@@ -102,7 +152,7 @@ print.opafit <- function(x, ...) {
 #' @param m an object of class "opafit"
 #' @param threshold a boolean indicating whether to plot a threshold abline
 #' @param title a boolean indicating whether to include a plot title
-#' @param legend a boolean indicating whether to include a legend when n groups > 1
+#' @param legend a boolean indicating whether to include a legend
 #' @return No return value, called for side effects.
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
@@ -113,6 +163,16 @@ print.opafit <- function(x, ...) {
 #' pcc_plot(opamod, threshold = 85)
 #' @export
 pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
+  UseMethod("pcc_plot")
+}
+
+
+#' @export
+pcc_plot.default <- function(m, threshold = NULL, title = TRUE, legend = TRUE) .NotYetImplemented()
+
+
+#' @export
+pcc_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   old_par <- par()
   if (is.null(m$groups)) {
     par(mar = c(4, 4, 2, 1)) # no legend for single group
@@ -186,6 +246,16 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 #' cval_plot(opamod, threshold = 0.1)
 #' @export
 cval_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
+  UseMethod("cval_plot")
+}
+
+
+#' @export
+cval_plot.default <- function(m, threshold = NULL, title = TRUE, legend = TRUE) .NotYetImplemented()
+
+
+#' @export
+cval_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   old_par <- par()
   if (is.null(m$groups)) {
     par(mar = c(4, 4, 2, 1))
@@ -268,8 +338,8 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
   } else {
     layout(matrix(c(1, 2, 3, 3), ncol = 2, byrow = TRUE), heights=c(4, 1))
     par(mai = rep(0.5, 4))
-    pcc_plot(x, threshold = pcc_threshold, legend = FALSE)
-    cval_plot(x, threshold = cval_threshold, legend = FALSE)
+    pcc_plot(x, threshold = pcc_threshold)
+    cval_plot(x, threshold = cval_threshold)
     par(mai = c(0, 0, 0, 0))
     plot.new()
     legend(x="center", horiz = TRUE, legend = levels(x$groups), title = "Group",
@@ -277,6 +347,28 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
     par(mfrow = c(1, 1))
   }
   par(mar = old_par$mar)
+}
+
+
+#' Plot a hypothesis.
+#' @param x an object of class "opa_hypothesis"
+#' @param title a boolean indicating whether to include a plot title
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' h <- hypothesis(c(1,2,3,3,3))
+#' plot(h)
+#' @export
+plot.opa_hypothesis <- function(x, title = TRUE, ...) {
+  par(mar = c(4, 4, 2, 0.5))
+  plot(x = NULL, y = NULL, xlim = c(0.5, length(x$raw) + 0.5),
+       ylim = c(min(x$raw) - 0.5, max(x$raw) + 0.5),
+       xlab = "x", ylab = "h(x)",
+       yaxt = "n", xaxt="n",
+       main = ifelse(title == TRUE, "Hypothesis", ""))
+  points(seq(length(x$raw)), x$raw, pch=21, cex=2, bg = palette()[1])
+  axis(1, at=x$raw, labels=x$raw)
+  axis(2, at=c(min(x$raw), max(x$raw)), labels = c("Lower", "Higher"), las = 1)
 }
 
 
@@ -367,25 +459,178 @@ individual_results.opafit <- function(m, digits = 2) {
   }
 }
 
-
-#' Plot a hypothesis.
-#' @param h a numeric vector
-#' @param title a boolean indicating whether to include a plot title
-#' @return No return value, called for side effects.
+#' Return the group PCC of the specified model
+#' @param m an object of class "opafit"
+#' @return a double
 #' @examples
-#' h <- c(1,2,3,3,3)
-#' plot_hypothesis(h)
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' group_pcc(opamod)
 #' @export
-plot_hypothesis <- function(h, title = TRUE) {
-  par(mar = c(4, 4, 2, 0.5))
-  plot(x = NULL, y = NULL, xlim = c(0.5, length(h) + 0.5),
-       ylim = c(min(h) - 0.5, max(h) + 0.5),
-       xlab = "x", ylab = "h(x)",
-       yaxt = "n", xaxt="n",
-       main = ifelse(title == TRUE, "Hypothesis", ""))
-  points(seq(length(h)), h, pch=21, cex=2, bg = palette()[1])
-  axis(1, at=h, labels=h)
-  axis(2, at=c(min(h), max(h)), labels = c("Lower", "Higher"), las = 1)
+group_pcc <- function(m) {
+  UseMethod("group_pcc")
+}
+
+
+#' @export
+group_pcc.default <- function(m) .NotYetImplemented()
+
+
+#' @export
+group_pcc.opafit <- function(m) {
+  m$group_pcc
+}
+
+
+#' Return the group chance value of the specified model
+#' @param m an object of class "opafit"
+#' @return a double
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' group_cval(opamod)
+#' @export
+group_cval <- function(m) {
+  UseMethod("group_cval")
+}
+
+
+#' @export
+group_cval.default <- function(m) .NotYetImplemented()
+
+
+#' @export
+group_cval.opafit <- function(m) {
+  m$group_cval
+}
+
+
+#' Return the individual PCCs of the specified model
+#' @param m an object of class "opafit"
+#' @return a numeric vector
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' individual_pccs(opamod)
+#' @export
+individual_pccs <- function(m) {
+  UseMethod("individual_pccs")
+}
+
+
+#' @export
+individual_pccs.default <- function(m) .NotYetImplemented()
+
+
+#' @export
+individual_pccs.opafit <- function(m) {
+  m$individual_pccs
+}
+
+
+#' Return the individual chance values of the specified model
+#' @param m an object of class "opafit"
+#' @return a numeric vector
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' individual_cvals(opamod)
+#' @export
+individual_cvals <- function(m) {
+  UseMethod("individual_cvals")
+}
+
+
+#' @export
+individual_cvals.default <- function(m) .NotYetImplemented()
+
+
+#' @export
+individual_cvals.opafit <- function(m) {
+  m$individual_cvals
+}
+
+
+#' Return the random order generated PCCs used to calculate the group chance value
+#' @param m an object of class "opafit"
+#' @return a numeric vector
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' random_pccs(opamod)
+#' @export
+random_pccs <- function(m) {
+  UseMethod("random_pccs")
+}
+
+
+#' @export
+random_pccs.default <- function(m) .NotYetImplemented()
+
+
+#' @export
+random_pccs.opafit <- function(m) {
+  m$rand_pccs
+}
+
+
+#' Return the number of pairs of observations matched by the hypothesis
+#' @param m an object of class "opafit"
+#' @return a non-negative integer
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' correct_pairs(opamod)
+#' @export
+correct_pairs <- function(m) {
+  UseMethod("correct_pairs")
+}
+
+
+#' @export
+correct_pairs.default <- function(m) .NotYetImplemented()
+
+
+#' @export
+correct_pairs.opafit <- function(m) {
+  m$correct_pairs
+}
+
+
+#' Return the number of pairs of observations not matched by the hypothesis
+#' @param m an object of class "opafit"
+#' @return a non-negative integer
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' opamod <- opa(dat, 1:3)
+#' incorrect_pairs(opamod)
+#' @export
+incorrect_pairs <- function(m) {
+  UseMethod("incorrect_pairs")
+}
+
+
+#' @export
+incorrect_pairs.default <- function(m) .NotYetImplemented()
+
+
+#' @export
+incorrect_pairs.opafit <- function(m) {
+  m$total_pairs - m$correct_pairs
 }
 
 

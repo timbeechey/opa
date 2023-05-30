@@ -109,6 +109,11 @@
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, nreps = 1000L) {
+
+  if (class(hypothesis) == "opa_hypothesis") {
+    hypothesis <- hypothesis$raw
+  }
+
   # verify the arguments
   if (!is.null(group)) {
     stopifnot("There must be at least 2 groups"= length(group) >= 2)
