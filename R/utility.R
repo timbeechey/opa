@@ -459,53 +459,64 @@ individual_results.opafit <- function(m, digits = 2) {
   }
 }
 
-#' Return the group PCC of the specified model
+#' Return the group PCCs of the specified model
 #' @param m an object of class "opafit"
-#' @return a double
+#' @return a numeric vector
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
 #' opamod <- opa(dat, 1:3)
-#' group_pcc(opamod)
+#' group_pccs(opamod)
 #' @export
-group_pcc <- function(m) {
-  UseMethod("group_pcc")
+group_pccs <- function(m) {
+  UseMethod("group_pccs")
 }
 
 
 #' @export
-group_pcc.default <- function(m) .NotYetImplemented()
+group_pccs.default <- function(m) .NotYetImplemented()
 
 
 #' @export
-group_pcc.opafit <- function(m) {
+group_pccs.opafit <- function(m) {
   m$group_pcc
 }
 
+#' @export
+group_pccs.pairwiseopafit <- function(m) {
+  m$pccs
+}
 
-#' Return the group chance value of the specified model
+
+#' Return the group chance values of the specified model
 #' @param m an object of class "opafit"
-#' @return a double
+#' @return a numeric vector
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
 #' opamod <- opa(dat, 1:3)
-#' group_cval(opamod)
+#' group_cvals(opamod)
 #' @export
-group_cval <- function(m) {
-  UseMethod("group_cval")
+group_cvals <- function(m) {
+  UseMethod("group_cvals")
 }
 
 
 #' @export
-group_cval.default <- function(m) .NotYetImplemented()
+group_cvals.default <- function(m) .NotYetImplemented()
 
 
 #' @export
-group_cval.opafit <- function(m) {
+group_cvals.opafit <- function(m) {
   m$group_cval
+}
+
+
+#' @export
+group_cvals.pairwiseopafit <- function(m) {
+  m$cvals
 }
 
 
@@ -530,7 +541,7 @@ individual_pccs.default <- function(m) .NotYetImplemented()
 
 #' @export
 individual_pccs.opafit <- function(m) {
-  m$individual_pccs
+  c(m$individual_pccs)
 }
 
 
@@ -555,7 +566,7 @@ individual_cvals.default <- function(m) .NotYetImplemented()
 
 #' @export
 individual_cvals.opafit <- function(m) {
-  m$individual_cvals
+  c(m$individual_cvals)
 }
 
 
