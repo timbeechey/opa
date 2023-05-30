@@ -343,8 +343,8 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
   } else {
     layout(matrix(c(1, 2, 3, 3), ncol = 2, byrow = TRUE), heights=c(4, 1))
     par(mai = rep(0.5, 4))
-    pcc_plot(x, threshold = pcc_threshold)
-    cval_plot(x, threshold = cval_threshold)
+    pcc_plot(x, threshold = pcc_threshold, legend = FALSE)
+    cval_plot(x, threshold = cval_threshold, legend = FALSE)
     par(mai = c(0, 0, 0, 0))
     plot.new()
     legend(x="center", horiz = TRUE, legend = levels(x$groups), title = "Group",
