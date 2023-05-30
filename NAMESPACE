@@ -2,6 +2,10 @@
 
 S3method(compare_conditions,default)
 S3method(compare_conditions,opafit)
+S3method(compare_groups,default)
+S3method(compare_groups,opafit)
+S3method(compare_hypotheses,default)
+S3method(compare_hypotheses,opafit)
 S3method(correct_pairs,default)
 S3method(correct_pairs,opafit)
 S3method(cval_plot,default)
