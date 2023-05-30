@@ -216,10 +216,20 @@ produced by a call to `opa()`:
 ``` r
 condition_comparisons <- compare_conditions(opamod)
 
-group_pccs(condition_comparisons)
-#> [1]  90 100  95 100  80  95
-group_cvals(condition_comparisons)
-#> [1] 0.000 0.000 0.000 0.000 0.002 0.000
+print(condition_comparisons)
+#> Pairwise PCCs:
+#>     1   2  3 4
+#> 1   -   -  - -
+#> 2  90   -  - -
+#> 3 100 100  - -
+#> 4  95  80 95 -
+#> 
+#> Pairwise chance values:
+#>        1      2      3 4
+#> 1      -      -      - -
+#> 2 <0.001      -      - -
+#> 3 <0.001 <0.001      - -
+#> 4 <0.001  0.002 <0.001 -
 ```
 
 ### Multiple groups

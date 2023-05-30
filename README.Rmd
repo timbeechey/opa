@@ -138,8 +138,7 @@ Pairwise comparisons of measurement conditions can be calculated by applying the
 ```{r}
 condition_comparisons <- compare_conditions(opamod)
 
-group_pccs(condition_comparisons)
-group_cvals(condition_comparisons)
+print(condition_comparisons)
 ```
 
 ### Multiple groups 
