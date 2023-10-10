@@ -337,8 +337,8 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
   old_par <- par()
   if (is.null(x$groups)) {
     par(mfrow = c(1, 2))
-    pcc_plot(x, threshold = pcc_threshold)
-    cval_plot(x, threshold = cval_threshold)
+    pcc_plot(x, threshold = pcc_threshold, legend = FALSE)
+    cval_plot(x, threshold = cval_threshold, legend = FALSE)
     par(mfrow = c(1, 1))
   } else {
     layout(matrix(c(1, 2, 3, 3), ncol = 2, byrow = TRUE), heights=c(4, 1))

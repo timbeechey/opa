@@ -21,6 +21,10 @@ row_pcc <- function(xs, h, pairing_type, diff_threshold) {
     .Call(`_opa_row_pcc`, xs, h, pairing_type, diff_threshold)
 }
 
+scalar_row_pcc <- function(xs, h, pairing_type, diff_threshold) {
+    .Call(`_opa_scalar_row_pcc`, xs, h, pairing_type, diff_threshold)
+}
+
 pcc <- function(dat, h, pairing_type, diff_threshold) {
     .Call(`_opa_pcc`, dat, h, pairing_type, diff_threshold)
 }

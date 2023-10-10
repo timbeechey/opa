@@ -73,6 +73,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// scalar_row_pcc
+double scalar_row_pcc(arma::rowvec xs, arma::vec h, std::string pairing_type, double diff_threshold);
+RcppExport SEXP _opa_scalar_row_pcc(SEXP xsSEXP, SEXP hSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::rowvec >::type xs(xsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type h(hSEXP);
+    Rcpp::traits::input_parameter< std::string >::type pairing_type(pairing_typeSEXP);
+    Rcpp::traits::input_parameter< double >::type diff_threshold(diff_thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(scalar_row_pcc(xs, h, pairing_type, diff_threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pcc
 Rcpp::List pcc(arma::mat dat, arma::vec h, std::string pairing_type, double diff_threshold);
 RcppExport SEXP _opa_pcc(SEXP datSEXP, SEXP hSEXP, SEXP pairing_typeSEXP, SEXP diff_thresholdSEXP) {
@@ -106,6 +120,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_opa_all_diffs", (DL_FUNC) &_opa_all_diffs, 1},
     {"_opa_ordering", (DL_FUNC) &_opa_ordering, 3},
     {"_opa_row_pcc", (DL_FUNC) &_opa_row_pcc, 4},
+    {"_opa_scalar_row_pcc", (DL_FUNC) &_opa_scalar_row_pcc, 4},
     {"_opa_pcc", (DL_FUNC) &_opa_pcc, 4},
     {"_opa_calc_cvalues", (DL_FUNC) &_opa_calc_cvalues, 2},
     {NULL, NULL, 0}

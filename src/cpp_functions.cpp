@@ -42,16 +42,12 @@ arma::vec conform(arma::rowvec xs, arma::vec h) {
 // [[Rcpp::export]]
 arma::vec sign_with_threshold(arma::vec xs, double diff_threshold) {
     size_t n {xs.n_elem};
-    arma::vec sign_vector(n);
+    arma::vec sign_vector {arma::zeros(n)};
     for (size_t i {}; i < n; i++) {
-        if (std::isnan(xs[i])) {
-            sign_vector[i] = arma::datum::nan;
-        } else if (xs[i] > diff_threshold) {
+        if (xs[i] > diff_threshold) {
             sign_vector[i] = 1;
         } else if (xs[i] < -diff_threshold) {
             sign_vector[i] = -1;
-        } else {
-            sign_vector[i] = 0;
         }
     }
     return sign_vector;
@@ -60,9 +56,8 @@ arma::vec sign_with_threshold(arma::vec xs, double diff_threshold) {
 
 // Calculate the difference between every pair of elements in a vector.
 // This function is called when the pairing_type = "pairwise" option is used.
-// When the pairing_type = "adjacent" option is used, R's built-in diff()
-// function is used instead. For an input vector of length N, the output vector
-// has length equal to the Nth-1 triangular number, calculated as (N-1 * N) / 2.
+// For an input vector of length N, the output vector has length equal to the 
+// Nth-1 triangular number, calculated as (N-1 * N) / 2.
 // @param xs, a numeric vector.
 // @return a numeric vector.
 // [[Rcpp::export]]
@@ -95,9 +90,9 @@ arma::vec all_diffs(arma::vec xs) {
 // [[Rcpp::export]]
 arma::vec ordering(arma::vec xs, std::string pairing_type, double diff_threshold) {
     if (pairing_type == "pairwise") {
-        return(sign_with_threshold(all_diffs(xs), diff_threshold));   
+        return(sign_with_threshold(all_diffs(xs), diff_threshold));
     } else{
-        return(sign_with_threshold(arma::diff(xs), diff_threshold));
+        return sign_with_threshold(arma::diff(xs), diff_threshold);
     }
 }
 
@@ -123,6 +118,28 @@ Rcpp::List row_pcc(arma::rowvec xs, arma::vec h, std::string pairing_type, doubl
     return Rcpp::List::create(Rcpp::Named("n_pairs") = n_pairs,
                               Rcpp::Named("correct_pairs") = correct_pairs,
                               Rcpp::Named("pcc") = pcc);
+}
+
+// Calculate the percentage of correct classifications for a single row of data.
+// This function returns only the scalar PCC value for use in c-value calculation.
+// @param xs, a numeric vector.
+// @param h, a numeric vector.
+// @param pairing_type, a string, either "adjacent" or "pairwise".
+// @param diff_threshold, a non-negative double.
+// @return a double
+// [[Rcpp::export]]
+double scalar_row_pcc(arma::rowvec xs, arma::vec h, std::string pairing_type, double diff_threshold) {
+    arma::vec hypothesis_no_nas = xs.has_nan() ? conform(xs, h) : h;
+    arma::vec hypothesis_ordering = ordering(hypothesis_no_nas, pairing_type, 0);
+    arma::vec row_ordering = ordering(xs.elem(arma::find_finite(xs)), pairing_type, diff_threshold);
+    arma::vec match(row_ordering.n_elem);
+    for (size_t i{}; i < row_ordering.n_elem; i++) {
+        match(i) = row_ordering(i) == hypothesis_ordering(i);
+    }
+    auto n_pairs {match.n_elem};
+    auto correct_pairs {arma::accu(match)};
+    auto pcc {(correct_pairs/n_pairs) * 100};
+    return pcc;
 }
 
 
@@ -185,8 +202,8 @@ Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps) {
         Rcpp::checkUserInterrupt();
         arma::vec rand_indiv_pccs(num_rows);
         for (size_t j {}; j < num_rows; j++) {
-            Rcpp::List rand_row_pcc = row_pcc(arma::shuffle(dat.row(j)), hypothesis, pairing_type, diff_threshold);
-            auto rand_indiv_pcc {rand_row_pcc["pcc"]};
+            auto rand_indiv_pcc = scalar_row_pcc(arma::shuffle(dat.row(j)), hypothesis, pairing_type, diff_threshold);
+            //auto rand_indiv_pcc {rand_row_pcc["pcc"]};
             rand_indiv_pccs(j) = rand_indiv_pcc;
             if (rand_indiv_pccs(j) >= individual_pccs[j]) {
                 indiv_rand_pcc_geq_obs_pcc[j] += 1;
