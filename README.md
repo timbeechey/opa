@@ -27,14 +27,6 @@ You can install the development version of opa from
 remotes::install_github("timbeechey/opa")
 ```
 
-## Citation
-
-To cite opa in your work you can use the output of:
-
-``` r
-citation(package = "opa")
-```
-
 ## Background
 
 `opa` is an implementation of methods described in publications
@@ -57,7 +49,7 @@ conditions or measurement instances.
 Ordinal pattern analysis works by comparing the relative ordering of
 pairs of observations and computing whether those pairwise relations are
 matched by a hypothesis. Each pairwise ordered relation is classified as
-an increases, a decrease, or as no change. These classifications are
+an increase, a decrease, or as no change. These classifications are
 encoded as 1, -1 and 0, respectively. For example, a hypothesis of a
 monotonic increase in a response variable across four experimental
 conditions can be specified as:

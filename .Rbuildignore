@@ -7,3 +7,7 @@
 ^\.github$
 ^README\.Rmd$
 ^.DS\_Store
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^logo$
