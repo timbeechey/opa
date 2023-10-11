@@ -11,7 +11,7 @@ Description: Quantifies hypothesis to data fit for repeated measures
     pairwise relative orderings which are then compared to determine the
     percentage of orderings in the data that are matched by the hypothesis.
 License: GPL (>= 3)
-URL: https://github.com/timbeechey/opa
+URL: https://github.com/timbeechey/opa, https://timbeechey.github.io/opa/
 BugReports: https://github.com/timbeechey/opa/issues
 Encoding: UTF-8
 LazyData: true

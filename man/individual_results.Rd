@@ -19,9 +19,9 @@ with 1 row per row of data.
 Individual-level PCC and chance values.
 }
 \details{
-If the model was fitted with no grouping variable, a matrix of PCCs and
-c-values are returned corresponding to the order of rows in the data. If the
-\code{opa} model was fitted with a grouping variable specified, a table of
+If the \code{opa} model was fitted with no grouping variable, a matrix of PCCs
+and c-values are returned corresponding to the order of rows in the data. If
+the \code{opa} model was fitted with a grouping variable specified, a table of
 PCCs and c-values is returned ordered by factor level of the grouping
 variable.
 }
