@@ -12,8 +12,7 @@ knitr::opts_chunk$set(
 )
 
 # set plot colors
-palette("Tableau 10")
-palette(adjustcolor(palette(), alpha.f = 0.8))
+palette(c("#0072B2", "#999999", "#E69F00", "#56B4E9"))
 ```
 
 # opa
