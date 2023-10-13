@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 palette(c("#0072B2", "#999999", "#E69F00", "#56B4E9"))
 ```
 
-# opa
+# opa <a href="https://timbeechey.github.io/opa/"><img src="man/figures/logo.png" align="right" height="139" alt="opa website" /></a>
 
 <!-- badges: start -->
 ![](https://www.r-pkg.org/badges/version-ago/opa?color=orange)
