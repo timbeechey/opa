@@ -83,6 +83,25 @@ summary.opaHypothesisComparison <- function(object, ...) {
 }
 
 
+#' Prints a summary of results from hypothesis comparison.
+#' @param x an object of class "opaHypothesisComparison".
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11),
+#'                   t4 = c(10, 5, 11, 12))
+#' opamod1 <- opa(dat, c(1, 2, 3, 4))
+#' opamod2 <- opa(dat, c(1, 4, 2, 3))
+#' z <- compare_hypotheses(opamod1, opamod2)
+#' print(z)
+#' @export
+print.opaHypothesisComparison <- function(x, ...) {
+    summary(x)
+}
+
+
 #' Calculate the c-value of the difference in PCCs produced by two groups
 #' @param m an object of class "opafit" produced by a call to opa().
 #' @param group1 a character string which matches a group level passed to opa().
@@ -149,4 +168,22 @@ summary.opaGroupComparison <- function(object, ...) {
     cat("Group 2 PCC:", object$group2_pcc, "\n")
     cat("PCC difference:", object$pcc_diff, "\n")
     cat("cval:", object$cval, "\n")
+}
+
+#' Prints a summary of results from hypothesis comparison.
+#' @param x an object of class "opaHypothesisComparison".
+#' @param ... ignored
+#' @return No return value, called for side effects.
+#' @examples
+#' dat <- data.frame(group = c("a", "b", "a", "b"),
+#'                   t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' dat$group <- factor(dat$group, levels = c("a", "b"))
+#' opamod <- opa(dat[,2:4], 1:3, group = dat$group)
+#' z <- compare_groups(opamod, "a", "b")
+#' print(z)
+#' @export
+print.opaGroupComparison <- function(x, ...) {
+    summary(x)
 }

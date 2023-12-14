@@ -228,7 +228,7 @@ pcc_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   if (!is.null(m$groups)) {
     if (legend == TRUE) {
       legend("right", legend = levels(m$groups), title = "Group",
-             pch=21, pt.bg = m$groups, cex=1,
+             pch=21, pt.bg = 1:nlevels(m$groups), cex=1,
              xpd = TRUE, inset = c(-0.3, 0))
     }
   }
@@ -312,7 +312,7 @@ cval_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
   if (!is.null(m$groups)) {
     if (legend == TRUE) {
       legend("right", legend = levels(m$groups), title = "Group",
-             pch=21, pt.bg = m$groups, cex=1,
+             pch=21, pt.bg = 1:nlevels(m$groups), cex=1,
              xpd = TRUE, inset = c(-0.3, 0))
     }
   }
@@ -347,8 +347,7 @@ plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
     cval_plot(x, threshold = cval_threshold, legend = FALSE)
     par(mai = c(0, 0, 0, 0))
     plot.new()
-    legend(x="center", horiz = TRUE, legend = levels(x$groups), title = "Group",
-           pch=21, pt.bg = x$groups, cex=1)
+    legend(x="center", horiz = TRUE, legend = levels(x$groups), title = "Group", pch=21, pt.bg = 1:nlevels(x$groups), cex=1)
     par(mfrow = c(1, 1))
   }
   par(mar = old_par$mar)
@@ -371,7 +370,7 @@ plot.opahypothesis <- function(x, title = TRUE, ...) {
        xlab = "x", ylab = "h(x)",
        yaxt = "n", xaxt="n",
        main = ifelse(title == TRUE, "Hypothesis", ""))
-  points(seq(length(x$raw)), x$raw, pch=21, cex=2, bg = palette()[1])
+  points(1:(length(x$raw)), x$raw, pch=21, cex=2, bg = palette()[1])
   axis(1, at=x$raw, labels=x$raw)
   axis(2, at=c(min(x$raw), max(x$raw)), labels = c("Lower", "Higher"), las = 1)
 }
@@ -454,7 +453,7 @@ individual_results.opafit <- function(m, digits = 2) {
   if (is.null(m$groups)) {
     out <- round(cbind(m$individual_pccs, m$individual_cvals), digits)
     colnames(out) <- c("PCC", "cval")
-    rownames(out) <- seq(length(m$individual_pccs))
+    rownames(out) <- 1:(length(m$individual_pccs))
     return(out)
   } else {
     out <- round(cbind(m$individual_idx, m$individual_pccs, m$individual_cvals), digits)

@@ -1,7 +1,7 @@
 Package: opa
 Type: Package
 Title: An Implementation of Ordinal Pattern Analysis
-Version: 0.8.1.017
+Version: 0.8.1.023
 Authors@R: person("Timothy", "Beechey", email = "tim.beechey@proton.me",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8858-946X"))
 Description: Quantifies hypothesis to data fit for repeated measures 
@@ -17,6 +17,10 @@ Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp, RcppArmadillo
 Imports: Rcpp, graphics, stats, utils
-Suggests: tinytest
+Suggests: 
+    knitr,
+    rmarkdown,
+    tinytest
 SystemRequirements: C++17
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr

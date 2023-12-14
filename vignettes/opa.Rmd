@@ -1,0 +1,51 @@
+---
+title: "opa"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{opa}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+Ordinal pattern analysis is a simple non-parametric method for quantifying how well a hypothesis fits patterns of observed data across multiple measurement conditions. Ordinal pattern analysis compares the rank ordering of a specified hypothesis against the rank ordering of observations within individuals. In this regard ordinal pattern analysis is similar to Kendal's Tau. While Kendal's Tau is used to compare two vectors of data, ordinal pattern analysis can be viewed as a form of inference to the best explanation whereby hypotheses can be considered in terms of their consistency with observed data. Ordinal pattern analysis was described by [Thorngate (1987)](https://doi.org/10.1016/S0166-4115(08)60083-7) and [Grice et al. (2015)](https://doi.org/10.1177/2158244015604192) and was inspired by Parsons (1975).
+
+## Modeling repeated measures data
+
+Once installed, you can load `opa` with
+
+```{r load_opa}
+library(opa)
+```
+
+### Data
+
+For this example we will use the `sleepstudy` data from the `lme4` package.
+
+```{r load_data}
+
+```
+
+#### Wide format
+
+## Specifying a hypothesis
+
+## Fitting an ordinal pattern analysis model
+
+## References
+
+Grice, J. W., Craig, D. P. A., & Abramson, C. I. (2015). A Simple and Transparent Alternative to Repeated Measures ANOVA. SAGE Open, 5(3), 215824401560419. https://doi.org/10.1177/2158244015604192
+
+Parsons, D. (1975). _The directory of tunes and musical themes_. S. Brown.
+
+Thorngate, W. (1987). Ordinal Pattern Analysis: A Method for Assessing Theory-Data Fit. Advances in Psychology, 40, 345–364. https://doi.org/10.1016/S0166-4115(08)60083-7
+
+
