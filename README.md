@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# opa <a href="https://timbeechey.github.io/opa/"><img src="man/figures/logo.png" align="right" height="139" alt="opa website" /></a>
+# opa <a href="https://timbeechey.github.io/opa/"></a>
 
 <!-- badges: start -->
 
