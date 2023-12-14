@@ -7,6 +7,12 @@
     <loc>https://timbeechey.github.io/opa/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://timbeechey.github.io/opa/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://timbeechey.github.io/opa/articles/opa.html</loc>
+  </url>
+  <url>
     <loc>https://timbeechey.github.io/opa/authors.html</loc>
   </url>
   <url>
@@ -65,6 +71,12 @@
   </url>
   <url>
     <loc>https://timbeechey.github.io/opa/reference/plot.opahypothesis.html</loc>
+  </url>
+  <url>
+    <loc>https://timbeechey.github.io/opa/reference/print.opaGroupComparison.html</loc>
+  </url>
+  <url>
+    <loc>https://timbeechey.github.io/opa/reference/print.opaHypothesisComparison.html</loc>
   </url>
   <url>
     <loc>https://timbeechey.github.io/opa/reference/print.opafit.html</loc>
