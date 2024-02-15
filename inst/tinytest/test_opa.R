@@ -8,7 +8,7 @@ test_dat <- data.frame(group = c("a", "b", "a", "b"),
                        t1 = c(1, 3, 1, 1),
                        t2 = c(2, 2, 1, 2),
                        t3 = c(4, 1, 1, 1))
-test_dat$group = factor(test_dat$group, levels = c("a", "b"))
+test_dat$group <- factor(test_dat$group, levels = c("a", "b"))
 
 test_dat_all_wrong <- data.frame(t1 = c(3, 2, 1),
                                  t2 = c(3, 2, 1),
@@ -57,6 +57,31 @@ expect_inherits(opamod1, "opafit")
 expect_inherits(pw1, "pairwiseopafit")
 expect_inherits(group_comp, "opaGroupComparison")
 expect_inherits(ch1, "opaHypothesisComparison")
+expect_inherits(random_pccs(opamod1), "matrix")
+
+# check getters
+expect_equal(correct_pairs(opamod1), 4)
+expect_equal(incorrect_pairs(opamod1), 8)
+expect_equal(round(group_pccs(opamod1), 2), 33.33)
+expect_true(group_cvals(opamod1) > 0.4)
+expect_true(group_cvals(opamod1) < 0.8)
+expect_equal(round(individual_pccs(opamod1), 2), c(100.00, 0.00, 0.00, 33.33))
+expect_equal(round(group_results(opamod1)[1], 2), 33.33)
+
+# check functions that produce side-effects
+expect_stdout(print(opamod1))
+expect_stdout(summary(opamod1))
+expect_stdout(plot(opamod1))
+expect_stdout(print(h1))
+expect_stdout(summary(h1))
+expect_stdout(plot(h1))
+expect_stdout(print(pw1))
+expect_stdout(print(ch1))
+expect_stdout(summary(ch1))
+expect_stdout(print(group_comp))
+expect_stdout(summary(group_comp))
+expect_stdout(print(group_results(opamod1)))
+expect_stdout(print(individual_results(opamod1)))
 
 #========== test pairwise opa works ==========
 expect_equal(opamod1$total_pairs, 12)
