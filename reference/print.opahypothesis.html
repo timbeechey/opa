@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">opa</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.028</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.030</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,6 +72,36 @@
 <p>No return value, called for side-effects.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">h1</span> <span class="op">&lt;-</span> <span class="fu"><a href="hypothesis.html">hypothesis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">h1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ********** Ordinal Hypothesis **********</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis type: pairwise </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Raw hypothesis:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2 1 3 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ordinal relations:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -1 1 1 1 1 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N conditions: 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised ordinal relations: 6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised increases: 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised decreases: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised equalities: 0 </span>
+<span class="r-in"><span><span class="va">h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="hypothesis.html">hypothesis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"adjacent"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">h2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ********** Ordinal Hypothesis **********</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis type: adjacent </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Raw hypothesis:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2 1 3 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ordinal relations:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -1 1 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N conditions: 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised ordinal relations: 3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised increases: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised decreases: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N hypothesised equalities: 0 </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
