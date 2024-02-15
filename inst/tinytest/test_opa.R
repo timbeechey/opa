@@ -14,8 +14,10 @@ test_dat_all_wrong <- data.frame(t1 = c(3, 2, 1),
                                  t2 = c(3, 2, 1),
                                  t3 = c(3, 2, 1))
 
+h1 <- hypothesis(1:3)
+
 opamod1 <- opa(test_dat[,2:4],
-               1:3,
+               h1,
                pairing_type = "pairwise")
 
 opamod1a <- opa(test_dat[,2:4],
@@ -50,9 +52,11 @@ ch2 <- compare_hypotheses(opamod1, opamod1)
 group_comp <- compare_groups(opamod5, "a", "b")
 
 # check types
+expect_inherits(h1, "opahypothesis")
 expect_inherits(opamod1, "opafit")
 expect_inherits(pw1, "pairwiseopafit")
-expect_inherits(ch1, "opaGroupComparison")
+expect_inherits(group_comp, "opaGroupComparison")
+expect_inherits(ch1, "opaHypothesisComparison")
 
 #========== test pairwise opa works ==========
 expect_equal(opamod1$total_pairs, 12)
