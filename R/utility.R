@@ -87,7 +87,8 @@ print.opahypothesis <- function(x, ...) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' summary(opamod)
 #' summary(opamod, digits = 3)
 #' @export
@@ -117,7 +118,8 @@ summary.opafit <- function(object, ..., digits = 2L) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' pw <- compare_conditions(opamod)
 #' print(pw)
 #' print(pw, digits = 2)
@@ -153,7 +155,8 @@ print.pairwiseopafit <- function(x, ...) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' print(opamod)
 #' @export
 print.opafit <- function(x, ...) {
@@ -171,7 +174,8 @@ print.opafit <- function(x, ...) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' pcc_plot(opamod)
 #' pcc_plot(opamod, threshold = 85)
 #' @export
@@ -254,7 +258,8 @@ pcc_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' cval_plot(opamod)
 #' cval_plot(opamod, threshold = 0.1)
 #' @export
@@ -338,7 +343,8 @@ cval_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' plot(opamod)
 #' @export
 plot.opafit <- function(x, pcc_threshold = NULL, cval_threshold = NULL, ...) {
@@ -398,7 +404,8 @@ plot.opahypothesis <- function(x, title = TRUE, ...) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' group_results(opamod)
 #' @export
 group_results <- function(m, digits) {
@@ -444,7 +451,8 @@ group_results.opafit <- function(m, digits = 2) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' individual_results(opamod)
 #' @export
 individual_results <- function(m, digits) {
@@ -478,7 +486,8 @@ individual_results.opafit <- function(m, digits = 2) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' group_pccs(opamod)
 #' @export
 group_pccs <- function(m) {
@@ -509,7 +518,8 @@ group_pccs.pairwiseopafit <- function(m) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' group_cvals(opamod)
 #' @export
 group_cvals <- function(m) {
@@ -540,7 +550,8 @@ group_cvals.pairwiseopafit <- function(m) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' individual_pccs(opamod)
 #' @export
 individual_pccs <- function(m) {
@@ -565,7 +576,8 @@ individual_pccs.opafit <- function(m) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' individual_cvals(opamod)
 #' @export
 individual_cvals <- function(m) {
@@ -590,7 +602,8 @@ individual_cvals.opafit <- function(m) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' random_pccs(opamod)
 #' @export
 random_pccs <- function(m) {
@@ -615,7 +628,8 @@ random_pccs.opafit <- function(m) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' correct_pairs(opamod)
 #' @export
 correct_pairs <- function(m) {
@@ -640,7 +654,8 @@ correct_pairs.opafit <- function(m) {
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
-#' opamod <- opa(dat, 1:3)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
 #' incorrect_pairs(opamod)
 #' @export
 incorrect_pairs <- function(m) {

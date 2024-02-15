@@ -25,7 +25,8 @@ Plot individual PCCs.
 dat <- data.frame(t1 = c(9, 4, 8, 10),
                   t2 = c(8, 8, 12, 10),
                   t3 = c(8, 5, 10, 11))
-opamod <- opa(dat, 1:3)
+h <- hypothesis(1:3)
+opamod <- opa(dat, h)
 pcc_plot(opamod)
 pcc_plot(opamod, threshold = 85)
 }
