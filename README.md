@@ -7,6 +7,8 @@
 
 ![](https://www.r-pkg.org/badges/version-ago/opa?color=orange)
 ![](https://cranlogs.r-pkg.org/badges/grand-total/opa)
+[![R-CMD-check](https://github.com/timbeechey/opa/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/timbeechey/opa/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/timbeechey/opa/graph/badge.svg?token=Q3ZI7BBMIK)](https://codecov.io/gh/timbeechey/opa)
 <!-- badges: end -->
 
 An R package for ordinal pattern analysis.
