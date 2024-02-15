@@ -34,7 +34,8 @@
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11),
 #'                   t4 = c(10, 5, 11, 12))
-#' opamod <- opa(dat, 1:4)
+#' h <- hypothesis(1:4)
+#' opamod <- opa(dat, h)
 #' compare_conditions(opamod)
 #' @export
 compare_conditions <- function(result, nreps = 1000L) {

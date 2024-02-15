@@ -25,6 +25,7 @@ dat <- data.frame(group = c("a", "b", "a", "b"),
                   t2 = c(8, 8, 12, 10),
                   t3 = c(8, 5, 10, 11))
 dat$group <- factor(dat$group, levels = c("a", "b"))
-opamod <- opa(dat[,2:4], 1:3, group = dat$group)
+h <- hypothesis(1:3)
+opamod <- opa(dat[,2:4], h, group = dat$group)
 compare_groups(opamod, "a", "b")
 }

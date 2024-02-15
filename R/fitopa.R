@@ -100,12 +100,13 @@
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
 #' dat$group <- factor(dat$group, levels = c("a", "b"))
-#' opamod <- opa(dat[,2:4], 1:3)
-#' opa(dat[,2:4], 1:3)
-#' opa(dat[,2:4], 1:3, nreps = 500)
-#' opa(dat[,2:4], 1:3, pairing_type = "adjacent")
-#' opa(dat[,2:4], 1:3, diff_threshold = 1)
-#' opa(dat[,2:4], 1:3, group = dat$group)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat[,2:4], h)
+#' opamod <- opa(dat[,2:4], h)
+#' opamod <- opa(dat[,2:4], h, nreps = 500)
+#' opamod <- opa(dat[,2:4], h, pairing_type = "adjacent")
+#' opamod <- opa(dat[,2:4], h, diff_threshold = 1)
+#' opamod <- opa(dat[,2:4], h, group = dat$group)
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, nreps = 1000L) {

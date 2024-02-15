@@ -18,6 +18,9 @@
 #' @param xs a numeric vector
 #' @param type a string
 #' @return a list containing the following elements
+#' @examples 
+#' h1 <- hypothesis(c(2, 1, 3, 4), type = "pairwise")
+#' h2 <- hypothesis(c(2, 1, 3, 4), type = "adjacent")
 #' @export
 hypothesis <- function(xs, type = "pairwise") {
 
@@ -56,6 +59,11 @@ hypothesis <- function(xs, type = "pairwise") {
 #' @param x an object of type "opaHypothesis"
 #' @param ... ignored
 #' @return No return value, called for side-effects.
+#' @examples 
+#' h1 <- hypothesis(c(2, 1, 3, 4), type = "pairwise")
+#' print(h1)
+#' h2 <- hypothesis(c(2, 1, 3, 4), type = "adjacent")
+#' print(h2)
 #' @export 
 print.opahypothesis <- function(x, ...) {
   cat("********** Ordinal Hypothesis **********\n")

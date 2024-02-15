@@ -17,3 +17,9 @@ No return value, called for side-effects.
 \description{
 Print details of a hypothesis
 }
+\examples{
+h1 <- hypothesis(c(2, 1, 3, 4), type = "pairwise")
+print(h1)
+h2 <- hypothesis(c(2, 1, 3, 4), type = "adjacent")
+print(h2)
+}

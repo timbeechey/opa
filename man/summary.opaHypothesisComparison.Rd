@@ -22,8 +22,10 @@ dat <- data.frame(t1 = c(9, 4, 8, 10),
                   t2 = c(8, 8, 12, 10),
                   t3 = c(8, 5, 10, 11),
                   t4 = c(10, 5, 11, 12))
-opamod1 <- opa(dat, c(1, 2, 3, 4))
-opamod2 <- opa(dat, c(1, 4, 2, 3))
+h1 <- hypothesis(c(1, 2, 3, 4))
+h2 <- hypothesis(c(1, 4, 2, 3))
+opamod1 <- opa(dat, h1)
+opamod2 <- opa(dat, h2)
 z <- compare_hypotheses(opamod1, opamod2)
 summary(z)
 }

@@ -24,8 +24,10 @@
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11),
 #'                   t4 = c(10, 5, 11, 12))
-#' opamod1 <- opa(dat, c(1, 2, 3, 4))
-#' opamod2 <- opa(dat, c(1, 4, 2, 3))
+#' h1 <- hypothesis(c(1, 2, 3, 4))
+#' h2 <- hypothesis(c(1, 4, 2, 3))
+#' opamod1 <- opa(dat, h1)
+#' opamod2 <- opa(dat, h2)
 #' compare_hypotheses(opamod1, opamod2)
 #' @export
 compare_hypotheses <- function(m1, m2) {
@@ -67,8 +69,10 @@ compare_hypotheses.opafit <- function(m1, m2) {
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11),
 #'                   t4 = c(10, 5, 11, 12))
-#' opamod1 <- opa(dat, c(1, 2, 3, 4))
-#' opamod2 <- opa(dat, c(1, 4, 2, 3))
+#' h1 <- hypothesis(c(1, 2, 3, 4))
+#' h2 <- hypothesis(c(1, 4, 2, 3))
+#' opamod1 <- opa(dat, h1)
+#' opamod2 <- opa(dat, h2)
 #' z <- compare_hypotheses(opamod1, opamod2)
 #' summary(z)
 #' @export
@@ -92,8 +96,10 @@ summary.opaHypothesisComparison <- function(object, ...) {
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11),
 #'                   t4 = c(10, 5, 11, 12))
-#' opamod1 <- opa(dat, c(1, 2, 3, 4))
-#' opamod2 <- opa(dat, c(1, 4, 2, 3))
+#' h1 <- hypothesis(c(1, 2, 3, 4))
+#' h2 <- hypothesis(c(1, 4, 2, 3))
+#' opamod1 <- opa(dat, h1)
+#' opamod2 <- opa(dat, h2)
 #' z <- compare_hypotheses(opamod1, opamod2)
 #' print(z)
 #' @export
@@ -113,7 +119,8 @@ print.opaHypothesisComparison <- function(x, ...) {
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
 #' dat$group <- factor(dat$group, levels = c("a", "b"))
-#' opamod <- opa(dat[,2:4], 1:3, group = dat$group)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat[,2:4], h, group = dat$group)
 #' compare_groups(opamod, "a", "b")
 #' @export 
 compare_groups <- function(m, group1, group2) {
@@ -156,7 +163,8 @@ compare_groups.opafit <- function(m, group1, group2) {
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
 #' dat$group <- factor(dat$group, levels = c("a", "b"))
-#' opamod <- opa(dat[,2:4], 1:3, group = dat$group)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat[,2:4], h, group = dat$group)
 #' z <- compare_groups(opamod, "a", "b")
 #' summary(z)
 #' @export
@@ -180,7 +188,8 @@ summary.opaGroupComparison <- function(object, ...) {
 #'                   t2 = c(8, 8, 12, 10),
 #'                   t3 = c(8, 5, 10, 11))
 #' dat$group <- factor(dat$group, levels = c("a", "b"))
-#' opamod <- opa(dat[,2:4], 1:3, group = dat$group)
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat[,2:4], h, group = dat$group)
 #' z <- compare_groups(opamod, "a", "b")
 #' print(z)
 #' @export

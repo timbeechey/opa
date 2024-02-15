@@ -17,3 +17,7 @@ a list containing the following elements
 \description{
 create a hypothesis object
 }
+\examples{
+h1 <- hypothesis(c(2, 1, 3, 4), type = "pairwise")
+h2 <- hypothesis(c(2, 1, 3, 4), type = "adjacent")
+}
