@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   opa: opa.html
-last_built: 2024-02-15T13:15Z
+last_built: 2024-02-15T14:04Z
 urls:
   reference: https://timbeechey.github.io/opa/reference
   article: https://timbeechey.github.io/opa/articles
