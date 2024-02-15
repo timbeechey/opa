@@ -371,7 +371,7 @@ plot.opahypothesis <- function(x, title = TRUE, ...) {
        yaxt = "n", xaxt="n",
        main = ifelse(title == TRUE, "Hypothesis", ""))
   points(1:(length(x$raw)), x$raw, pch=21, cex=2, bg = palette()[1])
-  axis(1, at=x$raw, labels=x$raw)
+  axis(1, at=1:length(x$raw), labels=1:length(x$raw))
   axis(2, at=c(min(x$raw), max(x$raw)), labels = c("Lower", "Higher"), las = 1)
 }
 

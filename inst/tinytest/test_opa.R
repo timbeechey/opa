@@ -49,6 +49,11 @@ ch2 <- compare_hypotheses(opamod1, opamod1)
 # compare subgroup pccs
 group_comp <- compare_groups(opamod5, "a", "b")
 
+# check types
+expect_inherits(opamod1, "opafit")
+expect_inherits(pw1, "pairwiseopafit")
+expect_inherits(ch1, "opaGroupComparison")
+
 #========== test pairwise opa works ==========
 expect_equal(opamod1$total_pairs, 12)
 expect_equal(opamod1$correct_pairs, 4)
