@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">opa</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.032</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,69 +83,278 @@ publications including <a href="https://doi.org/10.1016/S0166-4115(08)60083-7" c
 et al. (2015)</a>. Thorngate (1987) attributes the original idea to:</p>
 <p>Parsons, D. (1975). <em>The directory of tunes and musical
 themes</em>. S. Brown.</p>
-</div>
-<div class="section level2">
-<h2 id="how-ordinal-pattern-analysis-works">How ordinal pattern analysis works<a class="anchor" aria-label="anchor" href="#how-ordinal-pattern-analysis-works"></a>
-</h2>
-<p>Ordinal pattern analysis is a simple non-parametric method, similar
-to Kendall’s Tau. Whereas Kendall’s tau is a measure of similarity
-between two data sets in terms of rank ordering, ordinal pattern
-analysis is intended to quantify the match between a hypothesis and
-patterns of individual-level data across conditions or measurement
-instances.</p>
-<p>Ordinal pattern analysis works by comparing the relative ordering of
-pairs of observations and computing whether those pairwise relations are
-matched by a hypothesis. Each pairwise ordered relation is classified as
-an increase, a decrease, or as no change. These classifications are
-encoded as 1, -1 and 0, respectively. For example, a hypothesis of a
-monotonic increase in a response variable across four experimental
-conditions can be specified as:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1 2 3 4</span></span></code></pre></div>
-<p>Note that the absolute values are not important, only their relative
-ordering. The hypothesis <code>h</code> encodes six pairwise relations,
-all increases: <code>1 1 1 1 1 1</code>.</p>
-<p>A row of individual data representing measurements across four
-conditions, such as:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">65.3</span>, <span class="fl">68.8</span>, <span class="fl">67.0</span>, <span class="fl">73.1</span><span class="op">)</span></span></code></pre></div>
-<p>encodes six ordered pairwise relations <code>1 1 1 -1 1 1</code>. The
-percentage of orderings which are correctly classified by the hypothesis
-(<em>PCC</em>) is the main quantity of interest in ordinal pattern
-analysis. Comparing <code>h</code> and <code>dat</code>, the PCC is
-<code>5/6 = 0.833</code> or 83.3%. A hypothesis which generates a
-greater PCC is preferred over a hypothesis which generates a lower PCC
-for given data.</p>
-<p>It is also possible to calculate a <em>chance-value</em> for a PCC
-which is equal to the chance that a PCC at least as great as the PCC of
-the observed data could occur as a result of a random re-ordering of the
-data. Chance values can be computed using a randomization test.</p>
+<p>Ordinal pattern analysis may be useful as an alternative, or
+addition, to other methods of analyzing repeated measures data such as
+repeated measures ANOVA and mixed-effects models.</p>
 </div>
 <div class="section level2">
 <h2 id="modeling-repeated-measures-data">Modeling repeated measures data<a class="anchor" aria-label="anchor" href="#modeling-repeated-measures-data"></a>
 </h2>
 <p>Once installed, you can load <code>opa</code> with</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://timbeechey.github.io/opa/">opa</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h3>
-<p>For this example we will use the <code>sleepstudy</code> data from
-the <code>lme4</code> package.</p>
+<p>For this example we will use the childhood growth data reported by
+Potthoff &amp; Roy (1964) consisting of measures of the distance between
+the pituitary and the pteryo-maxillary fissure. Distances were recorded
+in millimeters when each child was 8, 10, 12 and 14 years old.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">pituitary</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    108 obs. of  4 variables:</span></span>
+<span><span class="co">#&gt;  $ distance  : num  26 25 29 31 21.5 22.5 23 26.5 23 22.5 ...</span></span>
+<span><span class="co">#&gt;  $ age       : int  8 10 12 14 8 10 12 14 8 10 ...</span></span>
+<span><span class="co">#&gt;  $ individual: Factor w/ 27 levels "1","2","3","4",..: 1 1 1 1 2 2 2 2 3 3 ...</span></span>
+<span><span class="co">#&gt;  $ sex       : Factor w/ 2 levels "F","M": 2 2 2 2 2 2 2 2 2 2 ...</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">xyplot</span><span class="op">(</span><span class="va">distance</span> <span class="op">~</span> <span class="va">age</span> <span class="op">|</span> <span class="va">individual</span>, <span class="va">pituitary</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g"</span>, <span class="st">"p"</span>, <span class="st">"l"</span><span class="op">)</span>,</span>
+<span>       groups <span class="op">=</span> <span class="va">sex</span>, cex <span class="op">=</span> <span class="fl">1.2</span>, pch <span class="op">=</span> <span class="fl">21</span>,</span>
+<span>       fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E69F0070"</span>, <span class="st">"#0072B270"</span><span class="op">)</span>,</span>
+<span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E69F00"</span>, <span class="st">"#0072B2"</span><span class="op">)</span>,</span>
+<span>       scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>       xlab <span class="op">=</span> <span class="st">"Age (years)"</span>,</span>
+<span>       ylab <span class="op">=</span> <span class="st">"Distance (mm)"</span>,</span>
+<span>       main <span class="op">=</span> <span class="st">"Pituitary-Pterygomaxillary Fissure Distance"</span>,</span>
+<span>       key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>space <span class="op">=</span> <span class="st">"bottom"</span>, columns <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                  text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="st">"Male"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                  lines <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E69F00"</span>, <span class="st">"#0072B2"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                  points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>pch <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E69F0070"</span>, <span class="st">"#0072B270"</span><span class="op">)</span>,</span>
+<span>                                col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E69F00"</span>, <span class="st">"#0072B2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="opa_files/figure-html/plot_data-1.png" width="576"></p>
 <div class="section level4">
 <h4 id="wide-format">Wide format<a class="anchor" aria-label="anchor" href="#wide-format"></a>
 </h4>
+<p><code>opa</code> requires data in wide format, with one row per
+individual and one column per measurement time or condition.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat_wide</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pituitary</span>,</span>
+<span>                    direction <span class="op">=</span> <span class="st">"wide"</span>,</span>
+<span>                    idvar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"individual"</span>, <span class="st">"sex"</span><span class="op">)</span>,</span>
+<span>                    timevar <span class="op">=</span> <span class="st">"age"</span>,</span>
+<span>                    v.names <span class="op">=</span> <span class="st">"distance"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat_wide</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    individual sex distance.8 distance.10 distance.12 distance.14</span></span>
+<span><span class="co">#&gt; 1           1   M       26.0        25.0        29.0        31.0</span></span>
+<span><span class="co">#&gt; 5           2   M       21.5        22.5        23.0        26.5</span></span>
+<span><span class="co">#&gt; 9           3   M       23.0        22.5        24.0        27.5</span></span>
+<span><span class="co">#&gt; 13          4   M       25.5        27.5        26.5        27.0</span></span>
+<span><span class="co">#&gt; 17          5   M       20.0        23.5        22.5        26.0</span></span>
+<span><span class="co">#&gt; 21          6   M       24.5        25.5        27.0        28.5</span></span></code></pre></div>
 </div>
 </div>
+<div class="section level3">
+<h3 id="specifying-a-hypothesis">Specifying a hypothesis<a class="anchor" aria-label="anchor" href="#specifying-a-hypothesis"></a>
+</h3>
+<p>For this analysis we will assume a hypothesis of monotonic increase
+in distance with increasing age. This monotonic increase hypothesis can
+be encoded using the <code><a href="../reference/hypothesis.html">hypothesis()</a></code> function.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">h1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hypothesis.html">hypothesis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span></code></pre></div>
+<p>Printing the hypothesis object shows that it consists of
+sub-hypotheses about six ordinal relations. In this case it is
+hypothesized that each of the six ordinal relations are increases, coded
+as <code>1</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">h1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ********** Ordinal Hypothesis **********</span></span>
+<span><span class="co">#&gt; Hypothesis type: pairwise </span></span>
+<span><span class="co">#&gt; Raw hypothesis:</span></span>
+<span><span class="co">#&gt;  1 2 3 4 </span></span>
+<span><span class="co">#&gt; Ordinal relations:</span></span>
+<span><span class="co">#&gt;  1 1 1 1 1 1 </span></span>
+<span><span class="co">#&gt; N conditions: 4 </span></span>
+<span><span class="co">#&gt; N hypothesised ordinal relations: 6 </span></span>
+<span><span class="co">#&gt; N hypothesised increases: 6 </span></span>
+<span><span class="co">#&gt; N hypothesised decreases: 0 </span></span>
+<span><span class="co">#&gt; N hypothesised equalities: 0</span></span></code></pre></div>
+<p>The hypothesis can also be visualized with the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>
+function.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="opa_files/figure-html/plot_h1-1.png" width="384"></p>
 </div>
-<div class="section level2">
-<h2 id="specifying-a-hypothesis">Specifying a hypothesis<a class="anchor" aria-label="anchor" href="#specifying-a-hypothesis"></a>
-</h2>
+<div class="section level3">
+<h3 id="fitting-an-ordinal-pattern-analysis-model">Fitting an ordinal pattern analysis model<a class="anchor" aria-label="anchor" href="#fitting-an-ordinal-pattern-analysis-model"></a>
+</h3>
+<p>How well a hypothesis accounts for observed data can be quantified at
+the individual and group levels using the <code><a href="../reference/opa.html">opa()</a></code> function.
+The first required argument to <code><a href="../reference/opa.html">opa()</a></code> is a dataframe
+consisting of only the response variable columns. The second required
+argument is the hypothesis.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/opa.html">opa</a></span><span class="op">(</span><span class="va">dat_wide</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, <span class="va">h1</span><span class="op">)</span></span></code></pre></div>
+<p>The results can be summarized using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+function.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Ordinal Pattern Analysis of 4 observations for 27 individuals in 1 group </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Between subjects results:</span></span>
+<span><span class="co">#&gt;          PCC cval</span></span>
+<span><span class="co">#&gt; pooled 88.27    0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Within subjects results:</span></span>
+<span><span class="co">#&gt;       PCC cval</span></span>
+<span><span class="co">#&gt; 1   83.33 0.18</span></span>
+<span><span class="co">#&gt; 2  100.00 0.04</span></span>
+<span><span class="co">#&gt; 3   83.33 0.16</span></span>
+<span><span class="co">#&gt; 4   66.67 0.35</span></span>
+<span><span class="co">#&gt; 5   83.33 0.14</span></span>
+<span><span class="co">#&gt; 6  100.00 0.04</span></span>
+<span><span class="co">#&gt; 7   83.33 0.08</span></span>
+<span><span class="co">#&gt; 8   83.33 0.16</span></span>
+<span><span class="co">#&gt; 9   66.67 0.38</span></span>
+<span><span class="co">#&gt; 10 100.00 0.05</span></span>
+<span><span class="co">#&gt; 11  83.33 0.08</span></span>
+<span><span class="co">#&gt; 12 100.00 0.04</span></span>
+<span><span class="co">#&gt; 13 100.00 0.04</span></span>
+<span><span class="co">#&gt; 14  83.33 0.10</span></span>
+<span><span class="co">#&gt; 15 100.00 0.05</span></span>
+<span><span class="co">#&gt; 16  83.33 0.17</span></span>
+<span><span class="co">#&gt; 17  83.33 0.17</span></span>
+<span><span class="co">#&gt; 18 100.00 0.04</span></span>
+<span><span class="co">#&gt; 19 100.00 0.04</span></span>
+<span><span class="co">#&gt; 20 100.00 0.04</span></span>
+<span><span class="co">#&gt; 21  83.33 0.16</span></span>
+<span><span class="co">#&gt; 22  83.33 0.09</span></span>
+<span><span class="co">#&gt; 23 100.00 0.04</span></span>
+<span><span class="co">#&gt; 24  83.33 0.08</span></span>
+<span><span class="co">#&gt; 25  83.33 0.15</span></span>
+<span><span class="co">#&gt; 26  83.33 0.09</span></span>
+<span><span class="co">#&gt; 27  83.33 0.07</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.</span></span>
+<span><span class="co">#&gt; Chance-values were calculated from 1000 random orderings.</span></span></code></pre></div>
+<p>The individual-level results can also be visualized using
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="opa_files/figure-html/plot_model1-1.png" width="672"></p>
+<p>It is also possible to determine how well the hypothesis accounts for
+the data at the group level for each of the sub-hypotheses using the
+<code><a href="../reference/compare_conditions.html">compare_conditions()</a></code> function.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/compare_conditions.html">compare_conditions</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Pairwise PCCs:</span></span>
+<span><span class="co">#&gt;        1      2      3 4</span></span>
+<span><span class="co">#&gt; 1      -      -      - -</span></span>
+<span><span class="co">#&gt; 2 66.667      -      - -</span></span>
+<span><span class="co">#&gt; 3    100 77.778      - -</span></span>
+<span><span class="co">#&gt; 4    100 96.296 88.889 -</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Pairwise chance values:</span></span>
+<span><span class="co">#&gt;        1      2      3 4</span></span>
+<span><span class="co">#&gt; 1      -      -      - -</span></span>
+<span><span class="co">#&gt; 2   0.01      -      - -</span></span>
+<span><span class="co">#&gt; 3 &lt;0.001 &lt;0.001      - -</span></span>
+<span><span class="co">#&gt; 4 &lt;0.001 &lt;0.001 &lt;0.001 -</span></span></code></pre></div>
+<p>These results indicate that the hypothesis accounts least well for
+the relationship between the first two measurement times.</p>
 </div>
-<div class="section level2">
-<h2 id="fitting-an-ordinal-pattern-analysis-model">Fitting an ordinal pattern analysis model<a class="anchor" aria-label="anchor" href="#fitting-an-ordinal-pattern-analysis-model"></a>
-</h2>
+<div class="section level3">
+<h3 id="comparing-hypotheses">Comparing hypotheses<a class="anchor" aria-label="anchor" href="#comparing-hypotheses"></a>
+</h3>
+<p>The output of <code><a href="../reference/compare_conditions.html">compare_conditions()</a></code> indicates that it may
+be informative to consider a second hypothesis:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hypothesis.html">hypothesis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">h2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ********** Ordinal Hypothesis **********</span></span>
+<span><span class="co">#&gt; Hypothesis type: pairwise </span></span>
+<span><span class="co">#&gt; Raw hypothesis:</span></span>
+<span><span class="co">#&gt;  2 1 3 4 </span></span>
+<span><span class="co">#&gt; Ordinal relations:</span></span>
+<span><span class="co">#&gt;  -1 1 1 1 1 1 </span></span>
+<span><span class="co">#&gt; N conditions: 4 </span></span>
+<span><span class="co">#&gt; N hypothesised ordinal relations: 6 </span></span>
+<span><span class="co">#&gt; N hypothesised increases: 5 </span></span>
+<span><span class="co">#&gt; N hypothesised decreases: 1 </span></span>
+<span><span class="co">#&gt; N hypothesised equalities: 0</span></span></code></pre></div>
+<p>To assess the adequacy of <code>h2</code> we fit a second
+<code><a href="../reference/opa.html">opa()</a></code> model, this time passing <code>h2</code> as the
+second argument.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/opa.html">opa</a></span><span class="op">(</span><span class="va">dat_wide</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, <span class="va">h2</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="../reference/compare_hypotheses.html">compare_hypotheses()</a></code> function can then be used to
+compare how well two hypothese account for the observed data.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/compare_hypotheses.html">compare_hypotheses</a></span><span class="op">(</span><span class="va">m1</span>, <span class="va">m2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ********* Hypothesis Comparison **********</span></span>
+<span><span class="co">#&gt; H1: 1 2 3 4 </span></span>
+<span><span class="co">#&gt; H2: 2 1 3 4 </span></span>
+<span><span class="co">#&gt; H1 PCC: 88.2716 </span></span>
+<span><span class="co">#&gt; H2 PCC: 80.8642 </span></span>
+<span><span class="co">#&gt; PCC difference: 7.407407 </span></span>
+<span><span class="co">#&gt; cval: 0.273</span></span></code></pre></div>
+<p>These results indicate that the monotonic increase hypothesis encoded
+by <code>h1</code> better acounts for the data than <code>h2</code>.
+However, the difference between these hypotheses is not large. The
+computed chance value indicates that a difference at least as large
+could be produced by chance, through random permutations of the data,
+about one quarter of the time.</p>
+</div>
+<div class="section level3">
+<h3 id="comparing-groups">Comparing groups<a class="anchor" aria-label="anchor" href="#comparing-groups"></a>
+</h3>
+<p>So far the analyses have not considered any possible differences
+between males and females in terms of how well the hypotheses account
+for the data. It is possible that a given hypothesis account better for
+males than for females, or vice-versa. A model which accounts for groups
+within the data can be fitted by passing a factor vector or dataframe
+column to the <code>group</code> argument.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/opa.html">opa</a></span><span class="op">(</span><span class="va">dat_wide</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, <span class="va">h1</span>, group <span class="op">=</span> <span class="va">dat_wide</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="../reference/compare_groups.html">compare_groups()</a></code> function may then be used to
+quantify the difference in hypothesis performance between any two groups
+within the data.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/compare_groups.html">compare_groups</a></span><span class="op">(</span><span class="va">m3</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ********* Group Comparison **********</span></span>
+<span><span class="co">#&gt; Group 1: M </span></span>
+<span><span class="co">#&gt; Group 2: F </span></span>
+<span><span class="co">#&gt; Group 1 PCC: 87.5 </span></span>
+<span><span class="co">#&gt; Group 2 PCC: 89.39394 </span></span>
+<span><span class="co">#&gt; PCC difference: 1.893939 </span></span>
+<span><span class="co">#&gt; cval: 0.828</span></span></code></pre></div>
+<p>In this case, <code><a href="../reference/compare_groups.html">compare_groups()</a></code> indicates that the
+difference in how well the hypothesis accounts for males and females
+growth is very small. the chance value shows that a difference at least
+as great could be produced by chance around 80% of the time.</p>
+</div>
+<div class="section level3">
+<h3 id="difference-thresholds">Difference thresholds<a class="anchor" aria-label="anchor" href="#difference-thresholds"></a>
+</h3>
+<p>Each of the above models has treated any numerical difference in the
+distance data as a true difference. However, we may wish to treat values
+that differ by some small amount as equivalent. In this way we may
+define a threshold of practical or clinical significance. For example,
+we may decide to consider only differences of at least 1 mm. This can be
+achieved by passing a threshold value of <code>1</code> using the
+<code>diff_threshold</code> argument.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/opa.html">opa</a></span><span class="op">(</span><span class="va">dat_wide</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, <span class="va">h1</span>, group <span class="op">=</span> <span class="va">dat_wide</span><span class="op">$</span><span class="va">sex</span>, diff_threshold <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p>Setting the difference threshold to 1 mm results in a greater
+difference in hypothesis performance between males and females.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/group_results.html">group_results</a></span><span class="op">(</span><span class="va">m4</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     PCC cval</span></span>
+<span><span class="co">#&gt; F 54.55    0</span></span>
+<span><span class="co">#&gt; M 71.88    0</span></span></code></pre></div>
+<p>However, <code><a href="../reference/compare_groups.html">compare_groups()</a></code> reveals that even this larger
+difference could occur quite frequently by chance.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/compare_groups.html">compare_groups</a></span><span class="op">(</span><span class="va">m4</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ********* Group Comparison **********</span></span>
+<span><span class="co">#&gt; Group 1: M </span></span>
+<span><span class="co">#&gt; Group 2: F </span></span>
+<span><span class="co">#&gt; Group 1 PCC: 71.875 </span></span>
+<span><span class="co">#&gt; Group 2 PCC: 54.54545 </span></span>
+<span><span class="co">#&gt; PCC difference: 17.32955 </span></span>
+<span><span class="co">#&gt; cval: 0.188</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -155,6 +364,9 @@ and Transparent Alternative to Repeated Measures ANOVA. SAGE Open, 5(3),
 215824401560419. <a href="https://doi.org/10.1177/2158244015604192" class="external-link uri">https://doi.org/10.1177/2158244015604192</a></p>
 <p>Parsons, D. (1975). <em>The directory of tunes and musical
 themes</em>. S. Brown.</p>
+<p>Potthoff, R. F., &amp; Roy, S. N. (1964). A Generalized Multivariate
+Analysis of Variance Model Useful Especially for Growth Curve Problems.
+Biometrika, 51(3/4), 313–326. <a href="https://doi.org/10.2307/2334137" class="external-link uri">https://doi.org/10.2307/2334137</a></p>
 <p>Thorngate, W. (1987). Ordinal Pattern Analysis: A Method for
 Assessing Theory-Data Fit. Advances in Psychology, 40, 345–364. <a href="https://doi.org/10.1016/S0166-4115(08)60083-7" class="external-link uri">https://doi.org/10.1016/S0166-4115(08)60083-7</a></p>
 </div>
