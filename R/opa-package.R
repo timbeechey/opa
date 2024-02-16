@@ -27,3 +27,8 @@ NULL
 #' @importFrom stats na.omit
 ## usethis namespace: end
 NULL
+
+## usethis namespace: start
+#' @importFrom lattice xyplot
+## usethis namespace: end
+NULL

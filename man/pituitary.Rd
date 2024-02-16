@@ -8,7 +8,7 @@
 ## `pituitary`
 A data frame with 108 rows and 4 columns:
 \describe{
- \item{distance}{distance in milimetres from the pituitary to the pteryo-maxillary fissure}
+ \item{distance}{distance in mm from the pituitary to the pteryo-maxillary fissure}
  \item{age}{age in years}
  \item{individual}{identifier for each individual}
  \item{sex}{sex of each individual}
