@@ -60,6 +60,41 @@ compare_hypotheses.opafit <- function(m1, m2) {
     )
 }
 
+
+#' Plot hypothesis comparison PCC replicates.
+#'
+#' @details
+#' Plot a histogram of PCCs computed from randomly reordered data
+#' used to calculate the chance-value for a hypothesis comparison.
+#' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
+#' @param ... ignored
+#' @return no return value, called for side effects only.
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11),
+#'                   t4 = c(10, 5, 11, 12))
+#' h1 <- hypothesis(c(1, 2, 3, 4))
+#' h2 <- hypothesis(c(1, 4, 2, 3))
+#' opamod1 <- opa(dat, h1)
+#' opamod2 <- opa(dat, h2)
+#' z <- compare_hypotheses(opamod1, opamod2)
+#' plot(z)
+#' @export
+plot.opaHypothesisComparison <- function(x, ...) {
+  histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
+    xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
+    ylab = "Count", col = "#56B4E9",
+    panel = function(...) {
+      panel.histogram(...)
+      panel.abline(v = x$pcc_diff,
+                   col = "red",
+                   lty = 2)
+    }
+  )
+}
+
+
 #' Prints a summary of results from hypothesis comparison.
 #' @param object an object of class "opaHypothesisComparison".
 #' @param ... ignored
@@ -150,6 +185,39 @@ compare_groups.opafit <- function(m, group1, group2) {
             class = "opaGroupComparison"
         )
     )
+}
+
+
+#' Plot group comparison PCC replicates.
+#'
+#' @details
+#' Plot a histogram of PCCs computed from randomly reordered data
+#' used to calculate the chance-value for a group comparison.
+#' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
+#' @param ... ignored
+#' @return no return value, called for side effects only.
+#' @examples
+#' dat <- data.frame(group = c("a", "b", "a", "b"),
+#'                   t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' dat$group <- factor(dat$group, levels = c("a", "b"))
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat[,2:4], h, group = dat$group)
+#' z <- compare_groups(opamod, "a", "b")
+#' plot(z)
+#' @export
+plot.opaGroupComparison <- function(x, ...) {
+  histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
+    xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
+    ylab = "Count", col = "#56B4E9",
+    panel = function(...) {
+      panel.histogram(...)
+      panel.abline(v = x$pcc_diff,
+                   col = "red",
+                   lty = 2)
+    }
+  )
 }
 
 

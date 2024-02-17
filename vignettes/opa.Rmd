@@ -36,7 +36,7 @@ library(opa)
 
 ### Data
 
-For this example we will use the childhood growth data reported by Potthoff & Roy (1964) consisting of measures of the distance between the pituitary and the pteryo-maxillary fissure. Distances were recorded in millimeters when each child was 8, 10, 12 and 14 years old.
+For this example we will use childhood growth data reported by Potthoff & Roy (1964) consisting of measures of the distance between the pituitary and the pteryo-maxillary fissure. Distances were recorded in millimeters when each child was 8, 10, 12 and 14 years old. This is same data set available as `Orthodont` from the `nlme` package.
 
 ```{r str_data}
 str(pituitary)
@@ -194,5 +194,3 @@ Parsons, D. (1975). _The directory of tunes and musical themes_. S. Brown.
 Potthoff, R. F., & Roy, S. N. (1964). A Generalized Multivariate Analysis of Variance Model Useful Especially for Growth Curve Problems. Biometrika, 51(3/4), 313–326. https://doi.org/10.2307/2334137
 
 Thorngate, W. (1987). Ordinal Pattern Analysis: A Method for Assessing Theory-Data Fit. Advances in Psychology, 40, 345–364. https://doi.org/10.1016/S0166-4115(08)60083-7
-
-

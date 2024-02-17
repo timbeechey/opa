@@ -57,7 +57,7 @@ expect_inherits(opamod1, "opafit")
 expect_inherits(pw1, "pairwiseopafit")
 expect_inherits(group_comp, "opaGroupComparison")
 expect_inherits(ch1, "opaHypothesisComparison")
-expect_inherits(random_pccs(opamod1), "matrix")
+expect_inherits(random_pccs(opamod1), "oparandpccs")
 
 # check getters
 expect_equal(correct_pairs(opamod1), 4)
@@ -67,6 +67,7 @@ expect_true(group_cvals(opamod1) > 0.4)
 expect_true(group_cvals(opamod1) < 0.8)
 expect_equal(round(individual_pccs(opamod1), 2), c(100.00, 0.00, 0.00, 33.33))
 expect_equal(round(group_results(opamod1)[1], 2), 33.33)
+expect_equal(length(random_pccs(opamod1)), opamod1$nreps)
 
 # check functions that produce side-effects
 expect_stdout(print(opamod1))

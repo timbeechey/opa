@@ -32,3 +32,23 @@ NULL
 #' @importFrom lattice xyplot
 ## usethis namespace: end
 NULL
+
+## usethis namespace: start
+#' @importFrom lattice histogram
+## usethis namespace: end
+NULL
+
+## usethis namespace: start
+#' @importFrom lattice histogram
+## usethis namespace: end
+NULL
+
+## usethis namespace: start
+#' @importFrom lattice panel.histogram
+## usethis namespace: end
+NULL
+
+## usethis namespace: start
+#' @importFrom lattice panel.abline
+## usethis namespace: end
+NULL

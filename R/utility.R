@@ -617,7 +617,40 @@ random_pccs.default <- function(m) .NotYetImplemented()
 
 #' @export
 random_pccs.opafit <- function(m) {
-  m$rand_pccs
+  z <- m$rand_pccs
+  attr(z, "observed_pcc") <- m$group_pcc
+  class(z) <- "oparandpccs"
+  z
+}
+
+
+#' Plot PCC replicates.
+#'
+#' @details
+#' Plot a histogram of PCCs computed from randomly reordered data
+#' used to calculate the chance-value.
+#' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
+#' @param ... ignored
+#' @return no return value, called for side effects only.
+#' @examples
+#' dat <- data.frame(t1 = c(9, 4, 8, 10),
+#'                   t2 = c(8, 8, 12, 10),
+#'                   t3 = c(8, 5, 10, 11))
+#' h <- hypothesis(1:3)
+#' opamod <- opa(dat, h)
+#' plot(random_pccs(opamod))
+#' @export
+plot.oparandpccs <- function(x, ...) {
+  histogram(unclass(x), type = "count", xlab = "PCC",
+    xlim = c(NA, min(max(max(x), attr(x, "observed_pcc")) + 5, 105)),
+    ylab = "Count", col = "#56B4E9",
+    panel = function(...) {
+      panel.histogram(...)
+      panel.abline(v = attr(x, "observed_pcc"),
+                   col = "red",
+                   lty = 2)
+    }
+  )
 }
 
 
