@@ -70,10 +70,19 @@
     <loc>https://timbeechey.github.io/opa/reference/pituitary.html</loc>
   </url>
   <url>
+    <loc>https://timbeechey.github.io/opa/reference/plot.opaGroupComparison.html</loc>
+  </url>
+  <url>
+    <loc>https://timbeechey.github.io/opa/reference/plot.opaHypothesisComparison.html</loc>
+  </url>
+  <url>
     <loc>https://timbeechey.github.io/opa/reference/plot.opafit.html</loc>
   </url>
   <url>
     <loc>https://timbeechey.github.io/opa/reference/plot.opahypothesis.html</loc>
+  </url>
+  <url>
+    <loc>https://timbeechey.github.io/opa/reference/plot.oparandpccs.html</loc>
   </url>
   <url>
     <loc>https://timbeechey.github.io/opa/reference/print.opaGroupComparison.html</loc>
