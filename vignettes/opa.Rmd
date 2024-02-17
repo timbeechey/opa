@@ -144,10 +144,14 @@ m2 <- opa(dat_wide[,3:6], h2)
 The `compare_hypotheses()` function can then be used to compare how well two hypothese account for the observed data.
 
 ```{r compare_hypotheses}
-compare_hypotheses(m1, m2)
+(comp_h1_h2 <- compare_hypotheses(m1, m2))
 ```
 
-These results indicate that the monotonic increase hypothesis encoded by `h1` better acounts for the data than `h2`. However, the difference between these hypotheses is not large. The computed chance value indicates that a difference at least as large could be produced by chance, through random permutations of the data, about one quarter of the time.
+These results indicate that the monotonic increase hypothesis encoded by `h1` better acounts for the data than `h2`. However, the difference between these hypotheses is not large. The computed chance value indicates that a difference at least as large could be produced by chance, through random permutations of the data, about one quarter of the time. The calculation of the group-level chance-value can be visualized by plotting the object returned by `compare_hypotheses()`.
+
+```{r}
+plot(comp_h1_h2)
+```
 
 ### Comparing groups
 
@@ -160,10 +164,14 @@ m3 <- opa(dat_wide[,3:6], h1, group = dat_wide$sex)
 The `compare_groups()` function may then be used to quantify the difference in hypothesis performance between any two groups within the data.
 
 ```{r compare_groups}
-compare_groups(m3, "M", "F")
+(comp_m_f <- compare_groups(m3, "M", "F"))
 ```
 
-In this case, `compare_groups()` indicates that the difference in how well the hypothesis accounts for males and females growth is very small. the chance value shows that a difference at least as great could be produced by chance around 80% of the time.
+In this case, `compare_groups()` indicates that the difference in how well the hypothesis accounts for males and females growth is very small. the chance value shows that a difference at least as great could be produced by chance around 80% of the time. As with the hypothesis comparison, the computation of the chance value for the group comparison can be visualized by plotting the object returned by `compare_groups()`.
+
+```{r}
+plot(comp_m_f)
+```
 
 ### Difference thresholds
 
