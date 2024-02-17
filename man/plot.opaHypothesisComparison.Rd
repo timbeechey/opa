@@ -4,10 +4,12 @@
 \alias{plot.opaHypothesisComparison}
 \title{Plot hypothesis comparison PCC replicates.}
 \usage{
-\method{plot}{opaHypothesisComparison}(x, ...)
+\method{plot}{opaHypothesisComparison}(x, nbins = 10, ...)
 }
 \arguments{
 \item{x}{an object of class "oparandpccs" produced by \code{random_pccs()}}
+
+\item{nbins}{number of histogram bins}
 
 \item{...}{ignored}
 }

@@ -4,10 +4,12 @@
 \alias{plot.oparandpccs}
 \title{Plot PCC replicates.}
 \usage{
-\method{plot}{oparandpccs}(x, ...)
+\method{plot}{oparandpccs}(x, nbins = 10, ...)
 }
 \arguments{
 \item{x}{an object of class "oparandpccs" produced by \code{random_pccs()}}
+
+\item{nbins}{number of histogram bins}
 
 \item{...}{ignored}
 }

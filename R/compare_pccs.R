@@ -67,6 +67,7 @@ compare_hypotheses.opafit <- function(m1, m2) {
 #' Plot a histogram of PCCs computed from randomly reordered data
 #' used to calculate the chance-value for a hypothesis comparison.
 #' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
+#' @param nbins number of histogram bins
 #' @param ... ignored
 #' @return no return value, called for side effects only.
 #' @examples
@@ -81,13 +82,13 @@ compare_hypotheses.opafit <- function(m1, m2) {
 #' z <- compare_hypotheses(opamod1, opamod2)
 #' plot(z)
 #' @export
-plot.opaHypothesisComparison <- function(x, ...) {
+plot.opaHypothesisComparison <- function(x, nbins = 10, ...) {
   histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
     xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
-    ylab = "Count", col = "#56B4E9",
+    ylab = "Count", col = "#56B4E9", breaks = nbins,
     panel = function(...) {
       panel.histogram(...)
-      panel.abline(v = x$pcc_diff,
+      panel.abline(v = c(x$pcc_diff, -x$pcc_diff),
                    col = "red",
                    lty = 2)
     }
@@ -194,6 +195,7 @@ compare_groups.opafit <- function(m, group1, group2) {
 #' Plot a histogram of PCCs computed from randomly reordered data
 #' used to calculate the chance-value for a group comparison.
 #' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
+#' @param nbins number of histogram bins
 #' @param ... ignored
 #' @return no return value, called for side effects only.
 #' @examples
@@ -207,13 +209,13 @@ compare_groups.opafit <- function(m, group1, group2) {
 #' z <- compare_groups(opamod, "a", "b")
 #' plot(z)
 #' @export
-plot.opaGroupComparison <- function(x, ...) {
+plot.opaGroupComparison <- function(x, nbins = 10, ...) {
   histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
     xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
-    ylab = "Count", col = "#56B4E9",
+    ylab = "Count", col = "#56B4E9", breaks = nbins,
     panel = function(...) {
       panel.histogram(...)
-      panel.abline(v = x$pcc_diff,
+      panel.abline(v = c(x$pcc_diff, -x$pcc_diff),
                    col = "red",
                    lty = 2)
     }

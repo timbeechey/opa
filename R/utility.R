@@ -630,6 +630,7 @@ random_pccs.opafit <- function(m) {
 #' Plot a histogram of PCCs computed from randomly reordered data
 #' used to calculate the chance-value.
 #' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
+#' @param nbins number of histogram bins
 #' @param ... ignored
 #' @return no return value, called for side effects only.
 #' @examples
@@ -640,10 +641,10 @@ random_pccs.opafit <- function(m) {
 #' opamod <- opa(dat, h)
 #' plot(random_pccs(opamod))
 #' @export
-plot.oparandpccs <- function(x, ...) {
+plot.oparandpccs <- function(x, nbins = 10, ...) {
   histogram(unclass(x), type = "count", xlab = "PCC",
     xlim = c(NA, min(max(max(x), attr(x, "observed_pcc")) + 5, 105)),
-    ylab = "Count", col = "#56B4E9",
+    ylab = "Count", col = "#56B4E9", breaks = nbins,
     panel = function(...) {
       panel.histogram(...)
       panel.abline(v = attr(x, "observed_pcc"),
