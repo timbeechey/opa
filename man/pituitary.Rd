@@ -5,13 +5,11 @@
 \alias{pituitary}
 \title{Childhood growth data}
 \format{
-## `pituitary`
-A data frame with 108 rows and 4 columns:
 \describe{
- \item{distance}{distance in mm from the pituitary to the pteryo-maxillary fissure}
- \item{age}{age in years}
- \item{individual}{identifier for each individual}
- \item{sex}{sex of each individual}
+ \item{distance}{Distance in mm from the pituitary to the pteryo-maxillary fissure.}
+ \item{age}{Age in years.}
+ \item{individual}{Unique identifier for each individual.}
+ \item{sex}{Biological sex of each individual.}
 }
 }
 \source{
@@ -21,6 +19,6 @@ Potthoff, R. F., & Roy, S. N. (1964). A Generalized Multivariate Analysis of Var
 pituitary
 }
 \description{
-Distance from the the pituitary to the pteryo-maxillary fissure.
+A data frame with 108 rows and 4 columns containing data on the distance from the the pituitary to the pteryo-maxillary fissure in children.
 }
 \keyword{datasets}

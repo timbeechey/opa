@@ -5,8 +5,6 @@
 \alias{bees}
 \title{Bee data}
 \format{
-## `bees`
-A data frame with 20 rows and 14 columns:
 \describe{
  \item{bee}{Unique identifier for each individual bee.}
  \item{condition}{Factor identifying the two experimental conditions. In the frustrated condition bees were temporarily restricted from returning to the hive after collecting nectar, in the free condition bees were able to return to the hive without delay.}
@@ -20,6 +18,6 @@ Grice, J. W., Craig, D. P. A., & Abramson, C. I. (2015). A Simple and Transparen
 bees
 }
 \description{
-Time between visits to a mechanical flower by bees in two experimental conditions.
+A data frame with 20 rows and 14 columns containing times between visits to a mechanical flower by bees in two experimental conditions.
 }
 \keyword{datasets}
