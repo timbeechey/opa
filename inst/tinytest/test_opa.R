@@ -66,7 +66,6 @@ expect_equal(round(group_pccs(opamod1), 2), 33.33)
 expect_true(group_cvals(opamod1) > 0.4)
 expect_true(group_cvals(opamod1) < 0.8)
 expect_equal(round(individual_pccs(opamod1), 2), c(100.00, 0.00, 0.00, 33.33))
-expect_equal(round(group_results(opamod1)[1], 2), 33.33)
 expect_equal(length(random_pccs(opamod1)), opamod1$nreps)
 
 # check functions that produce side-effects

@@ -386,7 +386,10 @@ plot.opahypothesis <- function(x, title = TRUE, ...) {
        main = ifelse(title == TRUE, "Hypothesis", ""))
   points(1:(length(x$raw)), x$raw, pch=21, cex=2, bg = palette()[1])
   axis(1, at=1:length(x$raw), labels=1:length(x$raw))
-  axis(2, at=c(min(x$raw), max(x$raw)), labels = c("Lower", "Higher"), las = 1)
+  # don't include y-axis labels if all values are equal
+  if (min(x$raw) != max(x$raw)) {
+    axis(2, at=c(min(x$raw), max(x$raw)), labels = c("Lower", "Higher"), las = 1)
+  }
 }
 
 
@@ -424,13 +427,16 @@ group_results.opafit <- function(m, digits = 2) {
                   nrow = 1)
     colnames(out) <- c("PCC", "cval")
     rownames(out) <- "pooled"
-    return(out)
-  }
-  else {
+    out_df <- as.data.frame(out)
+    out_df$cval[out_df$cval < 1/m$nreps] <- paste0("<", 1/m$nreps)
+    return(out_df)
+  } else {
     out <- cbind(round(m$group_pcc, digits), m$group_cval)
     colnames(out) <- c("PCC", "cval")
     rownames(out) <- levels(m$groups)
-    return(out)
+    out_df <- as.data.frame(out)
+    out_df$cval[out_df$cval < 1/m$nreps] <- paste0("<", 1/m$nreps)
+    return(out_df)
   }
 }
 
@@ -475,7 +481,9 @@ individual_results.opafit <- function(m, digits = 2) {
     out <- round(cbind(m$individual_idx, m$individual_pccs, m$individual_cvals), digits)
     colnames(out) <- c("Individual", "PCC", "cval")
     rownames(out) <- m$group_labels
-    return(out)
+    out_df <- as.data.frame(out)
+    out_df$cval[out_df$cval < 1/m$nreps] <- paste0("<", 1/m$nreps)
+    return(out_df)
   }
 }
 

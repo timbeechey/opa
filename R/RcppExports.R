@@ -29,7 +29,7 @@ pcc <- function(dat, h, pairing_type, diff_threshold) {
     .Call(`_opa_pcc`, dat, h, pairing_type, diff_threshold)
 }
 
-calc_cvalues <- function(pcc_out, nreps) {
-    .Call(`_opa_calc_cvalues`, pcc_out, nreps)
+calc_cvalues <- function(pcc_out, nreps, shuffle_across_individuals) {
+    .Call(`_opa_calc_cvalues`, pcc_out, nreps, shuffle_across_individuals)
 }
 

@@ -179,13 +179,23 @@ Rcpp::List pcc(arma::mat dat, arma::vec h, std::string pairing_type, double diff
 }
 
 
+// Shuffle each column of a matrix separately and return
+// a copy of the resulting shufled matrix.
+arma::mat shuffle_each_column(arma::mat x) {
+    for (size_t i {}; i < x.n_cols; i++) {
+        x.col(i) = arma::shuffle(x.col(i));
+    }
+    return x;
+}
+
+
 // Calculate the chance value for each individual in a matrix of data, and
 // the chance value for the group as a whole.
 // @param pcc_out, an Rcpp::List.
 // @param nreps, an integer.
 // @return an Rcpp::List.
 // [[Rcpp::export]]
-Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps) {
+Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps, bool shuffle_across_individuals) {
     arma::mat dat = pcc_out["data"];
     arma::vec hypothesis = pcc_out["hypothesis"];
     Rcpp::String pairing_type {pcc_out["pairing_type"]};
@@ -193,17 +203,28 @@ Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps) {
     arma::vec individual_pccs = pcc_out["individual_pccs"];
     auto obs_group_pcc {pcc_out["group_pcc"]};
     auto num_rows {dat.n_rows};
+    auto num_cols {dat.n_cols};
     
     arma::vec rand_group_pccs(nreps);
     arma::vec indiv_rand_pcc_geq_obs_pcc(num_rows);
     arma::vec individual_cvals(num_rows);
+    arma::mat shuffled_dat_cols(num_rows, num_cols);
     
     for (size_t i {}; i < nreps; i++) {
         Rcpp::checkUserInterrupt();
         arma::vec rand_indiv_pccs(num_rows);
+        double rand_indiv_pcc {};
+
+        if (shuffle_across_individuals) {
+            shuffled_dat_cols = shuffle_each_column(dat);
+        }
+
         for (size_t j {}; j < num_rows; j++) {
-            auto rand_indiv_pcc = scalar_row_pcc(arma::shuffle(dat.row(j)), hypothesis, pairing_type, diff_threshold);
-            //auto rand_indiv_pcc {rand_row_pcc["pcc"]};
+            if (shuffle_across_individuals) {
+                rand_indiv_pcc = scalar_row_pcc(arma::shuffle(shuffled_dat_cols.row(j)), hypothesis, pairing_type, diff_threshold);
+            } else {
+                rand_indiv_pcc = scalar_row_pcc(arma::shuffle(dat.row(j)), hypothesis, pairing_type, diff_threshold);
+            }
             rand_indiv_pccs(j) = rand_indiv_pcc;
             if (rand_indiv_pccs(j) >= individual_pccs[j]) {
                 indiv_rand_pcc_geq_obs_pcc[j] += 1;

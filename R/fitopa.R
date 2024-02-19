@@ -61,6 +61,7 @@
 #' @param pairing_type a string
 #' @param diff_threshold a positive integer or floating point number
 #' @param nreps an integer, ignored if \code{cval_method = "exact"}
+#' @param shuffle_across_individuals a boolean indicating whether to randomize data across individuals in c-value computation.
 #' @return \code{opa} returns an object of class "opafit".
 #'
 #' An object of class "opafit" is a list containing the folllowing components:
@@ -109,7 +110,8 @@
 #' opamod <- opa(dat[,2:4], h, group = dat$group)
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
-                diff_threshold = 0, nreps = 1000L) {
+                diff_threshold = 0, nreps = 1000L,
+                shuffle_across_individuals = FALSE) {
 
   if (inherits(hypothesis, "opahypothesis")) {
     hypothesis <- hypothesis$raw
@@ -134,7 +136,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
     mat <- as.matrix(dat) # data must be a matrix
 
     pccs <- pcc(mat, hypothesis, pairing_type, diff_threshold)
-    cvalues <- calc_cvalues(pccs, nreps)
+    cvalues <- calc_cvalues(pccs, nreps, shuffle_across_individuals)
 
     return(
       structure(
@@ -177,7 +179,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
       subgroup_dat <- dat[idx,]
       subgroup_mat <- as.matrix(subgroup_dat)
       subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
-      subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps)
+      subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps, shuffle_across_individuals)
 
       group_rand_pccs[groups[i]] <- subgroup_cvalues$rand_pccs
 

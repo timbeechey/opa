@@ -102,14 +102,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_cvalues
-Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps);
-RcppExport SEXP _opa_calc_cvalues(SEXP pcc_outSEXP, SEXP nrepsSEXP) {
+Rcpp::List calc_cvalues(Rcpp::List pcc_out, int nreps, bool shuffle_across_individuals);
+RcppExport SEXP _opa_calc_cvalues(SEXP pcc_outSEXP, SEXP nrepsSEXP, SEXP shuffle_across_individualsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type pcc_out(pcc_outSEXP);
     Rcpp::traits::input_parameter< int >::type nreps(nrepsSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_cvalues(pcc_out, nreps));
+    Rcpp::traits::input_parameter< bool >::type shuffle_across_individuals(shuffle_across_individualsSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_cvalues(pcc_out, nreps, shuffle_across_individuals));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -122,7 +123,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_opa_row_pcc", (DL_FUNC) &_opa_row_pcc, 4},
     {"_opa_scalar_row_pcc", (DL_FUNC) &_opa_scalar_row_pcc, 4},
     {"_opa_pcc", (DL_FUNC) &_opa_pcc, 4},
-    {"_opa_calc_cvalues", (DL_FUNC) &_opa_calc_cvalues, 2},
+    {"_opa_calc_cvalues", (DL_FUNC) &_opa_calc_cvalues, 3},
     {NULL, NULL, 0}
 };
 
