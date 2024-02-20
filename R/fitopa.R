@@ -153,7 +153,8 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
              diff_threshold = diff_threshold,
              data = dat,
              groups = group,
-             nreps = nreps),
+             nreps = nreps,
+             shuffle_across_individuals = shuffle_across_individuals),
         class = "opafit"))
 
   } else { # multiple groups

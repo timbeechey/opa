@@ -44,14 +44,14 @@ compare_conditions <- function(result, nreps = 1000L) {
 
 
 #' @export
-compare_conditions.default <- function(result, nreps = 1000L) .NotYetImplemented()
+compare_conditions.default <- function(result, nreps = 1000L) {
+  .NotYetImplemented()
+}
 
 
 #' @export
 compare_conditions.opafit <- function(result, nreps = 1000L) {
-  
   stopifnot("The object passed to compare_conditions() must be of class opafit"= class(result) == "opafit")
-
   dat <- result$data
   n_condition_pairs <- ((ncol(dat) - 1) * ncol(dat)) / 2
   pccs <- numeric(n_condition_pairs)
@@ -68,7 +68,8 @@ compare_conditions.opafit <- function(result, nreps = 1000L) {
       dat_subset <- na.omit(dat[,c(i,j)])
       pairwise_result <- opa(dat_subset, h_subset,
                              diff_threshold = result$diff_threshold,
-                             nreps = nreps)
+                             nreps = nreps,
+                             shuffle_across_individuals = result$shuffle_across_individuals)
       pccs[n] <- pairwise_result$group_pcc
       cvals[n] <- pairwise_result$group_cval
       n <- n + 1 # iterate vector index
@@ -77,16 +78,19 @@ compare_conditions.opafit <- function(result, nreps = 1000L) {
 
 
   # create upper triangle matrices for PCCs and cvalues for pairs of conditions
-  pcc_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
-  cval_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
+  pcc_mat <- matrix(numeric(0),
+                    nrow = dim(result$data)[2],
+                    ncol = dim(result$data)[2])
+  cval_mat <- matrix(numeric(0),
+                     nrow = dim(result$data)[2],
+                     ncol = dim(result$data)[2])
   # assign PCCs and c-values to matrix lower triangles
   pcc_mat[lower.tri(pcc_mat)] <- pccs
   cval_mat[lower.tri(cval_mat)] <- cvals
-  structure(
-    list(pccs_mat = pcc_mat,
-         cvals_mat = cval_mat,
-         pccs = pccs,
-         cvals = cvals,
-         nreps = nreps), 
-    class = "pairwiseopafit")
+  structure(list(pccs_mat = pcc_mat,
+                 cvals_mat = cval_mat,
+                 pccs = pccs,
+                 cvals = cvals,
+                 nreps = nreps),
+            class = "pairwiseopafit")
 }
