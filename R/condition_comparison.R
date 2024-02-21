@@ -39,58 +39,53 @@
 #' compare_conditions(opamod)
 #' @export
 compare_conditions <- function(result, nreps = 1000L) {
-  UseMethod("compare_conditions")
+    UseMethod("compare_conditions")
 }
 
 
 #' @export
 compare_conditions.default <- function(result, nreps = 1000L) {
-  .NotYetImplemented()
+    .NotYetImplemented()
 }
 
 
 #' @export
 compare_conditions.opafit <- function(result, nreps = 1000L) {
-  stopifnot("The object passed to compare_conditions() must be of class opafit"= class(result) == "opafit")
-  dat <- result$data
-  n_condition_pairs <- ((ncol(dat) - 1) * ncol(dat)) / 2
-  pccs <- numeric(n_condition_pairs)
-  cvals <- numeric(n_condition_pairs)
+    stopifnot("The object passed to compare_conditions() must be of class opafit"= class(result) == "opafit")
+    dat <- result$data
+    n_condition_pairs <- ((ncol(dat) - 1) * ncol(dat)) / 2
+    pccs <- numeric(n_condition_pairs)
+    cvals <- numeric(n_condition_pairs)
 
-  n <- 1 # vector index
-  # iterate through pairs of columns
+    n <- 1 # vector index
+    # iterate through pairs of columns
 
-  for (i in 1:(ncol(dat)-1)) {
-    for (j in (i+1):ncol(dat)) {
-      # get a pair of elements from the hypothesis
-      h_subset <- result$hypothesis[c(i,j)]
-      # get a pair of columns from the data
-      dat_subset <- na.omit(dat[,c(i,j)])
-      pairwise_result <- opa(dat_subset, h_subset,
-                             diff_threshold = result$diff_threshold,
-                             nreps = nreps,
-                             shuffle_across_individuals = result$shuffle_across_individuals)
-      pccs[n] <- pairwise_result$group_pcc
-      cvals[n] <- pairwise_result$group_cval
-      n <- n + 1 # iterate vector index
+    for (i in 1:(ncol(dat) - 1)) {
+        for (j in (i + 1):ncol(dat)) {
+            # get a pair of elements from the hypothesis
+            h_subset <- result$hypothesis[c(i, j)]
+            # get a pair of columns from the data
+            dat_subset <- na.omit(dat[, c(i, j)])
+            pairwise_result <- opa(dat_subset, h_subset,
+                                   diff_threshold = result$diff_threshold,
+                                   nreps = nreps,
+                                   shuffle_across_individuals = result$shuffle_across_individuals)
+            pccs[n] <- pairwise_result$group_pcc
+            cvals[n] <- pairwise_result$group_cval
+            n <- n + 1 # iterate vector index
+        }
     }
-  }
 
-
-  # create upper triangle matrices for PCCs and cvalues for pairs of conditions
-  pcc_mat <- matrix(numeric(0),
-                    nrow = dim(result$data)[2],
-                    ncol = dim(result$data)[2])
-  cval_mat <- matrix(numeric(0),
-                     nrow = dim(result$data)[2],
-                     ncol = dim(result$data)[2])
-  # assign PCCs and c-values to matrix lower triangles
-  pcc_mat[lower.tri(pcc_mat)] <- pccs
-  cval_mat[lower.tri(cval_mat)] <- cvals
-  structure(list(pccs_mat = pcc_mat,
-                 cvals_mat = cval_mat,
-                 pccs = pccs,
-                 cvals = cvals,
-                 nreps = nreps),
-            class = "pairwiseopafit")
+    # create upper triangle matrices for PCCs and cvalues for pairs of conditions
+    pcc_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
+    cval_mat <- matrix(numeric(0), nrow = dim(result$data)[2], ncol = dim(result$data)[2])
+    # assign PCCs and c-values to matrix lower triangles
+    pcc_mat[lower.tri(pcc_mat)] <- pccs
+    cval_mat[lower.tri(cval_mat)] <- cvals
+    structure(list(pccs_mat = pcc_mat,
+                   cvals_mat = cval_mat,
+                   pccs = pccs,
+                   cvals = cvals,
+                   nreps = nreps),
+              class = "pairwiseopafit")
 }

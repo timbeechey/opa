@@ -69,7 +69,7 @@ arma::vec all_diffs(arma::vec xs) {
     arma::vec diffs(n_pairs);
     // Fill the diffs vector with the difference between each pair of vector elements
     for (size_t i {}; i < n; i++) {
-        for (size_t j {i+1}; j < n; j++) {
+        for (size_t j {i + 1}; j < n; j++) {
             diffs(count) = xs(j) - xs(i);
             count++;
         }
@@ -109,7 +109,7 @@ Rcpp::List row_pcc(arma::rowvec xs, arma::vec h, std::string pairing_type, doubl
     arma::vec hypothesis_ordering = ordering(hypothesis_no_nas, pairing_type, 0);
     arma::vec row_ordering = ordering(xs.elem(arma::find_finite(xs)), pairing_type, diff_threshold);
     arma::vec match(row_ordering.n_elem);
-    for (size_t i{}; i < row_ordering.n_elem; i++) {
+    for (size_t i {}; i < row_ordering.n_elem; i++) {
         match(i) = row_ordering(i) == hypothesis_ordering(i);
     }
     auto n_pairs {match.n_elem};
@@ -133,7 +133,7 @@ double scalar_row_pcc(arma::rowvec xs, arma::vec h, std::string pairing_type, do
     arma::vec hypothesis_ordering = ordering(hypothesis_no_nas, pairing_type, 0);
     arma::vec row_ordering = ordering(xs.elem(arma::find_finite(xs)), pairing_type, diff_threshold);
     arma::vec match(row_ordering.n_elem);
-    for (size_t i{}; i < row_ordering.n_elem; i++) {
+    for (size_t i {}; i < row_ordering.n_elem; i++) {
         match(i) = row_ordering(i) == hypothesis_ordering(i);
     }
     auto n_pairs {match.n_elem};
@@ -156,7 +156,7 @@ Rcpp::List pcc(arma::mat dat, arma::vec h, std::string pairing_type, double diff
     size_t total_pairs {};
     size_t correct_pairs {};
     
-    for (size_t r{}; r < dat.n_rows; r++) {
+    for (size_t r {}; r < dat.n_rows; r++) {
         Rcpp::List result = row_pcc(dat.row(r), h, pairing_type, diff_threshold);
         size_t result_n_pairs {result["n_pairs"]};
         size_t result_correct_pairs {result["correct_pairs"]};

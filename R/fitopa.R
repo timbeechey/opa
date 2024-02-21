@@ -113,108 +113,105 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 diff_threshold = 0, nreps = 1000L,
                 shuffle_across_individuals = FALSE) {
 
-  if (inherits(hypothesis, "opahypothesis")) {
-    hypothesis <- hypothesis$raw
-  }
-
-  # verify the arguments
-  if (!is.null(group)) {
-    stopifnot("There must be at least 2 groups"= length(group) >= 2)
-    stopifnot("The groups vector must contain 1 item per data row"= length(group) == dim(dat)[1])
-  }
-  stopifnot("Data must be passed to opa() in a data.frame"= is.data.frame(dat))
-  stopifnot("Hypothesis and data rows are not the same length"= dim(dat)[2] == length(hypothesis))
-  stopifnot("pairing_type must be 'pairwise' or 'adjacent'"= pairing_type %in% c("pairwise", "adjacent"))
-  stopifnot("diff_threshold must be a number"= class(diff_threshold) %in% c("integer", "numeric"))
-  stopifnot("diff_threshold must be a non-negative number"= diff_threshold >= 0)
-  stopifnot("nreps must be a whole number"= nreps == as.integer(nreps))
-  stopifnot("nreps must be a positive number"= nreps >= 1)
-  stopifnot("nreps must be a single number"= length(nreps) == 1)
-  stopifnot("diff_threshold must be a single number"= length(diff_threshold) == 1)
-
-  if (is.null(group)) { # single groups
-    mat <- as.matrix(dat) # data must be a matrix
-
-    pccs <- pcc(mat, hypothesis, pairing_type, diff_threshold)
-    cvalues <- calc_cvalues(pccs, nreps, shuffle_across_individuals)
-
-    return(
-      structure(
-        list(group_pcc = pccs$group_pcc,
-             individual_pccs = pccs$individual_pccs,
-             correct_pairs = pccs$correct_pairs,
-             total_pairs = pccs$total_pairs,
-             group_cval = cvalues$group_cval,
-             individual_cvals = cvalues$individual_cvals,
-             rand_pccs = cvalues$rand_pccs,
-             call = match.call(),
-             hypothesis = hypothesis,
-             pairing_type = pairing_type,
-             diff_threshold = diff_threshold,
-             data = dat,
-             groups = group,
-             nreps = nreps,
-             shuffle_across_individuals = shuffle_across_individuals),
-        class = "opafit"))
-
-  } else { # multiple groups
-    stopifnot("The grouping vector must be a factor"=is.factor(group))
-    groups <- levels(group)
-    group_pccs <- numeric(nlevels(group))
-    group_cvals <- numeric(nlevels(group))
-    individual_pccs <- numeric(0)
-    individual_cvals <- numeric(0)
-    individual_idx <- numeric(0)
-    group_labels_vec <- character(0)
-    correct_pairs <- 0
-    total_pairs <- 0
-    n_permutations <- 0
-    pccs_geq_observed <- 0
-    pcc_replicates <- vector(nlevels(group), mode="list")
-    cond_pccs <- vector(nlevels(group), mode="list")
-
-    group_rand_pccs <- data.frame(n = 1:nreps)
-
-    for (i in 1:nlevels(group)) {
-      idx <- which(group == groups[i])
-      subgroup_dat <- dat[idx,]
-      subgroup_mat <- as.matrix(subgroup_dat)
-      subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
-      subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps, shuffle_across_individuals)
-
-      group_rand_pccs[groups[i]] <- subgroup_cvalues$rand_pccs
-
-      group_pccs[i] <- subgroup_pccs$group_pcc
-      correct_pairs <- correct_pairs + subgroup_pccs$correct_pairs
-      total_pairs <- total_pairs + subgroup_pccs$total_pairs
-      group_cvals[i] <- subgroup_cvalues$group_cval
-      individual_idx <- append(individual_idx, idx)
-      group_labels_vec <- append(group_labels_vec, rep(groups[i], length(idx)))
-      individual_pccs <- append(individual_pccs, subgroup_pccs$individual_pccs)
-      individual_cvals <- append(individual_cvals, subgroup_cvalues$individual_cvals)
+    # extract numeric vector from opahypothesis object
+    if (inherits(hypothesis, "opahypothesis")) {
+        hypothesis <- hypothesis$raw
     }
-    names(group_pccs) <- levels(group)
-    names(group_cvals) <- levels(group)
-    names(cond_pccs) <- levels(group)
 
-    return(
-      structure(
-        list(group_pcc = group_pccs,
-             individual_pccs = individual_pccs,
-             correct_pairs = correct_pairs,
-             total_pairs = total_pairs,
-             group_cval = group_cvals,
-             individual_cvals = individual_cvals,
-             group_rand_pccs = group_rand_pccs,
-             individual_idx = individual_idx,
-             group_labels = group_labels_vec,
-             call = match.call(),
-             hypothesis = hypothesis,
-             pairing_type = pairing_type,
-             diff_threshold = diff_threshold,
-             data = dat,
-             groups = group,
-             nreps = nreps),
-        class = "opafit"))
-  }
+    # verify the arguments
+    if (!is.null(group)) {
+        stopifnot("There must be at least 2 groups"= length(group) >= 2)
+        stopifnot("The groups vector must contain 1 item per data row"= length(group) == dim(dat)[1])
+    }
+    stopifnot("Data must be passed to opa() in a data.frame"= is.data.frame(dat))
+    stopifnot("Hypothesis and data rows are not the same length"= dim(dat)[2] == length(hypothesis))
+    stopifnot("pairing_type must be 'pairwise' or 'adjacent'"= pairing_type %in% c("pairwise", "adjacent"))
+    stopifnot("diff_threshold must be a number"= class(diff_threshold) %in% c("integer", "numeric"))
+    stopifnot("diff_threshold must be a non-negative number"= diff_threshold >= 0)
+    stopifnot("nreps must be a whole number"= nreps == as.integer(nreps))
+    stopifnot("nreps must be a positive number"= nreps >= 1)
+    stopifnot("nreps must be a single number"= length(nreps) == 1)
+    stopifnot("diff_threshold must be a single number"= length(diff_threshold) == 1)
+
+    if (is.null(group)) { # single groups
+        mat <- as.matrix(dat) # data must be a matrix
+        pccs <- pcc(mat, hypothesis, pairing_type, diff_threshold)
+        cvalues <- calc_cvalues(pccs, nreps, shuffle_across_individuals)
+
+        return(
+            structure(
+                list(group_pcc = pccs$group_pcc,
+                     individual_pccs = pccs$individual_pccs,
+                     correct_pairs = pccs$correct_pairs,
+                     total_pairs = pccs$total_pairs,
+                     group_cval = cvalues$group_cval,
+                     individual_cvals = cvalues$individual_cvals,
+                     rand_pccs = cvalues$rand_pccs,
+                     call = match.call(),
+                     hypothesis = hypothesis,
+                     pairing_type = pairing_type,
+                     diff_threshold = diff_threshold,
+                     data = dat,
+                     groups = group,
+                     nreps = nreps,
+                     shuffle_across_individuals = shuffle_across_individuals),
+                class = "opafit"))
+
+    } else { # multiple groups
+        stopifnot("The grouping vector must be a factor"=is.factor(group))
+        groups <- levels(group)
+        group_pccs <- numeric(nlevels(group))
+        group_cvals <- numeric(nlevels(group))
+        individual_pccs <- numeric(0)
+        individual_cvals <- numeric(0)
+        individual_idx <- numeric(0)
+        group_labels_vec <- character(0)
+        correct_pairs <- 0
+        total_pairs <- 0
+        n_permutations <- 0
+        pccs_geq_observed <- 0
+        pcc_replicates <- vector(nlevels(group), mode="list")
+        cond_pccs <- vector(nlevels(group), mode="list")
+        group_rand_pccs <- data.frame(n = 1:nreps)
+
+        for (i in 1:nlevels(group)) {
+            idx <- which(group == groups[i])
+            subgroup_dat <- dat[idx,]
+            subgroup_mat <- as.matrix(subgroup_dat)
+            subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
+            subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps, shuffle_across_individuals)
+            group_rand_pccs[groups[i]] <- subgroup_cvalues$rand_pccs
+            group_pccs[i] <- subgroup_pccs$group_pcc
+            correct_pairs <- correct_pairs + subgroup_pccs$correct_pairs
+            total_pairs <- total_pairs + subgroup_pccs$total_pairs
+            group_cvals[i] <- subgroup_cvalues$group_cval
+            individual_idx <- append(individual_idx, idx)
+            group_labels_vec <- append(group_labels_vec, rep(groups[i], length(idx)))
+            individual_pccs <- append(individual_pccs, subgroup_pccs$individual_pccs)
+            individual_cvals <- append(individual_cvals, subgroup_cvalues$individual_cvals)
+        }
+        names(group_pccs) <- levels(group)
+        names(group_cvals) <- levels(group)
+        names(cond_pccs) <- levels(group)
+
+        return(
+            structure(
+                list(group_pcc = group_pccs,
+                     individual_pccs = individual_pccs,
+                     correct_pairs = correct_pairs,
+                     total_pairs = total_pairs,
+                     group_cval = group_cvals,
+                     individual_cvals = individual_cvals,
+                     group_rand_pccs = group_rand_pccs,
+                     individual_idx = individual_idx,
+                     group_labels = group_labels_vec,
+                     call = match.call(),
+                     hypothesis = hypothesis,
+                     pairing_type = pairing_type,
+                     diff_threshold = diff_threshold,
+                     data = dat,
+                     groups = group,
+                     nreps = nreps),
+                class = "opafit"))
+    }
 }
