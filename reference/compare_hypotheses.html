@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">opa</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.020</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compare_hypotheses</span><span class="op">(</span><span class="va">m1</span>, <span class="va">m2</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compare_hypotheses</span><span class="op">(</span><span class="va">m1</span>, <span class="va">m2</span>, <span class="va">two_tailed</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -62,6 +62,10 @@
 
 <dt>m2</dt>
 <dd><p>an object of class "opafit" produced by a call to opa().</p></dd>
+
+
+<dt>two_tailed</dt>
+<dd><p>a boolean indicating whether the comparison is two-tailed.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -81,7 +85,7 @@
 <span class="r-in"><span><span class="va">h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="hypothesis.html">hypothesis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">opamod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="opa.html">opa</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">h1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">opamod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="opa.html">opa</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">h2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">compare_hypotheses</span><span class="op">(</span><span class="va">opamod1</span>, <span class="va">opamod2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">compare_hypotheses</span><span class="op">(</span><span class="va">opamod1</span>, <span class="va">opamod2</span>, two_tailed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ********* Hypothesis Comparison **********</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: 1 2 3 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H2: 1 4 2 3 </span>
@@ -89,6 +93,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> H2 PCC: 66.66667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PCC difference: 4.166667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cval: 0.895 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Comparison type: two-tailed</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
