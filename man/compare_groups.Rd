@@ -4,7 +4,7 @@
 \alias{compare_groups}
 \title{Calculate the c-value of the difference in PCCs produced by two groups}
 \usage{
-compare_groups(m, group1, group2)
+compare_groups(m, group1, group2, two_tailed)
 }
 \arguments{
 \item{m}{an object of class "opafit" produced by a call to opa().}
@@ -12,6 +12,8 @@ compare_groups(m, group1, group2)
 \item{group1}{a character string which matches a group level passed to opa().}
 
 \item{group2}{a character string which matches a group level passed to opa().}
+
+\item{two_tailed}{a boolean indicating whether the comparison is two-tailed.}
 }
 \value{
 an object of class "opaGroupComparison".

@@ -666,10 +666,8 @@ plot.oparandpccs <- function(x, nbins = 10, ...) {
         xlim = c(NA, min(max(max(x), attr(x, "observed_pcc")) + 5, 105)),
         ylab = "Count", col = "#56B4E9", breaks = nbins,
         panel = function(...) {
-        panel.histogram(...)
-        panel.abline(v = attr(x, "observed_pcc"),
-                     col = "red",
-                     lty = 2)
+            panel.histogram(...)
+            panel.abline(v = attr(x, "observed_pcc"), col = "red", lty = 2)
         }
     )
 }

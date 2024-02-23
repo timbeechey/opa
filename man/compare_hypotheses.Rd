@@ -4,12 +4,14 @@
 \alias{compare_hypotheses}
 \title{Calculate the c-value of the difference in PCCs produced by two hypotheses}
 \usage{
-compare_hypotheses(m1, m2)
+compare_hypotheses(m1, m2, two_tailed)
 }
 \arguments{
 \item{m1}{an object of class "opafit" produced by a call to opa().}
 
 \item{m2}{an object of class "opafit" produced by a call to opa().}
+
+\item{two_tailed}{a boolean indicating whether the comparison is two-tailed.}
 }
 \value{
 an object of class "opaHypothesisComparison".
@@ -26,5 +28,5 @@ h1 <- hypothesis(c(1, 2, 3, 4))
 h2 <- hypothesis(c(1, 4, 2, 3))
 opamod1 <- opa(dat, h1)
 opamod2 <- opa(dat, h2)
-compare_hypotheses(opamod1, opamod2)
+compare_hypotheses(opamod1, opamod2, two_tailed = TRUE)
 }

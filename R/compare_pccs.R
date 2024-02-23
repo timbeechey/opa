@@ -18,6 +18,7 @@
 #' Calculate the c-value of the difference in PCCs produced by two hypotheses
 #' @param m1 an object of class "opafit" produced by a call to opa().
 #' @param m2 an object of class "opafit" produced by a call to opa().
+#' @param two_tailed a boolean indicating whether the comparison is two-tailed.
 #' @return an object of class "opaHypothesisComparison".
 #' @examples
 #' dat <- data.frame(t1 = c(9, 4, 8, 10),
@@ -28,24 +29,32 @@
 #' h2 <- hypothesis(c(1, 4, 2, 3))
 #' opamod1 <- opa(dat, h1)
 #' opamod2 <- opa(dat, h2)
-#' compare_hypotheses(opamod1, opamod2)
+#' compare_hypotheses(opamod1, opamod2, two_tailed = TRUE)
 #' @export
-compare_hypotheses <- function(m1, m2) {
+compare_hypotheses <- function(m1, m2, two_tailed) {
     UseMethod("compare_hypotheses")
 }
 
 
 #' @export
-compare_hypotheses.default <- function(m1, m2) .NotYetImplemented()
+compare_hypotheses.default <- function(m1, m2, two_tailed) {
+    .NotYetImplemented()
+}
 
 
 #' @export
-compare_hypotheses.opafit <- function(m1, m2) {
+compare_hypotheses.opafit <- function(m1, m2, two_tailed = TRUE) {
     stopifnot("Multigroup fits cannot be compared using compare_hypotheses()"= is.null(m1$group) && is.null(m2$group))
     stopifnot("Models have different numbers of random orderings"= m1$nreps == m2$nreps)
     pcc_diff <- abs(m1$group_pcc - m2$group_pcc)
     rand_pccs_diff <- m1$rand_pccs - m2$rand_pccs
-    cval <- length(rand_pccs_diff[abs(rand_pccs_diff) >= pcc_diff]) / m1$nreps
+    if (two_tailed) {
+        type <- "two-tailed"
+        cval <- length(rand_pccs_diff[abs(rand_pccs_diff) >= pcc_diff]) / m1$nreps
+    } else {
+        type <- "one-tailed"
+        cval <- length(rand_pccs_diff[rand_pccs_diff >= pcc_diff]) / m1$nreps
+    }
     return(
         structure(
             list(h1 = m1$hypothesis,
@@ -54,6 +63,8 @@ compare_hypotheses.opafit <- function(m1, m2) {
                  h2_pcc = m2$group_pcc,
                  pcc_diff = pcc_diff,
                  cval = cval,
+                 nreps = m1$nreps,
+                 type = type,
                  pcc_diff_dist = unlist(rand_pccs_diff)),
             class = "opaHypothesisComparison"
         )
@@ -87,10 +98,12 @@ plot.opaHypothesisComparison <- function(x, nbins = 10, ...) {
     xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
     ylab = "Count", col = "#56B4E9", breaks = nbins,
     panel = function(...) {
-      panel.histogram(...)
-      panel.abline(v = c(x$pcc_diff, -x$pcc_diff),
-                   col = "red",
-                   lty = 2)
+        panel.histogram(...)
+        if (x$type == "two_tailed") {
+            panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
+        } else {
+            panel.abline(v = x$pcc_diff, col = "red", lty = 2)
+        }
     }
   )
 }
@@ -113,6 +126,9 @@ plot.opaHypothesisComparison <- function(x, nbins = 10, ...) {
 #' summary(z)
 #' @export
 summary.opaHypothesisComparison <- function(object, ...) {
+    if (object$cval == 0) {
+        object$cval <- paste0("<", toString(1/object$nreps))
+    }
     cat("********* Hypothesis Comparison **********\n")
     cat("H1:", object$h1, "\n")
     cat("H2:", object$h2, "\n")
@@ -120,6 +136,7 @@ summary.opaHypothesisComparison <- function(object, ...) {
     cat("H2 PCC:", object$h2_pcc, "\n")
     cat("PCC difference:", object$pcc_diff, "\n")
     cat("cval:", object$cval, "\n")
+    cat("Comparison type:", object$type)
 }
 
 
@@ -148,6 +165,7 @@ print.opaHypothesisComparison <- function(x, ...) {
 #' @param m an object of class "opafit" produced by a call to opa().
 #' @param group1 a character string which matches a group level passed to opa().
 #' @param group2 a character string which matches a group level passed to opa().
+#' @param two_tailed a boolean indicating whether the comparison is two-tailed.
 #' @return an object of class "opaGroupComparison".
 #' @examples
 #' dat <- data.frame(group = c("a", "b", "a", "b"),
@@ -159,21 +177,30 @@ print.opaHypothesisComparison <- function(x, ...) {
 #' opamod <- opa(dat[,2:4], h, group = dat$group)
 #' compare_groups(opamod, "a", "b")
 #' @export 
-compare_groups <- function(m, group1, group2) {
+compare_groups <- function(m, group1, group2, two_tailed) {
     UseMethod("compare_groups")
 }
 
 
 #' @export 
-compare_groups.default <- function(m, group1, group2) .NotYetImplemented()
+compare_groups.default <- function(m, group1, group2, two_tailed) {
+    .NotYetImplemented()
+}
 
 
 #' @export
-compare_groups.opafit <- function(m, group1, group2) {
+compare_groups.opafit <- function(m, group1, group2, two_tailed = TRUE) {
     stopifnot("The opafit object must have been fitted with at least 2 groups"= length(m$groups) >= 2)
     pcc_diff <- unname(abs(m$group_pcc[group1] - m$group_pcc[group2]))
     rand_pccs_diff <- unname(unlist(m$group_rand_pccs[group1]) - unlist(m$group_rand_pccs[group2]))
-    cval <- length(rand_pccs_diff[abs(rand_pccs_diff) >= pcc_diff]) / m$nreps
+    if (two_tailed) {
+        type <- "two-tailed"
+        cval <- length(rand_pccs_diff[abs(rand_pccs_diff) >= pcc_diff]) / m$nreps
+    } else {
+        type <- "one-tailed"
+        cval <- length(rand_pccs_diff[rand_pccs_diff >= pcc_diff]) / m$nreps
+    }
+    
     return(
         structure(
             list(group1 = group1,
@@ -182,6 +209,8 @@ compare_groups.opafit <- function(m, group1, group2) {
                  group2_pcc = m$group_pcc[group2],
                  pcc_diff = pcc_diff, 
                  cval = cval,
+                 nreps = m$nreps,
+                 type = type,
                  pcc_diff_dist = unlist(rand_pccs_diff)),
             class = "opaGroupComparison"
         )
@@ -214,10 +243,12 @@ plot.opaGroupComparison <- function(x, nbins = 10, ...) {
     xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
     ylab = "Count", col = "#56B4E9", breaks = nbins,
     panel = function(...) {
-      panel.histogram(...)
-      panel.abline(v = c(x$pcc_diff, -x$pcc_diff),
-                   col = "red",
-                   lty = 2)
+        panel.histogram(...)
+        if (x$type == "two_tailed") {
+            panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
+        } else {
+            panel.abline(v = x$pcc_diff, col = "red", lty = 2)
+        }
     }
   )
 }
@@ -239,6 +270,9 @@ plot.opaGroupComparison <- function(x, nbins = 10, ...) {
 #' summary(z)
 #' @export
 summary.opaGroupComparison <- function(object, ...) {
+    if (object$cval == 0) {
+        object$cval <- paste0("<", toString(1/object$nreps))
+    }
     cat("********* Group Comparison **********\n")
     cat("Group 1:", object$group1, "\n")
     cat("Group 2:", object$group2, "\n")
@@ -246,6 +280,7 @@ summary.opaGroupComparison <- function(object, ...) {
     cat("Group 2 PCC:", object$group2_pcc, "\n")
     cat("PCC difference:", object$pcc_diff, "\n")
     cat("cval:", object$cval, "\n")
+    cat("Comparison type:", object$type)
 }
 
 #' Prints a summary of results from hypothesis comparison.
