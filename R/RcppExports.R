@@ -9,6 +9,10 @@ sign_with_threshold <- function(xs, diff_threshold) {
     .Call(`_opa_sign_with_threshold`, xs, diff_threshold)
 }
 
+triangular <- function(n) {
+    .Call(`_opa_triangular`, n)
+}
+
 all_diffs <- function(xs) {
     .Call(`_opa_all_diffs`, xs)
 }

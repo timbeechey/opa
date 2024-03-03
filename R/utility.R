@@ -1,5 +1,5 @@
 # opa: An Implementation of Ordinal Pattern Analysis.
-# Copyright (C) 2023 Timothy Beechey (tim.beechey@proton.me)
+# Copyright (C) 2024 Timothy Beechey (tim.beechey@proton.me)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,11 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#' create a hypothesis object
+#' Create a hypothesis object
 #' @param xs a numeric vector
 #' @param type a string
 #' @return a list containing the following elements
-#' @examples 
+#' @examples
 #' h1 <- hypothesis(c(2, 1, 3, 4), type = "pairwise")
 #' h2 <- hypothesis(c(2, 1, 3, 4), type = "adjacent")
 #' @export
@@ -123,9 +123,8 @@ summary.opafit <- function(object, ..., digits = 2L) {
 #' h <- hypothesis(1:3)
 #' opamod <- opa(dat, h)
 #' pw <- compare_conditions(opamod)
-#' print(pw)
 #' print(pw, digits = 2)
-#' @export 
+#' @export
 print.pairwiseopafit <- function(x, ...) {
     disp_pcc_mat <- matrix(numeric(0), nrow = dim(x$pccs_mat)[1], ncol = dim(x$pccs_mat)[2])
     disp_cval_mat <- matrix(numeric(0), nrow = dim(x$cvals_mat)[1], ncol = dim(x$cvals_mat)[2])
@@ -135,13 +134,13 @@ print.pairwiseopafit <- function(x, ...) {
     disp_pcc_mat[upper.tri(disp_pcc_mat, diag = TRUE)] <- "-"
     disp_cval_mat[upper.tri(disp_cval_mat, diag = TRUE)] <- "-"
     # display 0s as < 1/nreps. e.g. if nreps=1000, display 0 as <0.001
-    disp_cval_mat[disp_cval_mat == "0"] <- paste0("<", toString(1/x$nreps))
+    disp_cval_mat[disp_cval_mat == "0"] <- paste0("<", toString(1 / x$nreps))
     # convert matrices to data.frames for pretty printing
     pcc_df <- as.data.frame(disp_pcc_mat)
     cval_df <- as.data.frame(disp_cval_mat)
     # set column names to condition numbers
-    colnames(pcc_df) <- 1:ncol(pcc_df)
-    colnames(cval_df) <- 1:ncol(cval_df)
+    colnames(pcc_df) <- seq_len(ncol(pcc_df))
+    colnames(cval_df) <- seq_len(ncol(cval_df))
     cat("Pairwise PCCs:\n")
     print(pcc_df)
     cat("\nPairwise chance values:\n")
@@ -188,7 +187,7 @@ pcc_plot <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
 
 #' @export
 pcc_plot.default <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
-  .NotYetImplemented()
+    .NotYetImplemented()
 }
 
 
@@ -198,7 +197,7 @@ pcc_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
     if (is.null(m$groups)) {
         par(mar = c(4, 4, 2, 1)) # no legend for single group
         plot_dat <- data.frame(group = rep(1, length(m$individual_pccs)),
-                               idx=1:length(m$individual_pccs),
+                               idx = seq_along(m$individual_pccs),
                                pcc = m$individual_pccs)
     } else {
         if (legend == TRUE) {
@@ -212,7 +211,7 @@ pcc_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
                                pcc = m$individual_pccs)
     }
 
-    plot(x=NULL, y=NULL,
+    plot(x=NULL, y = NULL,
          yaxt = "n",
          xlim = c(0, 100), ylim = rev(c(1, nrow(plot_dat))),
          ylab = "Individual", xlab = "PCC",
@@ -221,20 +220,20 @@ pcc_plot.opafit <- function(m, threshold = NULL, title = TRUE, legend = TRUE) {
     grid(ny = NA)
 
     if (is.null(threshold)) {
-        segments(x0 = 0, y0 = seq(nrow(plot_dat)),
-                 x1 = plot_dat$pcc, y1 = seq(nrow(plot_dat)),
-                 yaxt = "n", lty=1)
+        segments(x0 = 0, y0 = seq_len(nrow(plot_dat)),
+                 x1 = plot_dat$pcc, y1 = seq_len(nrow(plot_dat)),
+                 yaxt = "n", lty = 1)
     } else {
-        segments(x0 = 0, y0 = seq(nrow(plot_dat)),
-                 x1 = plot_dat$pcc, y1 = seq(nrow(plot_dat)),
-                 yaxt = "n", lty=ifelse(plot_dat$pcc >= threshold, 1, 3))
+        segments(x0 = 0, y0 = seq_len(nrow(plot_dat)),
+                 x1 = plot_dat$pcc, y1 = seq_len(nrow(plot_dat)),
+                 yaxt = "n", lty = ifelse(plot_dat$pcc >= threshold, 1, 3))
     }
 
     if (!is.null(threshold)) {
-        abline(v=threshold, col="red", lty = 2)
+        abline(v=threshold, col = "red", lty = 2)
     }
-    points(plot_dat$pcc, seq(nrow(plot_dat)), pch = 21, cex = 1.2, bg = plot_dat$group)
-    axis(2, at = seq(nrow(plot_dat)), labels = plot_dat$idx, las = 1)
+    points(plot_dat$pcc, seq_len(nrow(plot_dat)), pch = 21, cex = 1.2, bg = plot_dat$group)
+    axis(2, at = seq_len(nrow(plot_dat)), labels = plot_dat$idx, las = 1)
     if (!is.null(m$groups)) {
         if (legend == TRUE) {
             legend("right", legend = levels(m$groups), title = "Group",
@@ -650,7 +649,6 @@ random_pccs.opafit <- function(m) {
 #' Plot a histogram of PCCs computed from randomly reordered data
 #' used to calculate the chance-value.
 #' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
-#' @param nbins number of histogram bins
 #' @param ... ignored
 #' @return no return value, called for side effects only.
 #' @examples
@@ -661,15 +659,12 @@ random_pccs.opafit <- function(m) {
 #' opamod <- opa(dat, h)
 #' plot(random_pccs(opamod))
 #' @export
-plot.oparandpccs <- function(x, nbins = 10, ...) {
-    histogram(unclass(x), type = "count", xlab = "PCC",
-        xlim = c(NA, min(max(max(x), attr(x, "observed_pcc")) + 5, 105)),
-        ylab = "Count", col = "#56B4E9", breaks = nbins,
-        panel = function(...) {
-            panel.histogram(...)
-            panel.abline(v = attr(x, "observed_pcc"), col = "red", lty = 2)
-        }
-    )
+plot.oparandpccs <- function(x, ...) {
+    densityplot(unclass(x), lwd = 3, col = palette()[1], xlab = "PCC",
+                xlim = c(NA, min(max(max(x), attr(x, "observed_pcc")) + 5, 105)), ylab = "",
+                panel = function(...) {
+                    panel.densityplot(...)
+                    panel.abline(v = attr(x, "observed_pcc"), col = "red", lty = 2)})
 }
 
 

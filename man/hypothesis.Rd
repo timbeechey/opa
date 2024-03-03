@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility.R
 \name{hypothesis}
 \alias{hypothesis}
-\title{create a hypothesis object}
+\title{Create a hypothesis object}
 \usage{
 hypothesis(xs, type = "pairwise")
 }
@@ -15,7 +15,7 @@ hypothesis(xs, type = "pairwise")
 a list containing the following elements
 }
 \description{
-create a hypothesis object
+Create a hypothesis object
 }
 \examples{
 h1 <- hypothesis(c(2, 1, 3, 4), type = "pairwise")

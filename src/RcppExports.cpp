@@ -35,6 +35,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// triangular
+size_t triangular(size_t n);
+RcppExport SEXP _opa_triangular(SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< size_t >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(triangular(n));
+    return rcpp_result_gen;
+END_RCPP
+}
 // all_diffs
 arma::vec all_diffs(arma::vec xs);
 RcppExport SEXP _opa_all_diffs(SEXP xsSEXP) {
@@ -118,6 +129,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_opa_conform", (DL_FUNC) &_opa_conform, 2},
     {"_opa_sign_with_threshold", (DL_FUNC) &_opa_sign_with_threshold, 2},
+    {"_opa_triangular", (DL_FUNC) &_opa_triangular, 1},
     {"_opa_all_diffs", (DL_FUNC) &_opa_all_diffs, 1},
     {"_opa_ordering", (DL_FUNC) &_opa_ordering, 3},
     {"_opa_row_pcc", (DL_FUNC) &_opa_row_pcc, 4},

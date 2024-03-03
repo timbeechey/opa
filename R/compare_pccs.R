@@ -1,5 +1,5 @@
 # opa: An Implementation of Ordinal Pattern Analysis.
-# Copyright (C) 2023 Timothy Beechey (tim.beechey@proton.me)
+# Copyright (C) 2024 Timothy Beechey (tim.beechey@proton.me)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -78,7 +78,6 @@ compare_hypotheses.opafit <- function(m1, m2, two_tailed = TRUE) {
 #' Plot a histogram of PCCs computed from randomly reordered data
 #' used to calculate the chance-value for a hypothesis comparison.
 #' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
-#' @param nbins number of histogram bins
 #' @param ... ignored
 #' @return no return value, called for side effects only.
 #' @examples
@@ -93,19 +92,24 @@ compare_hypotheses.opafit <- function(m1, m2, two_tailed = TRUE) {
 #' z <- compare_hypotheses(opamod1, opamod2)
 #' plot(z)
 #' @export
-plot.opaHypothesisComparison <- function(x, nbins = 10, ...) {
-  histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
-    xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
-    ylab = "Count", col = "#56B4E9", breaks = nbins,
-    panel = function(...) {
-        panel.histogram(...)
-        if (x$type == "two_tailed") {
-            panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
-        } else {
-            panel.abline(v = x$pcc_diff, col = "red", lty = 2)
-        }
+plot.opaHypothesisComparison <- function(x, ...) {
+    max_x <- min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)
+    if (x$type == "two-tailed") {
+        x_lims <- c(-max_x, max_x)
+    } else {
+        x_lims <- c(NA, max_x)
     }
-  )
+    densityplot(as.vector(x$pcc_diff_dist), lwd = 3, col = palette()[1], xlab = "PCC",
+        xlim = x_lims, ylab = "",
+        panel = function(...) {
+            panel.densityplot(...)
+            if (x$type == "two-tailed") {
+                panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
+            } else {
+                panel.abline(v = x$pcc_diff, col = "red", lty = 2)
+            }
+        }
+    )
 }
 
 
@@ -224,7 +228,6 @@ compare_groups.opafit <- function(m, group1, group2, two_tailed = TRUE) {
 #' Plot a histogram of PCCs computed from randomly reordered data
 #' used to calculate the chance-value for a group comparison.
 #' @param x an object of class "oparandpccs" produced by \code{random_pccs()}
-#' @param nbins number of histogram bins
 #' @param ... ignored
 #' @return no return value, called for side effects only.
 #' @examples
@@ -238,19 +241,36 @@ compare_groups.opafit <- function(m, group1, group2, two_tailed = TRUE) {
 #' z <- compare_groups(opamod, "a", "b")
 #' plot(z)
 #' @export
-plot.opaGroupComparison <- function(x, nbins = 10, ...) {
-  histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
-    xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
-    ylab = "Count", col = "#56B4E9", breaks = nbins,
-    panel = function(...) {
-        panel.histogram(...)
-        if (x$type == "two_tailed") {
-            panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
-        } else {
-            panel.abline(v = x$pcc_diff, col = "red", lty = 2)
-        }
+plot.opaGroupComparison <- function(x, ...) {
+    max_x <- min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)
+    if (x$type == "two-tailed") {
+        x_lims <- c(-max_x, max_x)
+    } else {
+        x_lims <- c(NA, max_x)
     }
-  )
+    densityplot(as.vector(x$pcc_diff_dist), lwd = 3, col = palette()[1], xlab = "PCC",
+        xlim = x_lims, ylab = "",
+        panel = function(...) {
+            panel.densityplot(...)
+            if (x$type == "two-tailed") {
+                panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
+            } else {
+                panel.abline(v = x$pcc_diff, col = "red", lty = 2)
+            }
+        }
+    )
+#   histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
+#     xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
+#     ylab = "Count", col = "#56B4E9", breaks = nbins,
+#     panel = function(...) {
+#         panel.histogram(...)
+#         if (x$type == "two_tailed") {
+#             panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
+#         } else {
+#             panel.abline(v = x$pcc_diff, col = "red", lty = 2)
+#         }
+#     }
+#   )
 }
 
 

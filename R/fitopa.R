@@ -1,5 +1,5 @@
 # opa: An Implementation of Ordinal Pattern Analysis.
-# Copyright (C) 2023 Timothy Beechey (tim.beechey@proton.me)
+# Copyright (C) 2024 Timothy Beechey (tim.beechey@proton.me)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 
 
 #' Fit an ordinal pattern analysis model
@@ -102,11 +104,6 @@
 #'                   t3 = c(8, 5, 10, 11))
 #' dat$group <- factor(dat$group, levels = c("a", "b"))
 #' h <- hypothesis(1:3)
-#' opamod <- opa(dat[,2:4], h)
-#' opamod <- opa(dat[,2:4], h)
-#' opamod <- opa(dat[,2:4], h, nreps = 500)
-#' opamod <- opa(dat[,2:4], h, pairing_type = "adjacent")
-#' opamod <- opa(dat[,2:4], h, diff_threshold = 1)
 #' opamod <- opa(dat[,2:4], h, group = dat$group)
 #' @export
 opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",

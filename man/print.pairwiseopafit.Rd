@@ -24,6 +24,5 @@ dat <- data.frame(t1 = c(9, 4, 8, 10),
 h <- hypothesis(1:3)
 opamod <- opa(dat, h)
 pw <- compare_conditions(opamod)
-print(pw)
 print(pw, digits = 2)
 }

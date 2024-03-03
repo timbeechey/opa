@@ -19,11 +19,6 @@ NULL
 NULL
 
 ## usethis namespace: start
-#' @importFrom utils setTxtProgressBar txtProgressBar
-## usethis namespace: end
-NULL
-
-## usethis namespace: start
 #' @importFrom stats na.omit
 ## usethis namespace: end
 NULL
@@ -34,17 +29,12 @@ NULL
 NULL
 
 ## usethis namespace: start
-#' @importFrom lattice histogram
+#' @importFrom lattice densityplot
 ## usethis namespace: end
 NULL
 
 ## usethis namespace: start
-#' @importFrom lattice histogram
-## usethis namespace: end
-NULL
-
-## usethis namespace: start
-#' @importFrom lattice panel.histogram
+#' @importFrom lattice panel.densityplot
 ## usethis namespace: end
 NULL
 

@@ -1,5 +1,5 @@
 # opa: An Implementation of Ordinal Pattern Analysis.
-# Copyright (C) 2023 Timothy Beechey (tim.beechey@proton.me)
+# Copyright (C) 2024 Timothy Beechey (tim.beechey@proton.me)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -59,7 +59,6 @@ compare_conditions.opafit <- function(result, nreps = 1000L) {
 
     n <- 1 # vector index
     # iterate through pairs of columns
-
     for (i in 1:(ncol(dat) - 1)) {
         for (j in (i + 1):ncol(dat)) {
             # get a pair of elements from the hypothesis

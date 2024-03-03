@@ -4,12 +4,10 @@
 \alias{plot.opaGroupComparison}
 \title{Plot group comparison PCC replicates.}
 \usage{
-\method{plot}{opaGroupComparison}(x, nbins = 10, ...)
+\method{plot}{opaGroupComparison}(x, ...)
 }
 \arguments{
 \item{x}{an object of class "oparandpccs" produced by \code{random_pccs()}}
-
-\item{nbins}{number of histogram bins}
 
 \item{...}{ignored}
 }
