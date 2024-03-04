@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-palette(c("#56B4E9", "#E69F00", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))
+palette(c("#0073C2", "#EFC000", "#868686", "#CD534C"))
 
 library(lattice)
 ```
@@ -46,17 +46,17 @@ str(pituitary)
 ```{r plot_data, fig.width=6, fig.height=6}
 xyplot(distance ~ age | individual, pituitary, type = c("g", "p", "l"),
        groups = sex, cex = 1.2, pch = 21,
-       fill = c("#E69F0070", "#0072B270"),
-       col = c("#E69F00", "#0072B2"),
+       fill = c("#EFC00070", "#0073C270"),
+       col = c("#EFC000", "#0073C2"),
        scales = list(x = list(at = c(8, 10, 12, 14))),
        xlab = "Age (years)",
        ylab = "Distance (mm)",
        main = "Pituitary-Pterygomaxillary Fissure Distance",
        key = list(space = "bottom", columns = 2,
                   text = list(c("Female", "Male")),
-                  lines = list(col = c("#E69F00", "#0072B2")),
-                  points = list(pch = 21, fill = c("#E69F0070", "#0072B270"),
-                                col = c("#E69F00", "#0072B2"))))
+                  lines = list(col = c("#EFC000", "#0073C2")),
+                  points = list(pch = 21, fill = c("#EFC00070", "#0073C270"),
+                                col = c("#EFC000", "#0073C2"))))
 ```
 
 #### Wide format
