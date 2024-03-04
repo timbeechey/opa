@@ -148,15 +148,6 @@ plot(opamod)
 
 <img src="man/figures/README-plot_opamod1-1.png" style="display: block; margin: auto;" />
 
-To aid interpretation, individual PCCs and c-values can also be plotted
-relative to user-specified thresholds:
-
-``` r
-plot(opamod, pcc_threshold = 90, cval_threshold = 0.1)
-```
-
-<img src="man/figures/README-threshold_plots-1.png" style="display: block; margin: auto;" />
-
 ### Pairwise comparison of measurement conditions
 
 Pairwise comparisons of measurement conditions can be calculated by
@@ -189,7 +180,7 @@ can be passed with the `group` keyword to produce results for each group
 within the data, in addition to individual results.
 
 ``` r
-dat$group <- rep(c("A", "B", "C", "D"), 5)
+dat$group <- rep(c("A", "B", "C", "D"), each = 5)
 dat$group <- factor(dat$group, levels = c("A", "B", "C", "D"))
 
 opamod2 <- opa(dat[, 1:4], h, group = dat$group)
@@ -202,33 +193,33 @@ summary(opamod2, digits = 3)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 #> 
 #> Between subjects results:
-#>       PCC   cval
-#> A 100.000 <0.001
-#> B  86.667 <0.001
-#> C  93.333 <0.001
-#> D  93.333 <0.001
+#>      PCC   cval
+#> A 96.667 <0.001
+#> B 93.333 <0.001
+#> C 86.667  0.002
+#> D 96.667 <0.001
 #> 
 #> Within subjects results:
 #>     Individual     PCC  cval
 #> A            1 100.000 0.034
-#> A.1          5 100.000 0.035
-#> A.2          9 100.000 0.045
-#> A.3         13 100.000 0.044
-#> A.4         17 100.000 0.047
-#> B            2 100.000 0.053
-#> B.1          6  83.333 0.191
-#> B.2         10  83.333 0.165
-#> B.3         14  83.333 0.166
-#> B.4         18  83.333 0.159
-#> C            3  83.333 0.185
-#> C.1          7 100.000 0.044
-#> C.2         11 100.000 0.043
-#> C.3         15  83.333 0.158
-#> C.4         19 100.000  0.05
-#> D            4 100.000 0.055
-#> D.1          8 100.000 0.047
-#> D.2         12  66.667 0.379
-#> D.3         16 100.000  0.05
+#> A.1          2 100.000 0.035
+#> A.2          3  83.333 0.178
+#> A.3          4 100.000 0.044
+#> A.4          5 100.000 0.047
+#> B            6  83.333  0.18
+#> B.1          7 100.000 0.037
+#> B.2          8 100.000 0.048
+#> B.3          9 100.000 0.043
+#> B.4         10  83.333 0.158
+#> C           11 100.000 0.049
+#> C.1         12  66.667 0.392
+#> C.2         13 100.000 0.043
+#> C.3         14  83.333 0.158
+#> C.4         15  83.333 0.156
+#> D           16 100.000 0.055
+#> D.1         17 100.000 0.047
+#> D.2         18  83.333 0.158
+#> D.3         19 100.000  0.05
 #> D.4         20 100.000 0.044
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
@@ -261,10 +252,10 @@ summary(group_comp)
 #> ********* Group Comparison **********
 #> Group 1: A 
 #> Group 2: B 
-#> Group 1 PCC: 100 
-#> Group 2 PCC: 86.66667 
-#> PCC difference: 13.33333 
-#> cval: 0.43 
+#> Group 1 PCC: 96.66667 
+#> Group 2 PCC: 93.33333 
+#> PCC difference: 3.333333 
+#> cval: 0.776 
 #> Comparison type: two-tailed
 ```
 

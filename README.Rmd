@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 
 # set plot colors
-palette(c("#0072B2", "#999999", "#E69F00", "#56B4E9"))
+palette(c("#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF"))
 ```
 
 # opa <a href="https://timbeechey.github.io/opa/"></a>
@@ -90,12 +90,6 @@ Individual-level model output can be plotted using:
 plot(opamod)
 ```
 
-To aid interpretation, individual PCCs and c-values can also be plotted relative to user-specified thresholds:
-
-```{r threshold_plots, fig.width=9, fig.height=4.5, fig.align="center"}
-plot(opamod, pcc_threshold = 90, cval_threshold = 0.1)
-```
-
 ### Pairwise comparison of measurement conditions
 
 Pairwise comparisons of measurement conditions can be calculated by applying the `compare_conditions()` function to an `opafit` object produced by a call to `opa()`:
@@ -111,7 +105,7 @@ print(condition_comparisons)
 If the data consist of multiple groups a categorical grouping variable can be passed with the `group` keyword to produce results for each group within the data, in addition to individual results.
 
 ```{r group_data}
-dat$group <- rep(c("A", "B", "C", "D"), 5)
+dat$group <- rep(c("A", "B", "C", "D"), each = 5)
 dat$group <- factor(dat$group, levels = c("A", "B", "C", "D"))
 
 opamod2 <- opa(dat[, 1:4], h, group = dat$group)
