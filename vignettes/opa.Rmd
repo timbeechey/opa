@@ -46,11 +46,9 @@ str(pituitary)
 ```{r plot_data, fig.width=6, fig.height=6}
 xyplot(distance ~ age | individual, pituitary, type = c("g", "p", "l"),
        groups = sex, cex = 1.2, pch = 21,
-       fill = c("#EFC00070", "#0073C270"),
-       col = c("#EFC000", "#0073C2"),
+       fill = c("#EFC00070", "#0073C270"), col = c("#EFC000", "#0073C2"),
        scales = list(x = list(at = c(8, 10, 12, 14))),
-       xlab = "Age (years)",
-       ylab = "Distance (mm)",
+       xlab = "Age (years)", ylab = "Distance (mm)",
        main = "Pituitary-Pterygomaxillary Fissure Distance",
        key = list(space = "bottom", columns = 2,
                   text = list(c("Female", "Male")),
@@ -125,11 +123,19 @@ These results indicate that the hypothesis accounts least well for the relations
 
 ### Comparing hypotheses
 
-The output of `compare_conditions()` indicates that it may be informative to consider a second hypothesis:
+The output of `compare_conditions()` indicates that it may be informative to consider a second, non-monotonic hypothesis:
 
 ```{r define_h2}
 h2 <- hypothesis(c(2, 1, 3, 4))
 ```
+
+`h2` contains the sb-hypothesis that the second measurement, at age 10, may be shorter than the first measurement.
+
+```{r plot_h2}
+plot(h2)
+```
+
+The hypothesized decrease between measurements at ages 8 and 10 is encoded as `-1`.
 
 ```{r print_h2}
 print(h2)
@@ -161,13 +167,19 @@ So far the analyses have not considered any possible differences between males a
 m3 <- opa(dat_wide[,3:6], h1, group = dat_wide$sex)
 ```
 
-The `compare_groups()` function may then be used to quantify the difference in hypothesis performance between any two groups within the data.
+The `plot()` function can be used to get a first sense of how PCCs and chance-values differ between groups.
+
+```{r plot_model3}
+plot(m3)
+```
+
+There is not a clearly visible pattern that appears to distinguish males from females. The `compare_groups()` function may be used to more precisely quantify the difference in hypothesis performance between the groups within the data.
 
 ```{r compare_groups}
 (comp_m_f <- compare_groups(m3, "M", "F"))
 ```
 
-In this case, `compare_groups()` indicates that the difference in how well the hypothesis accounts for males and females growth is very small. the chance value shows that a difference at least as great could be produced by chance around 80% of the time. As with the hypothesis comparison, the computation of the chance value for the group comparison can be visualized by plotting the object returned by `compare_groups()`.
+In this case, `compare_groups()` indicates that the difference in how well the hypothesis accounts for males and females growth is very small. The chance value shows that a difference at least as great could be produced by chance around 80% of the time. As with the hypothesis comparison, the computation of the chance value for the group comparison can be visualized by plotting the object returned by `compare_groups()`.
 
 ```{r}
 plot(comp_m_f)
