@@ -4,16 +4,10 @@
 \alias{cval_plot}
 \title{Plot individual chance values}
 \usage{
-cval_plot(m, threshold = NULL, title = TRUE, legend = TRUE)
+cval_plot(m)
 }
 \arguments{
 \item{m}{an object of class "opafit"}
-
-\item{threshold}{a boolean indicating whether to plot a threshold abline}
-
-\item{title}{a boolean indicating whether to include a plot title}
-
-\item{legend}{a boolean indicating whether to include a legend when n groups > 1}
 }
 \value{
 No return value, called for side effects.
@@ -28,5 +22,4 @@ dat <- data.frame(t1 = c(9, 4, 8, 10),
 h <- hypothesis(1:3)
 opamod <- opa(dat, h)
 cval_plot(opamod)
-cval_plot(opamod, threshold = 0.1)
 }

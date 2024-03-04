@@ -4,16 +4,10 @@
 \alias{pcc_plot}
 \title{Plot individual PCCs.}
 \usage{
-pcc_plot(m, threshold = NULL, title = TRUE, legend = TRUE)
+pcc_plot(m)
 }
 \arguments{
 \item{m}{an object of class "opafit"}
-
-\item{threshold}{a boolean indicating whether to plot a threshold abline}
-
-\item{title}{a boolean indicating whether to include a plot title}
-
-\item{legend}{a boolean indicating whether to include a legend}
 }
 \value{
 No return value, called for side effects.
@@ -28,5 +22,4 @@ dat <- data.frame(t1 = c(9, 4, 8, 10),
 h <- hypothesis(1:3)
 opamod <- opa(dat, h)
 pcc_plot(opamod)
-pcc_plot(opamod, threshold = 85)
 }

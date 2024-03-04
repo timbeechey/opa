@@ -110,8 +110,8 @@ summary(opamod)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 1 group 
 #> 
 #> Between subjects results:
-#>          PCC cval
-#> pooled 93.33    0
+#>          PCC   cval
+#> pooled 93.33 <0.001
 #> 
 #> Within subjects results:
 #>       PCC cval
@@ -202,34 +202,34 @@ summary(opamod2, digits = 3)
 #> Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups 
 #> 
 #> Between subjects results:
-#>       PCC cval
-#> A 100.000    0
-#> B  86.667    0
-#> C  93.333    0
-#> D  93.333    0
+#>       PCC   cval
+#> A 100.000 <0.001
+#> B  86.667 <0.001
+#> C  93.333 <0.001
+#> D  93.333 <0.001
 #> 
 #> Within subjects results:
-#>   Individual     PCC  cval
-#> A          1 100.000 0.034
-#> A          5 100.000 0.035
-#> A          9 100.000 0.045
-#> A         13 100.000 0.044
-#> A         17 100.000 0.047
-#> B          2 100.000 0.053
-#> B          6  83.333 0.191
-#> B         10  83.333 0.165
-#> B         14  83.333 0.166
-#> B         18  83.333 0.159
-#> C          3  83.333 0.185
-#> C          7 100.000 0.044
-#> C         11 100.000 0.043
-#> C         15  83.333 0.158
-#> C         19 100.000 0.050
-#> D          4 100.000 0.055
-#> D          8 100.000 0.047
-#> D         12  66.667 0.379
-#> D         16 100.000 0.050
-#> D         20 100.000 0.044
+#>     Individual     PCC  cval
+#> A            1 100.000 0.034
+#> A.1          5 100.000 0.035
+#> A.2          9 100.000 0.045
+#> A.3         13 100.000 0.044
+#> A.4         17 100.000 0.047
+#> B            2 100.000 0.053
+#> B.1          6  83.333 0.191
+#> B.2         10  83.333 0.165
+#> B.3         14  83.333 0.166
+#> B.4         18  83.333 0.159
+#> C            3  83.333 0.185
+#> C.1          7 100.000 0.044
+#> C.2         11 100.000 0.043
+#> C.3         15  83.333 0.158
+#> C.4         19 100.000  0.05
+#> D            4 100.000 0.055
+#> D.1          8 100.000 0.047
+#> D.2         12  66.667 0.379
+#> D.3         16 100.000  0.05
+#> D.4         20 100.000 0.044
 #> 
 #> PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.
 #> Chance-values were calculated from 1000 random orderings.
@@ -264,7 +264,8 @@ summary(group_comp)
 #> Group 1 PCC: 100 
 #> Group 2 PCC: 86.66667 
 #> PCC difference: 13.33333 
-#> cval: 0.43
+#> cval: 0.43 
+#> Comparison type: two-tailed
 ```
 
 ## Acknowledgements

@@ -99,8 +99,8 @@ plot.opaHypothesisComparison <- function(x, ...) {
     } else {
         x_lims <- c(NA, max_x)
     }
-    densityplot(as.vector(x$pcc_diff_dist), lwd = 3, col = palette()[1], xlab = "PCC",
-        xlim = x_lims, ylab = "",
+    densityplot(as.vector(x$pcc_diff_dist), col = palette()[1], xlab = "PCC",
+        pch = 4, cex = 0.5, xlim = x_lims, ylab = "",
         panel = function(...) {
             panel.densityplot(...)
             if (x$type == "two-tailed") {
@@ -248,8 +248,8 @@ plot.opaGroupComparison <- function(x, ...) {
     } else {
         x_lims <- c(NA, max_x)
     }
-    densityplot(as.vector(x$pcc_diff_dist), lwd = 3, col = palette()[1], xlab = "PCC",
-        xlim = x_lims, ylab = "",
+    densityplot(as.vector(x$pcc_diff_dist), col = palette()[1], xlab = "PCC",
+        pch = 4, cex = 0.5, xlim = x_lims, ylab = "",
         panel = function(...) {
             panel.densityplot(...)
             if (x$type == "two-tailed") {

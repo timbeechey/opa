@@ -9,11 +9,6 @@ NULL
 NULL
 
 ## usethis namespace: start
-#' @importFrom graphics abline axis grid layout legend par plot.new points segments
-## usethis namespace: end
-NULL
-
-## usethis namespace: start
 #' @importFrom grDevices palette
 ## usethis namespace: end
 NULL
@@ -34,7 +29,17 @@ NULL
 NULL
 
 ## usethis namespace: start
+#' @importFrom lattice dotplot
+## usethis namespace: end
+NULL
+
+## usethis namespace: start
 #' @importFrom lattice panel.densityplot
+## usethis namespace: end
+NULL
+
+## usethis namespace: start
+#' @importFrom lattice panel.dotplot
 ## usethis namespace: end
 NULL
 
