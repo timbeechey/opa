@@ -43,7 +43,7 @@ remotes::install_github("timbeechey/opa")
 
 ## Using `opa`
 
-See the <a href="https://timbeechey.github.io/opa/articles/opa.html">introductory guide<\a> for a brief demonstration of how to conduct an ordinal pattern analysis using `opa`.
+See the [introductory guide](https://timbeechey.github.io/opa/articles/opa.html) for a brief demonstration of how to conduct an ordinal pattern analysis using `opa`.
 
 ## Acknowledgements
 

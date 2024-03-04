@@ -16,7 +16,7 @@ BugReports: https://github.com/timbeechey/opa/issues
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp, RcppArmadillo
-Imports: 
+Imports:
     Rcpp,
     stats,
     lattice
