@@ -129,9 +129,9 @@ The output of `compare_conditions()` indicates that it may be informative to con
 h2 <- hypothesis(c(2, 1, 3, 4))
 ```
 
-`h2` contains the sb-hypothesis that the second measurement, at age 10, may be shorter than the first measurement.
+`h2` contains the sub-hypothesis that the second measurement, at age 10, may be shorter than the first measurement taken at age 8.
 
-```{r plot_h2}
+```{r plot_h2, fig.width=4, fig.height=4}
 plot(h2)
 ```
 

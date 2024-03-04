@@ -48,10 +48,8 @@ hypothesis <- function(xs, type = "pairwise") {
              ordinal_relations = ordinal_relations,
              n_increases = n_increases,
              n_decreases = n_decreases,
-             n_equalities = n_equalities
-           ),
-        class = "opahypothesis"
-    )
+             n_equalities = n_equalities),
+        class = "opahypothesis")
 }
 
 
@@ -59,12 +57,12 @@ hypothesis <- function(xs, type = "pairwise") {
 #' @param x an object of type "opaHypothesis"
 #' @param ... ignored
 #' @return No return value, called for side-effects.
-#' @examples 
+#' @examples
 #' h1 <- hypothesis(c(2, 1, 3, 4), type = "pairwise")
 #' print(h1)
 #' h2 <- hypothesis(c(2, 1, 3, 4), type = "adjacent")
 #' print(h2)
-#' @export 
+#' @export
 print.opahypothesis <- function(x, ...) {
     cat("********** Ordinal Hypothesis **********\n")
     cat("Hypothesis type:", x$type, "\n")
@@ -107,7 +105,7 @@ summary.opafit <- function(object, ..., digits = 2L) {
     print(individual_results(object, digits))
     cat("\nPCCs were calculated for ", object$pairing_type,
         " ordinal relationships using a difference threshold of ", object$diff_threshold,
-        ".\n", sep="")
+        ".\n", sep = "")
     cat("Chance-values were calculated from", object$nreps, "random orderings.\n")
 }
 
@@ -233,11 +231,9 @@ cval_plot.opafit <- function(m) {
     dat <- data.frame(y = seq_along(m$individual_cvals), 
                       x = m$individual_cvals)
     plot_symbols <- c(3, 8, 4, 1, 0, 5, 2, 7, 6, 9, 10:14)
-    dotplot(y ~ x, dat, group = m$groups,
+    dotplot(y ~ x, dat, group = m$groups, lty = 3, col.line = "grey", cex = 1,
             pch = if (!is.null(m$groups)) plot_symbols else 3,
-            lty = 3, 
             col = if (!is.null(m$groups)) palette()[1:nlevels(m$groups)] else palette()[1],
-            col.line = "grey", cex = 1,
             xlab = "Chance-Value", ylab = "Individual",
             key = if (!is.null(m$groups)) {
                       list(space = "top", columns = nlevels(m$groups),
@@ -342,14 +338,14 @@ group_results.opafit <- function(m, digits = 2) {
         colnames(out) <- c("PCC", "cval")
         rownames(out) <- "pooled"
         out_df <- as.data.frame(out)
-        out_df$cval[out_df$cval < 1/m$nreps] <- paste0("<", 1/m$nreps)
+        out_df$cval[out_df$cval < 1 / m$nreps] <- paste0("<", 1 / m$nreps)
         return(out_df)
     } else {
         out <- cbind(round(m$group_pcc, digits), m$group_cval)
         colnames(out) <- c("PCC", "cval")
         rownames(out) <- levels(m$groups)
         out_df <- as.data.frame(out)
-        out_df$cval[out_df$cval < 1/m$nreps] <- paste0("<", 1/m$nreps)
+        out_df$cval[out_df$cval < 1 / m$nreps] <- paste0("<", 1 / m$nreps)
         return(out_df)
     }
 }
@@ -398,7 +394,7 @@ individual_results.opafit <- function(m, digits = 2) {
         colnames(out) <- c("Individual", "PCC", "cval")
         rownames(out) <- m$group_labels
         out_df <- as.data.frame(out)
-        out_df$cval[out_df$cval < 1/m$nreps] <- paste0("<", 1/m$nreps)
+        out_df$cval[out_df$cval < 1 / m$nreps] <- paste0("<", 1 / m$nreps)
         return(out_df)
     }
 }

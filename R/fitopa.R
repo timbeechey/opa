@@ -155,7 +155,7 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
                 class = "opafit"))
 
     } else { # multiple groups
-        stopifnot("The grouping vector must be a factor"=is.factor(group))
+        stopifnot("The grouping vector must be a factor" = is.factor(group))
         groups <- levels(group)
         group_pccs <- numeric(nlevels(group))
         group_cvals <- numeric(nlevels(group))
@@ -168,12 +168,12 @@ opa <- function(dat, hypothesis, group = NULL, pairing_type = "pairwise",
         n_permutations <- 0
         pccs_geq_observed <- 0
         pcc_replicates <- vector(nlevels(group), mode="list")
-        cond_pccs <- vector(nlevels(group), mode="list")
+        cond_pccs <- vector(nlevels(group), mode = "list")
         group_rand_pccs <- data.frame(n = 1:nreps)
 
         for (i in 1:nlevels(group)) {
             idx <- which(group == groups[i])
-            subgroup_dat <- dat[idx,]
+            subgroup_dat <- dat[idx, ]
             subgroup_mat <- as.matrix(subgroup_dat)
             subgroup_pccs <- pcc(subgroup_mat, hypothesis, pairing_type, diff_threshold)
             subgroup_cvalues <- calc_cvalues(subgroup_pccs, nreps, shuffle_across_individuals)
