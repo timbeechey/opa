@@ -36,7 +36,7 @@
     
     <a class="navbar-brand me-2" href="index.html">opa</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.026</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.027</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -184,15 +184,11 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">opamod</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_opamod1-1.png" style="display: block; margin: auto;"></p>
-<p>To aid interpretation, individual PCCs and c-values can also be plotted relative to user-specified thresholds:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">opamod</span>, pcc_threshold <span class="op">=</span> <span class="fl">90</span>, cval_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-threshold_plots-1.png" style="display: block; margin: auto;"></p>
 <div class="section level3">
 <h3 id="pairwise-comparison-of-measurement-conditions">Pairwise comparison of measurement conditions<a class="anchor" aria-label="anchor" href="#pairwise-comparison-of-measurement-conditions"></a>
 </h3>
 <p>Pairwise comparisons of measurement conditions can be calculated by applying the <code><a href="reference/compare_conditions.html">compare_conditions()</a></code> function to an <code>opafit</code> object produced by a call to <code><a href="reference/opa.html">opa()</a></code>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">condition_comparisons</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compare_conditions.html">compare_conditions</a></span><span class="op">(</span><span class="va">opamod</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">condition_comparisons</span><span class="op">)</span></span>
@@ -214,50 +210,50 @@
 <h3 id="multiple-groups">Multiple groups<a class="anchor" aria-label="anchor" href="#multiple-groups"></a>
 </h3>
 <p>If the data consist of multiple groups a categorical grouping variable can be passed with the <code>group</code> keyword to produce results for each group within the data, in addition to individual results.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">dat</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">group</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">opamod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/opa.html">opa</a></span><span class="op">(</span><span class="va">dat</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">h</span>, group <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
 <p>The summary output displays results organised by group.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">opamod2</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Ordinal Pattern Analysis of 4 observations for 20 individuals in 4 groups </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Between subjects results:</span></span>
-<span><span class="co">#&gt;       PCC   cval</span></span>
-<span><span class="co">#&gt; A 100.000 &lt;0.001</span></span>
-<span><span class="co">#&gt; B  86.667 &lt;0.001</span></span>
-<span><span class="co">#&gt; C  93.333 &lt;0.001</span></span>
-<span><span class="co">#&gt; D  93.333 &lt;0.001</span></span>
+<span><span class="co">#&gt;      PCC   cval</span></span>
+<span><span class="co">#&gt; A 96.667 &lt;0.001</span></span>
+<span><span class="co">#&gt; B 93.333 &lt;0.001</span></span>
+<span><span class="co">#&gt; C 86.667  0.002</span></span>
+<span><span class="co">#&gt; D 96.667 &lt;0.001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Within subjects results:</span></span>
 <span><span class="co">#&gt;     Individual     PCC  cval</span></span>
 <span><span class="co">#&gt; A            1 100.000 0.034</span></span>
-<span><span class="co">#&gt; A.1          5 100.000 0.035</span></span>
-<span><span class="co">#&gt; A.2          9 100.000 0.045</span></span>
-<span><span class="co">#&gt; A.3         13 100.000 0.044</span></span>
-<span><span class="co">#&gt; A.4         17 100.000 0.047</span></span>
-<span><span class="co">#&gt; B            2 100.000 0.053</span></span>
-<span><span class="co">#&gt; B.1          6  83.333 0.191</span></span>
-<span><span class="co">#&gt; B.2         10  83.333 0.165</span></span>
-<span><span class="co">#&gt; B.3         14  83.333 0.166</span></span>
-<span><span class="co">#&gt; B.4         18  83.333 0.159</span></span>
-<span><span class="co">#&gt; C            3  83.333 0.185</span></span>
-<span><span class="co">#&gt; C.1          7 100.000 0.044</span></span>
-<span><span class="co">#&gt; C.2         11 100.000 0.043</span></span>
-<span><span class="co">#&gt; C.3         15  83.333 0.158</span></span>
-<span><span class="co">#&gt; C.4         19 100.000  0.05</span></span>
-<span><span class="co">#&gt; D            4 100.000 0.055</span></span>
-<span><span class="co">#&gt; D.1          8 100.000 0.047</span></span>
-<span><span class="co">#&gt; D.2         12  66.667 0.379</span></span>
-<span><span class="co">#&gt; D.3         16 100.000  0.05</span></span>
+<span><span class="co">#&gt; A.1          2 100.000 0.035</span></span>
+<span><span class="co">#&gt; A.2          3  83.333 0.178</span></span>
+<span><span class="co">#&gt; A.3          4 100.000 0.044</span></span>
+<span><span class="co">#&gt; A.4          5 100.000 0.047</span></span>
+<span><span class="co">#&gt; B            6  83.333  0.18</span></span>
+<span><span class="co">#&gt; B.1          7 100.000 0.037</span></span>
+<span><span class="co">#&gt; B.2          8 100.000 0.048</span></span>
+<span><span class="co">#&gt; B.3          9 100.000 0.043</span></span>
+<span><span class="co">#&gt; B.4         10  83.333 0.158</span></span>
+<span><span class="co">#&gt; C           11 100.000 0.049</span></span>
+<span><span class="co">#&gt; C.1         12  66.667 0.392</span></span>
+<span><span class="co">#&gt; C.2         13 100.000 0.043</span></span>
+<span><span class="co">#&gt; C.3         14  83.333 0.158</span></span>
+<span><span class="co">#&gt; C.4         15  83.333 0.156</span></span>
+<span><span class="co">#&gt; D           16 100.000 0.055</span></span>
+<span><span class="co">#&gt; D.1         17 100.000 0.047</span></span>
+<span><span class="co">#&gt; D.2         18  83.333 0.158</span></span>
+<span><span class="co">#&gt; D.3         19 100.000  0.05</span></span>
 <span><span class="co">#&gt; D.4         20 100.000 0.044</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; PCCs were calculated for pairwise ordinal relationships using a difference threshold of 0.</span></span>
 <span><span class="co">#&gt; Chance-values were calculated from 1000 random orderings.</span></span></code></pre></div>
 <p>Similarly, plotting the output shows individual PCCs and c-values by group.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">opamod2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_opamod2-1.png" style="display: block; margin: auto;"></p>
 </div>
@@ -265,18 +261,18 @@
 <h3 id="comparing-fit-by-group">Comparing fit by group<a class="anchor" aria-label="anchor" href="#comparing-fit-by-group"></a>
 </h3>
 <p>The chance-value of the difference in group-level PCCs between any two groups can be calculated using the <code><a href="reference/compare_groups.html">compare_groups()</a></code> function.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compare_groups.html">compare_groups</a></span><span class="op">(</span><span class="va">opamod2</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span></span></code></pre></div>
 <p>The difference in group-level PCCs along with the c-value of the difference can then be checked:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">group_comp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ********* Group Comparison **********</span></span>
 <span><span class="co">#&gt; Group 1: A </span></span>
 <span><span class="co">#&gt; Group 2: B </span></span>
-<span><span class="co">#&gt; Group 1 PCC: 100 </span></span>
-<span><span class="co">#&gt; Group 2 PCC: 86.66667 </span></span>
-<span><span class="co">#&gt; PCC difference: 13.33333 </span></span>
-<span><span class="co">#&gt; cval: 0.43 </span></span>
+<span><span class="co">#&gt; Group 1 PCC: 96.66667 </span></span>
+<span><span class="co">#&gt; Group 2 PCC: 93.33333 </span></span>
+<span><span class="co">#&gt; PCC difference: 3.333333 </span></span>
+<span><span class="co">#&gt; cval: 0.776 </span></span>
 <span><span class="co">#&gt; Comparison type: two-tailed</span></span></code></pre></div>
 </div>
 </div>
