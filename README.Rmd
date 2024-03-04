@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 
 # set plot colors
-palette(c("#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF"))
+palette(c("#0073C2", "#EFC000", "#868686", "#CD534C"))
 ```
 
 # opa <a href="https://timbeechey.github.io/opa/"></a>

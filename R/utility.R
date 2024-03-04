@@ -199,7 +199,7 @@ pcc_plot.opafit <- function(m) {
             col.line = "grey", cex = 1,
             xlab = "PCC", ylab = "Individual",
             key = if (!is.null(m$groups)) {
-                      list(space = "top", columns = 2,
+                      list(space = "top", columns = nlevels(m$groups),
                            text = list(levels(m$groups)),
                            points = list(pch = plot_symbols[1:nlevels(m$groups)],
                            col = palette()[1:nlevels(m$groups)]))})
@@ -236,13 +236,13 @@ cval_plot.opafit <- function(m) {
     dotplot(y ~ x, dat, group = m$groups,
             pch = if (!is.null(m$groups)) plot_symbols else 3,
             lty = 3, 
-            col = if (!is.null(m$groups)) palette()[1:nlevels(m$groups)] else palette()[1], 
+            col = if (!is.null(m$groups)) palette()[1:nlevels(m$groups)] else palette()[1],
             col.line = "grey", cex = 1,
             xlab = "Chance-Value", ylab = "Individual",
             key = if (!is.null(m$groups)) {
-                      list(space = "top", columns = 2,
+                      list(space = "top", columns = nlevels(m$groups),
                            text = list(levels(m$groups)),
-                           points = list(pch = plot_symbols[1:nlevels(m$groups)], 
+                           points = list(pch = plot_symbols[1:nlevels(m$groups)],
                            col = palette()[1:nlevels(m$groups)]))})
 }
 
@@ -277,7 +277,7 @@ plot.opafit <- function(x, ...) {
             xlab = NULL, ylab = "Individual",
             scales = list(relation = "free"),
             key = if (!is.null(x$groups)) {
-                list(space = "bottom", columns = 2,
+                list(space = "bottom", columns = nlevels(x$groups),
                      text = list(levels(x$groups)),
                      points = list(pch = plot_symbols[1:nlevels(x$groups)],
                                    col = palette()[1:nlevels(x$groups)]))})
