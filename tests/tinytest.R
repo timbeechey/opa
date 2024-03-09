@@ -1,4 +1,4 @@
 
-if ( requireNamespace("tinytest", quietly=TRUE) ){
-  tinytest::test_package("opa")
+if (requireNamespace("tinytest", quietly = TRUE)) {
+    tinytest::test_package("opa")
 }

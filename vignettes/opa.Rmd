@@ -87,7 +87,7 @@ Printing the hypothesis object shows that it consists of sub-hypotheses about si
 print(h1)
 ```
 
-The hypothesis can also be visualized with the `plot()` function.
+The hypothesis can also be visualized with the `plot()` function. Note that the y-axis is unitless; the vertical distance between points has no meaning. The information represented by the y-axis is relative: bigger, smaller or equal.
 
 ```{r plot_h1, fig.width=4, fig.height=4}
 plot(h1)

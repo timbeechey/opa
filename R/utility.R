@@ -137,8 +137,8 @@ print.pairwiseopafit <- function(x, ...) {
     pcc_df <- as.data.frame(disp_pcc_mat)
     cval_df <- as.data.frame(disp_cval_mat)
     # set column names to condition numbers
-    colnames(pcc_df) <- seq_len(ncol(pcc_df))
-    colnames(cval_df) <- seq_len(ncol(cval_df))
+    colnames(pcc_df) <- seq_len(dim(pcc_df)[2])
+    colnames(cval_df) <- seq_len(dim(cval_df)[2])
     cat("Pairwise PCCs:\n")
     print(pcc_df)
     cat("\nPairwise chance values:\n")

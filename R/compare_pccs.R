@@ -259,18 +259,6 @@ plot.opaGroupComparison <- function(x, ...) {
             }
         }
     )
-#   histogram(x$pcc_diff_dist, type = "count", xlab = "PCC",
-#     xlim = c(NA, min(max(max(x$pcc_diff_dist), x$pcc_diff) + 5, 105)),
-#     ylab = "Count", col = "#56B4E9", breaks = nbins,
-#     panel = function(...) {
-#         panel.histogram(...)
-#         if (x$type == "two_tailed") {
-#             panel.abline(v = c(x$pcc_diff, -x$pcc_diff), col = "red", lty = 2)
-#         } else {
-#             panel.abline(v = x$pcc_diff, col = "red", lty = 2)
-#         }
-#     }
-#   )
 }
 
 
