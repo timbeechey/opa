@@ -140,7 +140,7 @@ summary.opaHypothesisComparison <- function(object, ...) {
     cat("H2 PCC:", object$h2_pcc, "\n")
     cat("PCC difference:", object$pcc_diff, "\n")
     cat("cval:", object$cval, "\n")
-    cat("Comparison type:", object$type)
+    cat("Comparison type:", object$type, "\n")
 }
 
 
